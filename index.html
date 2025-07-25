@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido al Desafío: Juego del Calamar</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #2c3e50; /* Fondo oscuro Squid Game */
+            color: #ecf0f1; /* Texto claro */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #34495e; /* Contenedor más claro */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #e74c3c; /* Rojo Squid Game */
+            margin-bottom: 20px; /* Reducido para acercar el subtítulo */
+            font-size: 2.5em; /* Aumentado para mayor impacto */
+            display: flex; /* Para centrar el icono junto al texto */
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 .game-icon {
+            margin-right: 15px; /* Espacio entre el icono y el texto */
+            font-size: 1.2em; /* Tamaño del icono relativo al título */
+            line-height: 1; /* Asegurar alineación vertical */
+        }
+
+        h2 { /* Nuevo estilo para "Ingresa tus datos" */
+            color: #f1c40f; /* Amarillo/Dorado para formato título */
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            text-transform: uppercase; /* Para darle formato de título */
+            letter-spacing: 1.5px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            width: 100%;
+            display: flex; /* Usar flexbox para centrar elementos internos */
+            flex-direction: column; /* Apilar elementos verticalmente */
+            align-items: center; /* Centrar horizontalmente */
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+            color: #f1c40f; /* Amarillo para las etiquetas */
+            text-align: center; /* Centrar el texto de la etiqueta */
+            width: 100%; /* Asegurarse de que ocupe todo el ancho para centrar */
+        }
+
+        .input-group input[type="text"] {
+            width: calc(80% - 20px); /* Ancho ajustado para que no sea 100% y se vea mejor */
+            max-width: 300px; /* Ancho máximo para el input */
+            padding: 12px 10px;
+            border: 1px solid #7f8c8d;
+            border-radius: 5px;
+            background-color: #4a6572; /* Color de fondo del input */
+            color: #ecf0f1;
+            font-size: 1.1em;
+            box-sizing: border-box;
+            text-align: center; /* Centrar el texto dentro del input */
+        }
+
+        .input-group input[type="text"]::placeholder {
+            color: #bdc3c7;
+        }
+
+        .city-label { /* Estilo para la etiqueta "Ciudad" */
+            font-size: 1.1em;
+            color: #f1c40f;
+            margin-bottom: 10px; /* Espacio debajo de "Ciudad" */
+            text-align: center; /* Centrar el texto "Ciudad" */
+            width: 100%;
+        }
+
+        .radio-options-container { /* Nuevo contenedor para los botones de ciudad */
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+            margin-bottom: 15px; /* Espacio debajo de los botones de ciudad */
+            width: 100%;
+        }
+
+        .city-button { /* Estilo para los botones de ciudad */
+            background-color: #2980b9; /* Azul */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            min-width: 120px;
+            position: relative; /* Para poder ocultar el radio input */
+        }
+
+        .city-button:hover {
+            background-color: #3498db; /* Azul más claro al pasar el ratón */
+            transform: translateY(-3px);
+        }
+
+        .city-button.selected {
+            background-color: #e74c3c; /* Rojo cuando está seleccionado */
+            border: 2px solid #c0392b;
+            transform: scale(1.05);
+        }
+
+        /* Ocultar los radio buttons originales */
+        .city-button input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            pointer-events: none; /* Evitar que el radio button sea clicable directamente */
+        }
+
+
+        #startButton {
+            background-color: #27ae60; /* Verde para iniciar */
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        #startButton:hover {
+            background-color: #2ecc71; /* Verde más claro */
+        }
+
+        #startButton:disabled {
+            background-color: #7f8c8d; /* Gris cuando está deshabilitado */
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 5px; /* Espacio debajo del campo/opciones */
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            display: none; /* Oculto por defecto */
+            text-align: center; /* Asegurarse de que los mensajes de error también se centren */
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><span class="game-icon">🎮</span> Bienvenido al Desafío</h1>
+        <h2>Ingresa tus datos</h2>
+
+        <div class="input-group">
+            <label for="username">Ingresa tu nombre</label>
+            <input type="text" id="username" placeholder="" maxlength="20">
+            <div id="usernameError" class="error-message">Por favor, ingresa tu nombre.</div>
+        </div>
+
+        <div class="input-group">
+            <span class="city-label">Ciudad</span>
+            <div class="radio-options-container">
+                <button class="city-button" data-value="Bahía Blanca">
+                    <input type="radio" id="bahiaBlanca" name="city" value="Bahía Blanca">
+                    Bahía Blanca
+                </button>
+                <button class="city-button" data-value="Paraná">
+                    <input type="radio" id="parana" name="city" value="Paraná">
+                    Paraná
+                </button>
+            </div>
+            <div id="cityError" class="error-message">Por favor, selecciona tu ciudad.</div>
+        </div>
+
+        <button id="startButton" disabled>Comenzar el Juego</button>
+    </div>
+
+    <script>
+        const usernameInput = document.getElementById('username');
+        const cityButtons = document.querySelectorAll('.city-button'); // Ahora seleccionamos los botones
+        const cityRadios = document.querySelectorAll('input[name="city"]'); // Y los radios internos
+        const startButton = document.getElementById('startButton');
+        const usernameError = document.getElementById('usernameError');
+        const cityError = document.getElementById('cityError');
+
+        // Función para validar los campos
+        function validateForm() {
+            let isValid = true;
+
+            // Validar nombre de usuario
+            if (usernameInput.value.trim() === '') {
+                usernameError.style.display = 'block';
+                isValid = false;
+            } else {
+                usernameError.style.display = 'none';
+            }
+
+            // Validar selección de ciudad
+            let citySelected = false;
+            cityRadios.forEach(radio => {
+                if (radio.checked) {
+                    citySelected = true;
+                }
+            });
+
+            if (!citySelected) {
+                cityError.style.display = 'block';
+                isValid = false;
+            } else {
+                cityError.style.display = 'none';
+            }
+
+            // Habilitar/deshabilitar botón
+            startButton.disabled = !isValid;
+        }
+
+        // Escuchar cambios en el input de nombre
+        usernameInput.addEventListener('input', validateForm);
+
+        // Event listeners para los botones de ciudad (simulan el radio button)
+        cityButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Deseleccionar visualmente todos los botones y desmarcar todos los radios
+                cityButtons.forEach(btn => btn.classList.remove('selected'));
+                cityRadios.forEach(radio => radio.checked = false);
+
+                // Seleccionar visualmente el botón clicado y marcar su radio interno
+                button.classList.add('selected');
+                const radioInsideButton = button.querySelector('input[type="radio"]');
+                if (radioInsideButton) {
+                    radioInsideButton.checked = true;
+                }
+                validateForm(); // Revalidar el formulario
+            });
+        });
+
+
+        // Event listener para el botón "Comenzar el Juego"
+        startButton.addEventListener('click', () => {
+            if (startButton.disabled) {
+                return;
+            }
+
+            const username = usernameInput.value.trim();
+            let selectedCity = '';
+            cityRadios.forEach(radio => {
+                if (radio.checked) {
+                    selectedCity = radio.value;
+                }
+            });
+
+            const encodedUsername = encodeURIComponent(username);
+            const encodedCity = encodeURIComponent(selectedCity);
+
+            // Redirigir a la primera pregunta de la trivia
+            // Asume que tu primera pregunta se llama 'pregunta1.html'
+            window.location.href = `pregunta1.html?user=${encodedUsername}&city=${encodedCity}`;
+        });
+
+        // Validar al cargar la página
+        document.addEventListener('DOMContentLoaded', validateForm);
+
+    </script>
+</body>
+</html>
