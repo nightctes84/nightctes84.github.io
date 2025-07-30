@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafío Trivia: Juego del Calamar</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a4314; /* Verde oscuro */
+            color: #ecf0f1; /* Texto gris claro */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #4a4e69; /* Un tono de gris azulado más cálido */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #ff6b6b; /* Un rojo más vibrante */
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .timer {
+            font-size: 1.8em;
+            color: #ffd166; /* Un amarillo/dorado más brillante */
+            margin-bottom: 20px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        p {
+            font-size: 1.4em;
+            margin-bottom: 30px;
+        }
+
+        .options-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option-button {
+            background-color: #6a0572; /* Un morado oscuro */
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            min-width: 300px; /* Tamaño fijo para todos los botones, ajustado manualmente */
+            text-align: center;
+            box-sizing: border-box; /* Para incluir padding y border en el ancho total */
+        }
+
+        .option-button:hover {
+            background-color: #880e4f; /* Un tono de morado más claro/rosa oscuro al pasar el ratón */
+            transform: translateY(-3px);
+        }
+
+        .option-button.selected {
+            background-color: #e74c3c; /* Rojo cuando está seleccionado */
+            border: 2px solid #c0392b;
+            transform: scale(1.05);
+        }
+
+        #submitButton {
+            background-color: #00b894; /* Un verde turquesa */
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        #submitButton:hover {
+            background-color: #00cec9; /* Un turquesa más claro al pasar el ratón */
+        }
+
+        #submitButton:disabled {
+            background-color: #7f8c8d; /* Gris cuando está deshabilitado */
+            cursor: not-allowed;
+        }
+
+        #nextButton {
+            background-color: #fdcb6e; /* Un naranja pastel */
+            color: #333; /* Texto más oscuro para contrastar con el pastel */
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            display: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #nextButton:hover {
+            background-color: #ffeaa7; /* Un naranja aún más claro al pasar el ratón */
+        }
+
+        .message {
+            font-size: 1.8em;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+
+        .incorrect-message {
+            color: #e74c3c; /* Rojo para incorrecto */
+        }
+
+        .timeout-message {
+            color: #e74c3c; /* Rojo para tiempo agotado */
+        }
+
+        .correct-message {
+            color: #00b894; /* Verde turquesa para correcto, haciendo juego con el submit */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="timer" id="timerDisplay">02:00</div>
+        <h1>¡Desafío del Juego del Calamar! 🦑</h1>
+        <p>¿Qué indica una alteración de la conciencia?</p>
+
+        <div class="options-container">
+            <button class="option-button" data-value="A">A) Respiración entrecortada con taquicardia</button>
+            <button class="option-button" data-value="B">B) Ojos en blanco y mordedura de lengua</button>
+            <button class="option-button" data-value="C">C) No responder a estímulos y mirada perdida</button>
+            <button class="option-button" data-value="D">D) Sensación de ahogo con hiperventilación</button>
+        </div>
+
+        <button id="submitButton">Responder</button>
+        <button id="nextButton">Siguiente</button>
+
+        <div id="feedbackMessage" class="message"></div>
+    </div>
+
+    <script>
+        const timerDisplay = document.getElementById('timerDisplay');
+        const optionButtons = document.querySelectorAll('.option-button');
+        const submitButton = document.getElementById('submitButton');
+        const nextButton = document.getElementById('nextButton');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+        const correctAnwser = 'C';
+        const totalTime = 120; // 2 minutos en segundos
+        let timeLeft = totalTime;
+        let timerInterval;
+        let selectedOption = null;
+        let gameEnded = false;
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                if (!gameEnded) {
+                    endGame("¡Se acabó el tiempo, queda eliminado! 💀", false);
+                }
+            } else {
+                timeLeft--;
+            }
+        }
+
+        function endGame(message, isCorrect = false) {
+            gameEnded = true;
+            clearInterval(timerInterval);
+            feedbackMessage.textContent = message;
+            if (isCorrect) {
+                feedbackMessage.classList.add('correct-message');
+                feedbackMessage.classList.remove('incorrect-message');
+            } else {
+                feedbackMessage.classList.add('incorrect-message');
+                feedbackMessage.classList.remove('correct-message');
+            }
+            submitButton.style.display = 'none';
+            optionButtons.forEach(button => button.disabled = true);
+            if (isCorrect) {
+                nextButton.style.display = 'block';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            timerInterval = setInterval(updateTimer, 1000);
+            submitButton.disabled = true;
+        });
+
+        optionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (gameEnded) return;
+                optionButtons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                selectedOption = button.dataset.value;
+                submitButton.disabled = false;
+            });
+        });
+
+        submitButton.addEventListener('click', () => {
+            if (gameEnded) return;
+            if (selectedOption === null) {
+                alert("Por favor, selecciona una opción antes de responder.");
+                return;
+            }
+
+            if (selectedOption === correctAnwser) {
+                endGame("¡Respuesta correcta! ¡Felicidades, sigues en el juego! 🎉", true);
+            } else {
+                endGame("¡Respuesta incorrecta, queda eliminado! ❌", false);
+            }
+            submitButton.disabled = true;
+        });
+
+        nextButton.addEventListener('click', () => {
+            alert("¡Pasando a la siguiente pregunta! (Aquí iría la lógica para cargar la próxima pregunta)");
+            location.reload();
+        });
+    </script>
+</body>
+</html>
