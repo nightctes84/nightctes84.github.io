@@ -209,9 +209,9 @@
             }
             submitButton.style.display = 'none';
             optionButtons.forEach(button => button.disabled = true);
-            if (isCorrect) {
-                // El JavaScript es el que controla cuándo se muestra el botón y su 'display'
-                nextButton.style.display = 'block'; 
+            if (isCorrect) { 
+                nextButton.style.display = 'block';
+                nextButton.onclick = () => window.location.href = 'Squidgame2.html';
             }
         }
 
