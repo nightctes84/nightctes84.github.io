@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #1a4314; /* Verde oscuro */
+            background-color: #2c3e50; /* Azul/gris oscuro, inspirado en la estética de Squid Game */
             color: #ecf0f1; /* Texto gris claro */
             display: flex;
             justify-content: center;
@@ -21,27 +21,27 @@
         }
 
         .container {
-            background-color: #4a4e69; /* Un tono de gris azulado más cálido */
+            background-color: #34495e; /* Azul/gris oscuro ligeramente más claro */
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             max-width: 600px;
             width: 100%;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            position: relative; /* Para posicionar el temporizador */
+            display: flex; /* Añadido para Flexbox */
+            flex-direction: column; /* Para apilar los elementos verticalmente */
+            align-items: center; /* Centrar horizontalmente los elementos hijos */
         }
 
         h1 {
-            color: #ff6b6b; /* Un rojo más vibrante */
+            color: #e74c3c; /* Rojo, como los uniformes de los guardias o la sangre en Squid Game */
             margin-bottom: 30px;
             font-size: 2.5em;
         }
 
         .timer {
             font-size: 1.8em;
-            color: #ffd166; /* Un amarillo/dorado más brillante */
+            color: #f1c40f; /* Amarillo/Dorado, como el dinero del premio */
             margin-bottom: 20px;
             position: absolute;
             top: 20px;
@@ -58,14 +58,14 @@
 
         .options-container {
             display: flex;
-            justify-content: center;
+            justify-content: center; /* Centrar los botones de opción */
             flex-wrap: wrap;
             gap: 15px;
             margin-bottom: 30px;
         }
 
         .option-button {
-            background-color: #6a0572; /* Un morado oscuro */
+            background-color: #2980b9; /* Azul */
             color: white;
             padding: 15px 30px;
             border: none;
@@ -73,13 +73,12 @@
             font-size: 1.2em;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            min-width: 300px; /* Tamaño fijo para todos los botones, ajustado manualmente */
-            text-align: center;
-            box-sizing: border-box; /* Para incluir padding y border en el ancho total */
+            min-width: 120px;
+            text-align: center; /* Centrar el texto en el botón */
         }
 
         .option-button:hover {
-            background-color: #880e4f; /* Un tono de morado más claro/rosa oscuro al pasar el ratón */
+            background-color: #3498db; /* Azul más claro al pasar el ratón */
             transform: translateY(-3px);
         }
 
@@ -90,7 +89,7 @@
         }
 
         #submitButton {
-            background-color: #00b894; /* Un verde turquesa */
+            background-color: #27ae60; /* Verde para enviar */
             color: white;
             padding: 15px 40px;
             border: none;
@@ -102,7 +101,7 @@
         }
 
         #submitButton:hover {
-            background-color: #00cec9; /* Un turquesa más claro al pasar el ratón */
+            background-color: #2ecc71; /* Verde más claro al pasar el ratón */
         }
 
         #submitButton:disabled {
@@ -111,8 +110,8 @@
         }
 
         #nextButton {
-            background-color: #fdcb6e; /* Un naranja pastel */
-            color: #333; /* Texto más oscuro para contrastar con el pastel */
+            background-color: #f39c12; /* Naranja para siguiente */
+            color: white;
             padding: 15px 40px;
             border: none;
             border-radius: 8px;
@@ -120,13 +119,13 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
             margin-top: 20px;
-            display: none;
-            margin-left: auto;
-            margin-right: auto;
+            display: none; /* Oculto inicialmente */
+            margin-left: auto; /* Centrar el botón */
+            margin-right: auto; /* Centrar el botón */
         }
 
         #nextButton:hover {
-            background-color: #ffeaa7; /* Un naranja aún más claro al pasar el ratón */
+            background-color: #e67e22; /* Naranja más oscuro al pasar el ratón */
         }
 
         .message {
@@ -144,7 +143,7 @@
         }
 
         .correct-message {
-            color: #00b894; /* Verde turquesa para correcto, haciendo juego con el submit */
+            color: #2ecc71; /* Verde para correcto */
         }
     </style>
 </head>
@@ -152,13 +151,13 @@
     <div class="container">
         <div class="timer" id="timerDisplay">02:00</div>
         <h1>¡Desafío del Juego del Calamar! 🦑</h1>
-        <p>¿Qué indica una alteración de la conciencia?</p>
+        <p>En caso de traumatismo por accidente de tránsito, ¿qué es lo más recomendable?</p>
 
         <div class="options-container">
-            <button class="option-button" data-value="A">A) Respiración entrecortada con taquicardia</button>
-            <button class="option-button" data-value="B">B) Ojos en blanco y mordedura de lengua</button>
-            <button class="option-button" data-value="C">C) No responder a estímulos y mirada perdida</button>
-            <button class="option-button" data-value="D">D) Sensación de ahogo con hiperventilación</button>
+            <button class="option-button" data-value="A">Abandonar el lugar rápidamente para evitar complicaciones.</button>
+            <button class="option-button" data-value="B">Mover a los heridos sin importar su condición.</button>
+            <button class="option-button" data-value="C">Señalizar la zona, verificar el estado de las personas involucradas y llamar a emergencias.</button>
+            <button class="option-button" data-value="D">Pedir el seguro a los otros conductores para determinar quién tuvo la culpa.</button>
         </div>
 
         <button id="submitButton">Responder</button>
@@ -210,6 +209,7 @@
             optionButtons.forEach(button => button.disabled = true);
             if (isCorrect) {
                 nextButton.style.display = 'block';
+                nextButton.onclick = () => window.location.href = 'Squidgame3.html';
             }
         }
 
@@ -241,11 +241,6 @@
                 endGame("¡Respuesta incorrecta, queda eliminado! ❌", false);
             }
             submitButton.disabled = true;
-        });
-
-        nextButton.addEventListener('click', () => {
-            alert("¡Pasando a la siguiente pregunta! (Aquí iría la lógica para cargar la próxima pregunta)");
-            location.reload();
         });
     </script>
 </body>
