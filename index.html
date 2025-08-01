@@ -177,43 +177,49 @@
         <h1><span class="game-icon">🎮</span> Bienvenido al Desafío</h1>
         <h2>Ingresa tus datos</h2>
 
-        <div class="input-group">
-            <label for="username">Ingresa tu nombre</label>
-            <input type="text" id="username" placeholder="" maxlength="20">
-            <div id="usernameError" class="error-message">Por favor, ingresa tu nombre.</div>
-        </div>
-
-        <div class="input-group">
-            <span class="city-label">Ciudad</span>
-            <div class="radio-options-container">
-                <button class="city-button" data-value="Bahía Blanca">
-                    <input type="radio" id="bahiaBlanca" name="city" value="Bahía Blanca">
-                    Bahía Blanca
-                </button>
-                <button class="city-button" data-value="Paraná">
-                    <input type="radio" id="parana" name="city" value="Paraná">
-                    Paraná
-                </button>
+        <!-- EL FORMULARIO HA SIDO AGREGADO AQUÍ -->
+        <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec">
+            <div class="input-group">
+                <label for="username">Ingresa tu nombre</label>
+                <!-- IMPORTANTE: name="nombre" para Google Apps Script -->
+                <input type="text" id="username" name="nombre" placeholder="" maxlength="20" required>
+                <div id="usernameError" class="error-message">Por favor, ingresa tu nombre.</div>
             </div>
-            <div id="cityError" class="error-message">Por favor, selecciona tu ciudad.</div>
-        </div>
 
-        <button id="startButton" disabled>Comenzar el Juego</button>
+            <div class="input-group">
+                <span class="city-label">Ciudad</span>
+                <div class="radio-options-container">
+                    <button class="city-button" type="button" data-value="Bahía Blanca">
+                        <!-- IMPORTANTE: name="localidad" para Google Apps Script -->
+                        <input type="radio" id="bahiaBlanca" name="localidad" value="Bahía Blanca">
+                        Bahía Blanca
+                    </button>
+                    <button class="city-button" type="button" data-value="Paraná">
+                        <!-- IMPORTANTE: name="localidad" para Google Apps Script -->
+                        <input type="radio" id="parana" name="localidad" value="Paraná">
+                        Paraná
+                    </button>
+                </div>
+                <div id="cityError" class="error-message">Por favor, selecciona tu ciudad.</div>
+            </div>
+
+            <!-- El botón ahora es type="submit" para enviar el formulario -->
+            <button id="startButton" type="submit" disabled>Comenzar el Juego</button>
+        </form>
     </div>
 
     <script>
+        const dataForm = document.getElementById('dataForm'); // Referencia al formulario
         const usernameInput = document.getElementById('username');
-        const cityButtons = document.querySelectorAll('.city-button'); // Ahora seleccionamos los botones
-        const cityRadios = document.querySelectorAll('input[name="city"]'); // Y los radios internos
+        const cityButtons = document.querySelectorAll('.city-button');
+        const cityRadios = document.querySelectorAll('input[name="localidad"]'); // Cambiado a 'localidad'
         const startButton = document.getElementById('startButton');
         const usernameError = document.getElementById('usernameError');
         const cityError = document.getElementById('cityError');
 
-        // Función para validar los campos
         function validateForm() {
             let isValid = true;
 
-            // Validar nombre de usuario
             if (usernameInput.value.trim() === '') {
                 usernameError.style.display = 'block';
                 isValid = false;
@@ -221,7 +227,6 @@
                 usernameError.style.display = 'none';
             }
 
-            // Validar selección de ciudad
             let citySelected = false;
             cityRadios.forEach(radio => {
                 if (radio.checked) {
@@ -236,34 +241,32 @@
                 cityError.style.display = 'none';
             }
 
-            // Habilitar/deshabilitar botón
             startButton.disabled = !isValid;
         }
 
-        // Escuchar cambios en el input de nombre
         usernameInput.addEventListener('input', validateForm);
 
-        // Event listeners para los botones de ciudad (simulan el radio button)
         cityButtons.forEach(button => {
             button.addEventListener('click', () => {
-                // Deseleccionar visualmente todos los botones y desmarcar todos los radios
                 cityButtons.forEach(btn => btn.classList.remove('selected'));
                 cityRadios.forEach(radio => radio.checked = false);
 
-                // Seleccionar visualmente el botón clicado y marcar su radio interno
                 button.classList.add('selected');
                 const radioInsideButton = button.querySelector('input[type="radio"]');
                 if (radioInsideButton) {
                     radioInsideButton.checked = true;
                 }
-                validateForm(); // Revalidar el formulario
+                validateForm();
             });
         });
 
+        // NUEVO: Manejar el envío del formulario
+        dataForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Evita el envío normal del formulario
 
-        // Event listener para el botón "Comenzar el Juego"
-        startButton.addEventListener('click', () => {
-            if (startButton.disabled) {
+            validateForm(); // Re-validar antes de enviar
+
+            if (startButton.disabled) { // Si el botón está deshabilitado, significa que la validación falló
                 return;
             }
 
@@ -275,17 +278,36 @@
                 }
             });
 
-            const encodedUsername = encodeURIComponent(username);
-            const encodedCity = encodeURIComponent(selectedCity);
+            // Enviar datos a Google Apps Script
+            const formData = new FormData();
+            formData.append('nombre', username); // 'nombre' debe coincidir con el Apps Script
+            formData.append('localidad', selectedCity); // 'localidad' debe coincidir con el Apps Script
 
-            // Redirigir a la primera pregunta de la trivia
-            // Asume que tu primera pregunta se llama 'pregunta1.html'
-            window.location.href = `Squidgame1.html?user=${encodedUsername}&city=${encodedCity}`;
+            try {
+                const response = await fetch(dataForm.action, {
+                    method: 'POST',
+                    body: formData // FormData se encarga de formatear los datos correctamente
+                });
+
+                // Opcional: Puedes verificar la respuesta de Apps Script
+                if (response.ok) {
+                    // console.log('Datos enviados a Google Sheets con éxito!');
+                    // alert('¡Datos enviados con éxito! Preparándote para el juego...');
+                } else {
+                    // console.error('Error al enviar datos a Google Sheets:', response.statusText);
+                    // alert('Hubo un error al guardar tus datos. Intenta de nuevo.');
+                }
+            } catch (error) {
+                // console.error('Error de red o al enviar datos:', error);
+                // alert('Error de conexión. Intenta de nuevo.');
+            }
+
+            // Redirigir a la primera pregunta de la trivia después de intentar enviar los datos
+            // Asume que tu primera pregunta se llama 'Squidgame1.html'
+            window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
         });
 
-        // Validar al cargar la página
         document.addEventListener('DOMContentLoaded', validateForm);
-
     </script>
 </body>
 </html>
