@@ -456,7 +456,7 @@
             <h1><span class="game-icon">🎮</span> Bienvenido al Desafío</h1>
             <h2>Ingresa tus datos</h2>
 
-            <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKcCu98KfA09zfBAxzyDgYlhoSdzQ/exec">
+            <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec">
                 <div class="input-group">
                     <label for="username">Ingresa tu nombre</label>
                     <input type="text" id="username" name="nombre" placeholder="Tu nombre de jugador" maxlength="20" required>
@@ -540,7 +540,7 @@
             });
         });
 
-        // Manejador del envío del formulario
+        // Manejador del envío del formulario modificado para enviar datos a Google Sheets
         dataForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
@@ -558,26 +558,32 @@
                 }
             });
 
+            // Crear FormData para enviar los datos
             const formData = new FormData();
             formData.append('nombre', username);
             formData.append('localidad', selectedCity);
 
             try {
+                // Enviar datos a Google Apps Script
                 const response = await fetch(dataForm.action, {
                     method: 'POST',
                     body: formData
                 });
 
                 if (response.ok) {
-                    // console.log('Datos enviados a Google Sheets con éxito!');
+                    console.log('Datos enviados a Google Sheets con éxito!');
+                    // Redirigir a la primera pregunta después de enviar los datos
+                    window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
                 } else {
-                    // console.error('Error al enviar datos a Google Sheets:', response.statusText);
+                    console.error('Error al enviar datos a Google Sheets:', response.statusText);
+                    // Aunque falle el envío, permitir continuar con el juego
+                    window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
                 }
             } catch (error) {
-                // console.error('Error de red o al enviar datos:', error);
+                console.error('Error de red o al enviar datos:', error);
+                // Aunque falle el envío, permitir continuar con el juego
+                window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
             }
-
-            window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
         });
 
         // --- Lógica de la secuencia de animación inicial y aparición del formulario ---
