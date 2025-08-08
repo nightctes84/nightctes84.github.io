@@ -258,7 +258,11 @@
                 sendGameData(userName, userCity, 'Squidgame1', totalTime - timeLeft);
                 // Mostrar botón "Siguiente" y configurar para ir a la próxima página
                 nextButton.style.display = 'block';
-                nextButton.onclick = () => window.location.href = `Squidgame2.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
+                // Después de 3 segundos, redirigir a la siguiente página. Esto da tiempo para que el usuario vea el mensaje.
+                setTimeout(() => {
+                    window.location.href = `Squidgame2.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
+                }, 3000); // Redirige después de 3 segundos
+                
             } else {
                 feedbackMessage.classList.add('incorrect-message');
                 feedbackMessage.classList.remove('correct-message');
@@ -268,7 +272,7 @@
                 }
                 // Si la respuesta es incorrecta, el botón "Siguiente" no se muestra.
             }
-            submitButton.disabled = true; // Deshabilitar el botón de responder
+            submitButton.disabled = true; // Deshabilitar el botón de responder una vez que el juego terminó
             optionButtons.forEach(button => button.disabled = true); // Deshabilitar botones de opción
         }
 
@@ -297,11 +301,15 @@
                 return;
             }
 
+            // Llamar a endGame para procesar la respuesta y enviar datos
             if (selectedOption === correctAnwser) {
                 endGame("¡Respuesta correcta! ¡Felicidades, sigues en el juego! 🎉", true);
             } else {
                 endGame("¡Respuesta incorrecta, queda eliminado! ❌", false);
             }
+            // Importante: El botón "Responder" ya se deshabilita dentro de endGame(),
+            // pero lo ponemos aquí también para mayor seguridad inmediata.
+            submitButton.disabled = true; 
         });
 
         // El botón "Siguiente" ahora es manejado DENTRO de la función endGame()
@@ -310,6 +318,7 @@
         // antes de la redirección.
         nextButton.addEventListener('click', () => {
             // Esta función puede estar vacía. La navegación ya se gestiona en endGame().
+            // Ya no necesitas 'alert' ni 'location.reload()' aquí.
         });
     </script>
 </body>
