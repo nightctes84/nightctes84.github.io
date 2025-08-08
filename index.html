@@ -559,9 +559,12 @@
             });
 
             // Crear FormData para enviar los datos
-            const formData = new FormData();
-            formData.append('nombre', username);
-            formData.append('localidad', selectedCity);
+const formData = new FormData();
+formData.append('nombre', username);
+formData.append('localidad', selectedCity);
+// ¡Añade estas dos líneas aquí! 👇
+formData.append('gamePage', 'Registro'); // O 'Inicio', 'Bienvenida', etc.
+formData.append('timeTaken', 0); // Establece el tiempo en 0 para el registro inicial
 
             try {
                 // Enviar datos a Google Apps Script
@@ -605,4 +608,5 @@
     </script>
 </body>
 </html>
+
 
