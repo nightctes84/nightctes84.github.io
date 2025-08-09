@@ -235,31 +235,28 @@
         }
 
         #animationContainer {
-            /* Mantiene los estilos de posicionamiento relativo dentro del wrapper */
             position: relative;
-            width: 100%; /* Ajusta el ancho para que las figuras se centren */
-            height: 40%; /* Ajustado para dar más espacio vertical a las figuras y al texto de carga */
+            width: 100%;
+            height: 40%;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 20px; /* Ajustado para empujar las figuras más abajo y separar de la frase */
-            margin-bottom: 0; /* Asegurar que no haya margen inferior extra */
+            margin-top: 20px;
+            margin-bottom: 0;
         }
 
         .animated-shape {
             position: absolute;
-            /* AJUSTE CLAVE: Reducimos el tamaño base */
-            font-size: 8vw; /* Tamaño base de las figuras para pantallas grandes */
+            /* **AJUSTE CLAVE 1:** Reducimos el tamaño base para que haya más espacio */
+            font-size: 6vw; /* Tamaño base para pantallas grandes */
             opacity: 0; /* Aún invisible al inicio de sus animaciones individuales */
             line-height: 1;
             transition: transform 0.7s ease-in-out, color 0.7s ease-in-out;
             color: white;
         }
 
-        /* Ajuste específico para el triángulo para asegurar tamaño constante */
         .animated-shape.triangle {
-            /* Usar el mismo tamaño base */
-            font-size: 8vw;
+            font-size: 6vw; /* Mismo tamaño base */
         }
 
         /* Keyframes de las figuras */
@@ -288,78 +285,75 @@
 
         /* Animación de entrada de las figuras */
         @keyframes circleEnter {
-            0% { opacity: 0; transform: translateY(-250%) scale(0.8); } /* Más arriba */
-            100% { opacity: 1; transform: translateY(-100%) scale(1); } /* Posición inicial más baja */
+            0% { opacity: 0; transform: translateY(-250%) scale(0.8); }
+            100% { opacity: 1; transform: translateY(-100%) scale(1); }
         }
 
         @keyframes triangleEnter {
-            0% { opacity: 0; transform: translateX(-200%) scale(1); } /* Sin escalado, tamaño inicial correcto */
-            100% { opacity: 1; transform: translateX(0) scale(1); } /* Tamaño constante */
+            0% { opacity: 0; transform: translateX(-200%) scale(1); }
+            100% { opacity: 1; transform: translateX(0) scale(1); }
         }
 
         @keyframes squareEnter {
-            0% { opacity: 0; transform: translateY(250%) scale(0.8); } /* Más abajo */
-            100% { opacity: 1; transform: translateY(100%) scale(1); } /* Posición inicial más baja */
+            0% { opacity: 0; transform: translateY(250%) scale(0.8); }
+            100% { opacity: 1; transform: translateY(100%) scale(1); }
         }
 
         /* Animación de centralización (separación vertical) */
         @keyframes circleCentralize {
             0% { transform: translateY(-100%); }
-            /* AJUSTE CLAVE: Usamos vw para la traslación vertical */
-            100% { transform: translateY(-10vw); } /* Distancia relativa al tamaño de las figuras */
+            /* **AJUSTE CLAVE 2:** Reducimos la distancia de traslación en vw */
+            100% { transform: translateY(-7vw); } /* Ajustado a 7vw */
         }
 
         @keyframes triangleCentralize {
-            0% { transform: translateX(0) scale(1); } /* Tamaño constante */
-            100% { transform: translateY(0px) scale(1); } /* Mantener en el centro vertical de las 3, tamaño constante */
+            0% { transform: translateX(0) scale(1); }
+            100% { transform: translateY(0) scale(1); }
         }
 
         @keyframes squareCentralize {
             0% { transform: translateY(100%); }
-            /* AJUSTE CLAVE: Usamos vw para la traslación vertical */
-            100% { transform: translateY(10vw); } /* Distancia relativa al tamaño de las figuras */
+            /* **AJUSTE CLAVE 2:** Reducimos la distancia de traslación en vw */
+            100% { transform: translateY(7vw); } /* Ajustado a 7vw */
         }
 
         /* Animación de movimiento a horizontal */
         @keyframes circleToHorizontal {
-            0% { transform: translateY(-10vw) scale(1); color: white; } /* También ajustamos el inicio */
+            0% { transform: translateY(-7vw) scale(1); color: white; } /* Mismo ajuste */
             50% { color: #e74c3c; }
-            /* AJUSTE CLAVE: Usamos vw para la traslación horizontal */
-            100% { transform: translate(-9vw, 0) scale(1); color: #e74c3c; }
+            /* **AJUSTE CLAVE 2:** Reducimos la distancia de traslación en vw */
+            100% { transform: translate(-8vw, 0) scale(1); color: #e74c3c; } /* Ajustado a 8vw */
         }
 
         @keyframes triangleToHorizontal {
-            0% { transform: translateY(0px) scale(1); color: white; } /* Tamaño constante */
+            0% { transform: translateY(0) scale(1); color: white; }
             50% { color: #e74c3c; }
-            100% { transform: translate(0, 0) scale(1); color: #e74c3c; } /* Tamaño constante */
+            100% { transform: translate(0, 0) scale(1); color: #e74c3c; }
         }
 
         @keyframes squareToHorizontal {
-            0% { transform: translateY(10vw) scale(1); color: white; } /* También ajustamos el inicio */
+            0% { transform: translateY(7vw) scale(1); color: white; } /* Mismo ajuste */
             50% { color: #e74c3c; }
-            /* AJUSTE CLAVE: Usamos vw para la traslación horizontal */
-            100% { transform: translate(9vw, -5px) scale(1); color: #e74c3c; }
+            /* **AJUSTE CLAVE 2:** Reducimos la distancia de traslación en vw */
+            100% { transform: translate(8vw, -5px) scale(1); color: #e74c3c; } /* Ajustado a 8vw */
         }
 
-        /* NUEVO Keyframe para el desvanecimiento del contenedor general de la intro */
         @keyframes introFadeOut {
             0% { opacity: 1; pointer-events: all; }
-            95% { opacity: 1; } /* Mantiene visible hasta casi el final */
-            100% { opacity: 0; pointer-events: none; display: none; } /* Se oculta completamente */
+            95% { opacity: 1; }
+            100% { opacity: 0; pointer-events: none; display: none; }
         }
 
-        /* --- Estilos para la frase "El Juego del Be Safe" dentro de la animación --- */
         .game-title-be-safe {
-            font-size: 3em; /* Ajustado para que quepa bien en el contenedor */
+            font-size: 3em;
             color: #ecf0f1;
             text-transform: uppercase;
             letter-spacing: 3px;
             position: relative;
             text-align: center;
             line-height: 1.2;
-            margin-top: 0; /* Aseguramos que no haya margen superior adicional */
-            margin-bottom: 5px; /* Un margen pequeño para separar de las figuras */
-            /* La animación de glow de texto se aplica desde el inicio */
+            margin-top: 0;
+            margin-bottom: 5px;
             animation: textGlowPulse 2s infinite alternate ease-in-out;
         }
 
@@ -367,7 +361,6 @@
             color: #e74c3c;
         }
 
-        /* Keyframes para la animación de pulso de resplandor de texto (usada por "Be Safe") */
         @keyframes textGlowPulse {
             0% {
                 text-shadow: 0 0 10px rgba(255, 255, 255, 0.3),
@@ -379,63 +372,60 @@
             }
         }
 
-        /* Nuevo estilo para el texto de carga */
         .loading-animation-text {
             font-family: 'Chakra Petch', sans-serif;
-            font-size: 1.5em; /* Tamaño de fuente para el texto de carga */
-            color: #ecf0f1; /* Mismo color que el texto principal de "Be Safe" */
+            font-size: 1.5em;
+            color: #ecf0f1;
             text-transform: uppercase;
             letter-spacing: 2px;
             text-align: center;
-            opacity: 0; /* Inicialmente invisible */
-            animation: fadeInOutLoading 3s infinite alternate forwards 5.5s; /* Animación de fade in/out después de las figuras */
-            margin-top: 40px; /* Margen superior para colocarlo debajo del cuadrado */
-            padding-bottom: 20px; /* Pequeño padding inferior para darle espacio */
+            opacity: 0;
+            animation: fadeInOutLoading 3s infinite alternate forwards 5.5s;
+            margin-top: 40px;
+            padding-bottom: 20px;
         }
 
-        /* Keyframes para la animación del texto de carga */
         @keyframes fadeInOutLoading {
             0% { opacity: 0; }
             50% { opacity: 1; }
             100% { opacity: 0; }
         }
 
-
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .game-title-be-safe {
-                font-size: 2.5em;
+                font-size: 2.2em; /* Ligeramente más pequeño para tablets */
                 letter-spacing: 2px;
             }
             #animationContainer {
-                margin-top: 30px; /* Ajuste para pantallas más pequeñas */
+                margin-top: 25px;
                 height: 40%;
             }
             .animated-shape {
-                /* AJUSTE CLAVE: Un poco más grande para mantener visibilidad en pantallas más estrechas */
-                font-size: 10vw;
+                /* **AJUSTE CLAVE 3:** Para tablets, un tamaño un poco mayor que el base, pero controlado */
+                font-size: 8vw; /* Antes 10vw */
             }
             .loading-animation-text {
-                font-size: 1.2em;
-                margin-top: 30px;
+                font-size: 1em;
+                margin-top: 25px;
             }
         }
 
         @media (max-width: 480px) {
             .game-title-be-safe {
-                font-size: 1.5em;
+                font-size: 1.6em; /* Más pequeño para móviles */
                 letter-spacing: 1px;
             }
             #animationContainer {
-                margin-top: 25px; /* Ajuste para móviles */
+                margin-top: 20px;
                 height: 35%;
             }
             .animated-shape {
-                /* AJUSTE CLAVE: Un poco más grande para móviles para que no se vean diminutas */
-                font-size: 12vw;
+                /* **AJUSTE CLAVE 4:** Para móviles, un tamaño controlado para evitar superposición */
+                font-size: 10vw; /* Antes 12vw */
             }
             .loading-animation-text {
-                font-size: 1em;
+                font-size: 0.9em;
                 margin-top: 20px;
             }
         }
@@ -464,7 +454,7 @@
             <h1><span class="game-icon">🎮</span> Bienvenido al Desafío</h1>
             <h2>Ingresa tus datos</h2>
 
-            <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec">
+            <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlWFYwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec">
                 <div class="input-group">
                     <label for="username">Ingresa tu nombre</label>
                     <input type="text" id="username" name="nombre" placeholder="Tu nombre de jugador" maxlength="20" required>
