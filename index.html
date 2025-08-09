@@ -217,21 +217,21 @@
         /* --- CONTENEDOR DE LA ANIMACIÓN INICIAL (Frase "Be Safe" + Figuras) --- */
         #introAnimationWrapper {
             position: absolute;
-            top: 0; /* Aseguramos que esté pegado al top del container */
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #1a2a3a; /* Mismo color del contenedor para fundirse */
-            z-index: 20; /* Asegura que esté por encima del contenido del formulario */
+            background-color: #1a2a3a;
+            z-index: 20;
             display: flex;
-            flex-direction: column; /* Para apilar la frase y las figuras */
-            justify-content: space-around; /* Distribuye el espacio entre los elementos */
+            flex-direction: column;
+            justify-content: space-around;
             align-items: center;
-            opacity: 1; /* Empieza visible */
-            animation: introFadeOut 0.5s forwards 8s; /* Se desvanece al final de la secuencia de animación */
+            opacity: 1;
+            animation: introFadeOut 0.5s forwards 8s;
             padding-top: 1%;
-            padding-bottom: 2%; /* Agrega un padding inferior para el texto de carga */
-            box-sizing: border-box; /* Para que el padding no afecte el cálculo de height */
+            padding-bottom: 2%;
+            box-sizing: border-box;
         }
 
         #animationContainer {
@@ -247,16 +247,16 @@
 
         .animated-shape {
             position: absolute;
-            /* **AJUSTE CLAVE 1:** Reducimos el tamaño base para que haya más espacio */
-            font-size: 6vw; /* Tamaño base para pantallas grandes */
-            opacity: 0; /* Aún invisible al inicio de sus animaciones individuales */
+            /* **CAMBIO CLAVE: Tamaño fijo en píxeles para consistencia** */
+            font-size: 90px; /* Ajustado para que se vea bien en PC y no se superponga en móvil */
+            opacity: 0;
             line-height: 1;
             transition: transform 0.7s ease-in-out, color 0.7s ease-in-out;
             color: white;
         }
 
         .animated-shape.triangle {
-            font-size: 6vw; /* Mismo tamaño base */
+            font-size: 90px; /* Mismo tamaño fijo */
         }
 
         /* Keyframes de las figuras */
@@ -302,8 +302,8 @@
         /* Animación de centralización (separación vertical) */
         @keyframes circleCentralize {
             0% { transform: translateY(-100%); }
-            /* **AJUSTE CLAVE 2:** Reducimos la distancia de traslación en vw */
-            100% { transform: translateY(-7vw); } /* Ajustado a 7vw */
+            /* **CAMBIO CLAVE: Traslación fija en píxeles** */
+            100% { transform: translateY(-120px); } /* Ajustado para mejor espaciado */
         }
 
         @keyframes triangleCentralize {
@@ -313,16 +313,16 @@
 
         @keyframes squareCentralize {
             0% { transform: translateY(100%); }
-            /* **AJUSTE CLAVE 2:** Reducimos la distancia de traslación en vw */
-            100% { transform: translateY(7vw); } /* Ajustado a 7vw */
+            /* **CAMBIO CLAVE: Traslación fija en píxeles** */
+            100% { transform: translateY(120px); } /* Ajustado para mejor espaciado */
         }
 
         /* Animación de movimiento a horizontal */
         @keyframes circleToHorizontal {
-            0% { transform: translateY(-7vw) scale(1); color: white; } /* Mismo ajuste */
+            0% { transform: translateY(-120px) scale(1); color: white; } /* Mismo ajuste */
             50% { color: #e74c3c; }
-            /* **AJUSTE CLAVE 2:** Reducimos la distancia de traslación en vw */
-            100% { transform: translate(-8vw, 0) scale(1); color: #e74c3c; } /* Ajustado a 8vw */
+            /* **CAMBIO CLAVE: Traslación fija en píxeles** */
+            100% { transform: translate(-150px, 0) scale(1); color: #e74c3c; } /* Ajustado para mejor espaciado */
         }
 
         @keyframes triangleToHorizontal {
@@ -332,10 +332,10 @@
         }
 
         @keyframes squareToHorizontal {
-            0% { transform: translateY(7vw) scale(1); color: white; } /* Mismo ajuste */
+            0% { transform: translateY(120px) scale(1); color: white; } /* Mismo ajuste */
             50% { color: #e74c3c; }
-            /* **AJUSTE CLAVE 2:** Reducimos la distancia de traslación en vw */
-            100% { transform: translate(8vw, -5px) scale(1); color: #e74c3c; } /* Ajustado a 8vw */
+            /* **CAMBIO CLAVE: Traslación fija en píxeles** */
+            100% { transform: translate(150px, -5px) scale(1); color: #e74c3c; } /* Ajustado para mejor espaciado */
         }
 
         @keyframes introFadeOut {
@@ -391,20 +391,18 @@
             100% { opacity: 0; }
         }
 
-        /* Responsive adjustments */
+        /* Responsive adjustments para otros elementos si fuera necesario,
+           pero las figuras y sus animaciones ahora tienen un tamaño fijo. */
         @media (max-width: 768px) {
             .game-title-be-safe {
-                font-size: 2.2em; /* Ligeramente más pequeño para tablets */
+                font-size: 2.2em;
                 letter-spacing: 2px;
             }
             #animationContainer {
                 margin-top: 25px;
                 height: 40%;
             }
-            .animated-shape {
-                /* **AJUSTE CLAVE 3:** Para tablets, un tamaño un poco mayor que el base, pero controlado */
-                font-size: 8vw; /* Antes 10vw */
-            }
+            /* Las figuras mantienen su tamaño fijo en px */
             .loading-animation-text {
                 font-size: 1em;
                 margin-top: 25px;
@@ -413,17 +411,14 @@
 
         @media (max-width: 480px) {
             .game-title-be-safe {
-                font-size: 1.6em; /* Más pequeño para móviles */
+                font-size: 1.6em;
                 letter-spacing: 1px;
             }
             #animationContainer {
                 margin-top: 20px;
                 height: 35%;
             }
-            .animated-shape {
-                /* **AJUSTE CLAVE 4:** Para móviles, un tamaño controlado para evitar superposición */
-                font-size: 10vw; /* Antes 12vw */
-            }
+            /* Las figuras mantienen su tamaño fijo en px */
             .loading-animation-text {
                 font-size: 0.9em;
                 margin-top: 20px;
