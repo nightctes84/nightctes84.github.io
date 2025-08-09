@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido al Desafío: Juego del Calamar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap" rel="stylesheet">
+    <title>Desafío Trivia: Juego del Calamar</title>
     <style>
-        /* Importamos la fuente Chakra Petch */
-        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap');
-
         body {
-            font-family: 'Chakra Petch', sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #0d1a26; /* Fondo muy oscuro, casi negro */
             color: #ecf0f1; /* Texto claro */
             display: flex;
@@ -22,7 +18,6 @@
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
-            overflow: hidden; /* Evitar scroll si la animación se desborda temporalmente */
         }
 
         .container {
@@ -30,580 +25,300 @@
             padding: 40px;
             border-radius: 15px; /* Bordes más redondeados */
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
-            max-width: 550px; /* Un poco más ancho */
+            max-width: 600px;
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            position: relative; /* Para posicionar el temporizador */
+            display: flex; /* Añadido para Flexbox */
+            flex-direction: column; /* Para apilar los elementos verticalmente */
+            align-items: center; /* Centrar horizontalmente los elementos hijos */
             border: 2px solid #e74c3c; /* Borde rojo distintivo */
-            position: relative; /* Para el posicionamiento de la animación */
-            overflow: hidden; /* Asegurar que la animación no se salga del contenedor */
-        }
-
-        /* Oculta todo el contenido del formulario inicialmente */
-        .form-content {
-            opacity: 0;
-            transition: opacity 0.8s ease-in-out; /* Transición suave para que aparezca */
-            pointer-events: none; /* Deshabilita interacciones mientras está oculto */
-        }
-
-        .form-content.active {
-            opacity: 1;
-            pointer-events: all; /* Habilita interacciones cuando está activo */
         }
 
         h1 {
-            color: #e74c3c; /* Rojo Squid Game */
-            margin-bottom: 25px;
-            font-size: 3.2em; /* Más grande para el título principal */
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-shadow: 0 0 10px rgba(231, 76, 60, 0.7); /* Resplandor rojo */
-        }
-
-        h1 .game-icon {
-            margin-right: 20px;
-            font-size: 1.5em; /* Tamaño del icono relativo al título */
-            line-height: 1;
-            animation: pulse 1.5s infinite alternate; /* Animación de pulso para el icono del título */
-        }
-
-        h2 {
-            color: #f1c40f; /* Amarillo/Dorado para formato título */
-            font-size: 2em;
-            margin-bottom: 35px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 8px rgba(241, 196, 15, 0.6); /* Resplandor amarillo */
-        }
-
-        .input-group {
+            color: #e74c3c; /* Rojo, como los uniformes de los guardias o la sangre en Squid Game */
             margin-bottom: 30px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            font-size: 2.5em;
         }
 
-        .input-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 1.2em;
-            color: #f1c40f; /* Amarillo para las etiquetas */
-            text-align: center;
-            width: 100%;
-            letter-spacing: 0.8px;
-        }
-
-        .input-group input[type="text"] {
-            width: calc(90% - 20px);
-            max-width: 350px;
-            padding: 15px 15px;
-            border: 1px solid #7f8c8d;
-            border-radius: 8px; /* Más redondeado */
-            background-color: #2b3e50; /* Color de fondo del input más oscuro */
-            color: #ecf0f1;
-            font-size: 1.2em;
-            box-sizing: border-box;
-            text-align: center;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .input-group input[type="text"]:focus {
-            border-color: #e74c3c; /* Borde rojo al enfocar */
-            box-shadow: 0 0 10px rgba(231, 76, 60, 0.5); /* Resplandor al enfocar */
-            outline: none;
-        }
-
-        .input-group input[type="text"]::placeholder {
-            color: #95a5a6; /* Placeholder un poco más oscuro */
-        }
-
-        .city-label {
-            font-size: 1.2em;
-            color: #f1c40f;
-            margin-bottom: 15px;
-            text-align: center;
-            width: 100%;
-            letter-spacing: 0.8px;
-        }
-
-        .radio-options-container {
-            display: flex;
-            justify-content: center;
-            gap: 25px; /* Más espacio entre los botones */
-            margin-top: 15px;
+        .timer {
+            font-size: 1.8em;
+            color: #f1c40f; /* Amarillo/Dorado, como el dinero del premio */
             margin-bottom: 20px;
-            width: 100%;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 5px;
         }
 
-        .city-button {
-            background-color: #34495e; /* Azul oscuro suave */
+        p {
+            font-size: 1.4em;
+            margin-bottom: 30px;
+        }
+
+        .options-container {
+            display: flex;
+            justify-content: center; /* Centrar los botones de opción */
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option-button {
+            background-color: #2980b9; /* Azul */
             color: white;
             padding: 15px 30px;
             border: none;
-            border-radius: 10px; /* Más redondeado */
+            border-radius: 8px;
             font-size: 1.2em;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            min-width: 140px;
-            position: relative;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            min-width: 120px;
         }
 
-        .city-button:hover {
-            background-color: #3f5870; /* Un poco más claro al pasar el ratón */
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        .option-button:hover {
+            background-color: #3498db; /* Azul más claro al pasar el ratón */
+            transform: translateY(-3px);
         }
 
-        .city-button.selected {
+        .option-button.selected {
             background-color: #e74c3c; /* Rojo cuando está seleccionado */
-            border: 3px solid #c0392b; /* Borde más grueso y oscuro */
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(231, 76, 60, 0.7); /* Resplandor rojo al seleccionar */
+            border: 2px solid #c0392b;
+            transform: scale(1.05);
         }
 
-        .city-button input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-            pointer-events: none;
-        }
-
-        #startButton {
-            background-color: #27ae60; /* Verde para iniciar */
+        #submitButton {
+            background-color: #27ae60; /* Verde para enviar */
             color: white;
-            padding: 18px 50px;
+            padding: 15px 40px;
             border: none;
-            border-radius: 10px;
-            font-size: 1.8em; /* Más grande */
+            border-radius: 8px;
+            font-size: 1.5em;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            margin-top: 30px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
         }
 
-        #startButton:hover {
-            background-color: #2ecc71; /* Verde más claro */
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+        #submitButton:hover {
+            background-color: #2ecc71; /* Verde más claro al pasar el ratón */
         }
 
-        #startButton:disabled {
+        #submitButton:disabled {
             background-color: #7f8c8d; /* Gris cuando está deshabilitado */
             cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
         }
 
-        .error-message {
-            color: #e74c3c;
-            margin-top: 8px;
-            margin-bottom: 20px;
-            font-size: 1em;
-            display: none;
-            text-align: center;
-            width: 100%;
+        #nextButton {
+            background-color: #f39c12; /* Naranja para siguiente */
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            display: none; /* Oculto inicialmente */
+            margin-left: auto; /* Centrar el botón */
+            margin-right: auto; /* Centrar el botón */
+        }
+
+        #nextButton:hover {
+            background-color: #e67e22; /* Naranja más oscuro al pasar el ratón */
+        }
+
+        .message {
+            font-size: 1.8em;
+            margin-top: 30px;
             font-weight: bold;
         }
 
-        /* --- CONTENEDOR DE LA ANIMACIÓN INICIAL (Frase "Be Safe" + Figuras) --- */
-        #introAnimationWrapper {
-            position: absolute;
-            top: 0; /* Aseguramos que esté pegado al top del container */
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #1a2a3a; /* Mismo color del contenedor para fundirse */
-            z-index: 20; /* Asegura que esté por encima del contenido del formulario */
-            display: flex;
-            flex-direction: column; /* Para apilar la frase y las figuras */
-            justify-content: space-around; /* Distribuye el espacio entre los elementos */
-            align-items: center;
-            opacity: 1; /* Empieza visible */
-            animation: introFadeOut 0.5s forwards 8s; /* Se desvanece al final de la secuencia de animación */
-            padding-top: 1%;
-            padding-bottom: 2%; /* Agrega un padding inferior para el texto de carga */
-            box-sizing: border-box; /* Para que el padding no afecte el cálculo de height */
+        .incorrect-message {
+            color: #e74c3c; /* Rojo para incorrecto */
         }
 
-        #animationContainer {
-            /* Mantiene los estilos de posicionamiento relativo dentro del wrapper */
-            position: relative;
-            width: 100%; /* Ajusta el ancho para que las figuras se centren */
-            height: 40%; /* Ajustado para dar más espacio vertical a las figuras y al texto de carga */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px; /* Ajustado para empujar las figuras más abajo y separar de la frase */
-            margin-bottom: 0; /* Asegurar que no haya margen inferior extra */
+        .timeout-message {
+            color: #e74c3c; /* Rojo para tiempo agotado */
         }
 
-        .animated-shape {
-            position: absolute;
-            font-size: 15vw; /* Tamaño base de las figuras */
-            opacity: 0; /* Aún invisible al inicio de sus animaciones individuales */
-            line-height: 1;
-            transition: transform 0.7s ease-in-out, color 0.7s ease-in-out;
-            color: white;
+        .correct-message {
+            color: #2ecc71; /* Verde para correcto */
         }
-
-        /* Ajuste específico para el triángulo para asegurar tamaño constante */
-        .animated-shape.triangle {
-            font-size: 15vw; /* Usar el mismo tamaño base */
+        .welcome-message {
+            font-size: 1.5em;
+            color: #f1c40f;
+            margin-bottom: 20px;
         }
-
-        /* Keyframes de las figuras */
-        .animated-shape.circle {
-            animation: circleEnter 1.5s forwards 0.5s,
-                       circleCentralize 0.5s forwards 2s,
-                       circleToHorizontal 1.5s forwards 4.5s;
-        }
-
-        .animated-shape.triangle {
-            animation: triangleEnter 1.5s forwards 0.5s,
-                       triangleCentralize 0.5s forwards 2s,
-                       triangleToHorizontal 1.5s forwards 4.5s;
-        }
-
-        .animated-shape.square {
-            animation: squareEnter 1.5s forwards 0.5s,
-                       squareCentralize 0.5s forwards 2s,
-                       squareToHorizontal 1.5s forwards 4.5s;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
-        }
-
-        /* Animación de entrada de las figuras */
-        @keyframes circleEnter {
-            0% { opacity: 0; transform: translateY(-250%) scale(0.8); } /* Más arriba */
-            100% { opacity: 1; transform: translateY(-100%) scale(1); } /* Posición inicial más baja */
-        }
-
-        @keyframes triangleEnter {
-            0% { opacity: 0; transform: translateX(-200%) scale(1); } /* Sin escalado, tamaño inicial correcto */
-            100% { opacity: 1; transform: translateX(0) scale(1); } /* Tamaño constante */
-        }
-
-        @keyframes squareEnter {
-            0% { opacity: 0; transform: translateY(250%) scale(0.8); } /* Más abajo */
-            100% { opacity: 1; transform: translateY(100%) scale(1); } /* Posición inicial más baja */
-        }
-
-        /* Animación de centralización (separación vertical) */
-        @keyframes circleCentralize {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(-150px); } /* Bajar más el círculo */
-        }
-
-        @keyframes triangleCentralize {
-            0% { transform: translateX(0) scale(1); } /* Tamaño constante */
-            100% { transform: translateY(0px) scale(1); } /* Mantener en el centro vertical de las 3, tamaño constante */
-        }
-
-        @keyframes squareCentralize {
-            0% { transform: translateY(100%); }
-            100% { transform: translateY(150px); } /* Bajar más el cuadrado */
-        }
-
-        /* Animación de movimiento a horizontal */
-        @keyframes circleToHorizontal {
-            0% { transform: translateY(-150px) scale(1); color: white; }
-            50% { color: #e74c3c; }
-            100% { transform: translate(-140px, 0) scale(1); color: #e74c3c; }
-        }
-
-        @keyframes triangleToHorizontal {
-            0% { transform: translateY(0px) scale(1); color: white; } /* Tamaño constante */
-            50% { color: #e74c3c; }
-            100% { transform: translate(0, 0) scale(1); color: #e74c3c; } /* Tamaño constante */
-        }
-
-        @keyframes squareToHorizontal {
-            0% { transform: translateY(150px) scale(1); color: white; }
-            50% { color: #e74c3c; }
-            100% { transform: translate(140px, -5px) scale(1); color: #e74c3c; }
-        }
-
-        /* NUEVO Keyframe para el desvanecimiento del contenedor general de la intro */
-        @keyframes introFadeOut {
-            0% { opacity: 1; pointer-events: all; }
-            95% { opacity: 1; } /* Mantiene visible hasta casi el final */
-            100% { opacity: 0; pointer-events: none; display: none; } /* Se oculta completamente */
-        }
-
-        /* --- Estilos para la frase "El Juego del Be Safe" dentro de la animación --- */
-        .game-title-be-safe {
-            font-size: 3em; /* Ajustado para que quepa bien en el contenedor */
-            color: #ecf0f1;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            position: relative;
-            text-align: center;
-            line-height: 1.2;
-            margin-top: 0; /* Aseguramos que no haya margen superior adicional */
-            margin-bottom: 5px; /* Un margen pequeño para separar de las figuras */
-            /* La animación de glow de texto se aplica desde el inicio */
-            animation: textGlowPulse 2s infinite alternate ease-in-out;
-        }
-
-        .game-title-be-safe .red-char-be-safe {
-            color: #e74c3c;
-        }
-
-        /* Keyframes para la animación de pulso de resplandor de texto (usada por "Be Safe") */
-        @keyframes textGlowPulse {
-            0% {
-                text-shadow: 0 0 10px rgba(255, 255, 255, 0.3),
-                             0 0 20px rgba(231, 76, 60, 0.4);
-            }
-            100% {
-                text-shadow: 0 0 20px rgba(255, 255, 255, 0.6),
-                             0 0 40px rgba(231, 76, 60, 0.8);
-            }
-        }
-
-        /* Nuevo estilo para el texto de carga */
-        .loading-animation-text {
-            font-family: 'Chakra Petch', sans-serif;
-            font-size: 1.5em; /* Tamaño de fuente para el texto de carga */
-            color: #ecf0f1; /* Mismo color que el texto principal de "Be Safe" */
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-align: center;
-            opacity: 0; /* Inicialmente invisible */
-            animation: fadeInOutLoading 3s infinite alternate forwards 5.5s; /* Animación de fade in/out después de las figuras */
-            margin-top: 40px; /* Margen superior para colocarlo debajo del cuadrado */
-            padding-bottom: 20px; /* Pequeño padding inferior para darle espacio */
-        }
-
-        /* Keyframes para la animación del texto de carga */
-        @keyframes fadeInOutLoading {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .game-title-be-safe {
-                font-size: 2.5em;
-                letter-spacing: 2px;
-            }
-            #animationContainer {
-                margin-top: 30px; /* Ajuste para pantallas más pequeñas */
-                height: 40%;
-            }
-            .animated-shape {
-                font-size: 20vw; /* Ajuste el tamaño de las figuras para pantallas más pequeñas */
-            }
-            .loading-animation-text {
-                font-size: 1.2em;
-                margin-top: 30px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .game-title-be-safe {
-                font-size: 1.5em;
-                letter-spacing: 1px;
-            }
-            #animationContainer {
-                margin-top: 25px; /* Ajuste para móviles */
-                height: 35%;
-            }
-            .animated-shape {
-                font-size: 25vw; /* Ajuste el tamaño de las figuras para móviles */
-            }
-            .loading-animation-text {
-                font-size: 1em;
-                margin-top: 20px;
-            }
-        }
-
     </style>
 </head>
 <body>
     <div class="container">
-        <div id="introAnimationWrapper">
-            <div class="game-title-be-safe" id="beSafeTitle">
-                El Juego D<span class="red-char-be-safe">E</span>L <br>BE SA<span class="red-char-be-safe">F</span>E
-            </div>
+        <div class="timer" id="timerDisplay">01:00</div>
+        <div class="welcome-message" id="welcomeMessage"></div> <h1>¡Desafío del Juego del Calamar! 🦑</h1>
+        <p>¿Cuántas compresiones se deben realizar por minuto durante la RCP?</p>
 
-            <div id="animationContainer">
-                <span class="animated-shape circle">&#x25CB;</span>
-                <span class="animated-shape triangle">&#x25B3;</span>
-                <span class="animated-shape square">&#x25A1;</span>
-            </div>
-
-            <div id="loadingText" class="loading-animation-text">
-                Iniciando con animación...
-            </div>
+        <div class="options-container">
+            <button class="option-button" data-value="100">100</button>
+            <button class="option-button" data-value="50">50</button>
+            <button class="option-button" data-value="20">20</button>
+            <button class="option-button" data-value="10">10</button>
         </div>
 
-        <div class="form-content" id="formContent">
-            <h1><span class="game-icon">🎮</span> Bienvenido al Desafío</h1>
-            <h2>Ingresa tus datos</h2>
+        <button id="submitButton">Responder</button>
+        <button id="nextButton">Siguiente</button>
 
-            <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec">
-                <div class="input-group">
-                    <label for="username">Ingresa tu nombre</label>
-                    <input type="text" id="username" name="nombre" placeholder="Tu nombre de jugador" maxlength="20" required>
-                    <div id="usernameError" class="error-message">Por favor, ingresa tu nombre.</div>
-                </div>
-
-                <div class="input-group">
-                    <span class="city-label">Ciudad</span>
-                    <div class="radio-options-container">
-                        <button class="city-button" type="button" data-value="Bahía Blanca">
-                            <input type="radio" id="bahiaBlanca" name="localidad" value="Bahía Blanca">
-                            Bahía Blanca
-                        </button>
-                        <button class="city-button" type="button" data-value="Paraná">
-                            <input type="radio" id="parana" name="localidad" value="Paraná">
-                            Paraná
-                        </button>
-                    </div>
-                    <div id="cityError" class="error-message">Por favor, selecciona tu ciudad.</div>
-                </div>
-
-                <button id="startButton" type="submit" disabled>Comenzar el Juego</button>
-            </form>
-        </div>
+        <div id="feedbackMessage" class="message"></div>
     </div>
 
     <script>
-        const dataForm = document.getElementById('dataForm');
-        const usernameInput = document.getElementById('username');
-        const cityButtons = document.querySelectorAll('.city-button');
-        const cityRadios = document.querySelectorAll('input[name="localidad"]');
-        const startButton = document.getElementById('startButton');
-        const usernameError = document.getElementById('usernameError');
-        const cityError = document.getElementById('cityError');
-        const introAnimationWrapper = document.getElementById('introAnimationWrapper');
-        const formContent = document.getElementById('formContent');
-        const beSafeTitle = document.getElementById('beSafeTitle');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const optionButtons = document.querySelectorAll('.option-button');
+        const submitButton = document.getElementById('submitButton');
+        const nextButton = document.getElementById('nextButton');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+        const welcomeMessage = document.getElementById('welcomeMessage'); // Obtener el nuevo elemento
+        const correctAnwser = '100';
+        const totalTime = 60; // 60 segundos
+        let timeLeft = totalTime;
+        let timerInterval;
+        let selectedOption = null;
+        let gameEnded = false;
+        let userName = ''; // Para almacenar el nombre del usuario
+        let userCity = ''; // Para almacenar la ciudad del usuario
+        // URL de tu script de Google Apps para enviar datos. ¡Verifica que esta sea la URL correcta de tu despliegue!
+        const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec'; 
 
-        // Función para validar el formulario
-        function validateForm() {
-            let isValid = true;
+        // Función para parsear parámetros de URL
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
 
-            if (usernameInput.value.trim() === '') {
-                usernameError.style.display = 'block';
-                isValid = false;
-            } else {
-                usernameError.style.display = 'none';
-            }
-
-            let citySelected = false;
-            cityRadios.forEach(radio => {
-                if (radio.checked) {
-                    citySelected = true;
-                }
-            });
-
-            if (!citySelected) {
-                cityError.style.display = 'block';
-                isValid = false;
-            } else {
-                cityError.style.display = 'none';
-            }
-
-            // El botón de inicio ahora solo se habilita si el formulario es válido
-            startButton.disabled = !isValid;
+        // Obtener el nombre de usuario y la ciudad de la URL al cargar la página
+        userName = getUrlParameter('user');
+        userCity = getUrlParameter('city');
+        if (userName) {
+            welcomeMessage.textContent = `¡Bienvenido, ${userName}!`;
         }
 
-        // Event listeners para la validación
-        usernameInput.addEventListener('input', validateForm);
-        cityButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                cityButtons.forEach(btn => btn.classList.remove('selected'));
-                cityRadios.forEach(radio => radio.checked = false);
-
-                button.classList.add('selected');
-                const radioInsideButton = button.querySelector('input[type="radio"]');
-                if (radioInsideButton) {
-                    radioInsideButton.checked = true;
-                }
-                validateForm();
-            });
-        });
-
-        // Manejador del envío del formulario modificado para enviar datos a Google Sheets
-        dataForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            validateForm();
-
-            if (startButton.disabled) {
-                return;
-            }
-
-            const username = usernameInput.value.trim();
-            let selectedCity = '';
-            cityRadios.forEach(radio => {
-                if (radio.checked) {
-                    selectedCity = radio.value;
-                }
-            });
-
-            // Crear FormData para enviar los datos
+        // Función para enviar datos al script de Google Apps
+        async function sendGameData(name, city, gamePage, timeTaken) {
             const formData = new FormData();
-            formData.append('nombre', username);
-            formData.append('localidad', selectedCity);
-            // ¡Añade estas dos líneas aquí! 👇
-            formData.append('gamePage', 'Registro'); // Se envía 'Registro' para la página inicial
-            formData.append('timeTaken', 0); // Establece el tiempo en 0 para el registro inicial
+            formData.append('nombre', name);
+            formData.append('localidad', city);
+            formData.append('gamePage', gamePage); // Nombre de la página del juego
+            formData.append('timeTaken', timeTaken); // Tiempo tomado o restante
 
             try {
-                // Enviar datos a Google Apps Script
-                const response = await fetch(dataForm.action, {
+                const response = await fetch(googleAppsScriptURL, {
                     method: 'POST',
                     body: formData
                 });
 
                 if (response.ok) {
-                    console.log('Datos enviados a Google Sheets con éxito!');
-                    // Redirigir a la primera pregunta después de enviar los datos
-                    window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
+                    console.log(`¡Datos del juego para ${gamePage} enviados a Google Sheets correctamente!`);
                 } else {
-                    console.error('Error al enviar datos a Google Sheets:', response.statusText);
-                    // Aunque falle el envío, permitir continuar con el juego
-                    window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
+                    console.error(`Error al enviar datos del juego para ${gamePage} a Google Sheets:`, response.statusText);
                 }
             } catch (error) {
-                console.error('Error de red o al enviar datos:', error);
-                // Aunque falle el envío, permitir continuar con el juego
-                window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
+                console.error(`Error de red o problema al enviar datos del juego para ${gamePage}:`, error);
             }
+        }
+
+        // Función para actualizar la visualización del temporizador
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                if (!gameEnded) {
+                    endGame("¡Se acabó el tiempo, queda eliminado! 💀", false);
+                    sendGameData(userName, userCity, '1', 0); // Registrar 0 segundos si el tiempo se agota
+                }
+            } else {
+                timeLeft--;
+            }
+        }
+
+        // Función para terminar el juego con un mensaje
+        function endGame(message, isCorrect = false) {
+            gameEnded = true;
+            clearInterval(timerInterval); // Detener el temporizador
+            feedbackMessage.textContent = message;
+
+            if (isCorrect) {
+                feedbackMessage.classList.add('correct-message');
+                feedbackMessage.classList.remove('incorrect-message');
+                // Si es correcto, enviar el tiempo que se tardó en responder
+                sendGameData(userName, userCity, '1', totalTime - timeLeft); // Envía '1' como gamePage
+                // Mostrar botón "Siguiente" y configurar para ir a la próxima página
+                nextButton.style.display = 'block';
+                // Después de 3 segundos, redirigir a la siguiente página. Esto da tiempo para que el usuario vea el mensaje.
+                setTimeout(() => {
+                    window.location.href = `Squidgame2.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
+                }, 3000); // Redirige después de 3 segundos
+                
+            } else {
+                feedbackMessage.classList.add('incorrect-message');
+                feedbackMessage.classList.remove('correct-message');
+                // Si es incorrecto (y no fue por tiempo agotado, que ya se maneja arriba)
+                if (timeLeft > 0) {
+                    sendGameData(userName, userCity, '1', totalTime - timeLeft); // Envía '1' como gamePage
+                }
+                // Si la respuesta es incorrecta, el botón "Siguiente" no se muestra.
+            }
+            submitButton.disabled = true; // Deshabilitar el botón de responder una vez que el juego terminó
+            optionButtons.forEach(button => button.disabled = true); // Deshabilitar botones de opción
+        }
+
+        // Iniciar el temporizador cuando la página se carga
+        document.addEventListener('DOMContentLoaded', () => {
+            timerInterval = setInterval(updateTimer, 1000);
+            submitButton.disabled = true; // Botón de responder deshabilitado hasta que se seleccione una opción
         });
 
-        // --- Lógica de la secuencia de animación inicial y aparición del formulario ---
-        document.addEventListener('DOMContentLoaded', () => {
-            // Inicialmente, el formulario estará oculto y deshabilitado para interacciones
-            formContent.classList.remove('active');
-            validateForm(); // Asegura que el botón esté deshabilitado al inicio
-
-            // Escuchamos el evento `animationend` del contenedor principal de la introducción
-            introAnimationWrapper.addEventListener('animationend', (event) => {
-                // Aseguramos que solo reaccionamos a la animación principal de fade out
-                if (event.animationName === 'introFadeOut') {
-                    introAnimationWrapper.style.display = 'none'; // Oculta el contenedor de animación completamente
-                    formContent.classList.add('active'); // Muestra el contenido del formulario
-                    validateForm(); // Re-valida para habilitar el botón si el formulario es válido
-                }
+        // Event listeners para los botones de opción
+        optionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (gameEnded) return; // No permitir selección si el juego ya terminó
+                optionButtons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                selectedOption = button.dataset.value;
+                submitButton.disabled = false; // Habilitar el botón de responder
             });
+        });
+
+        // Event listener para el botón "Responder"
+        submitButton.addEventListener('click', () => {
+            if (gameEnded) return; // No permitir responder si el juego ya terminó
+            if (selectedOption === null) {
+                alert("Por favor, selecciona una opción antes de responder.");
+                return;
+            }
+
+            // Llamar a endGame para procesar la respuesta y enviar datos
+            if (selectedOption === correctAnwser) {
+                endGame("¡Respuesta correcta! ¡Felicidades, sigues en el juego! 🎉", true);
+            } else {
+                endGame("¡Respuesta incorrecta, queda eliminado! ❌", false);
+            }
+            // Importante: El botón "Responder" ya se deshabilita dentro de endGame(),
+            // pero lo ponemos aquí también para mayor seguridad inmediata.
+            submitButton.disabled = true; 
+        });
+
+        // El botón "Siguiente" ahora es manejado DENTRO de la función endGame()
+        // para asegurar que solo se muestre y redirija cuando la respuesta es correcta.
+        // Esto evita duplicaciones de usuarios y asegura que los datos de tiempo se envíen
+        // antes de la redirección.
+        nextButton.addEventListener('click', () => {
+            // Esta función puede estar vacía. La navegación ya se gestiona en endGame().
+            // Ya no necesitas 'alert' ni 'location.reload()' aquí.
         });
     </script>
 </body>
