@@ -379,9 +379,10 @@
             100% { opacity: 0; }
         }
 
+        /* --- MEDIA QUERIES PARA AJUSTES EN PANTALLAS PEQUEÑAS (CELULAR) --- */
         @media (max-width: 600px) {
             h1 {
-                font-size: 2.2em; /* Reducido a 2.2em para que sea más pequeño */
+                font-size: 2.2em; /* Título "Bienvenido al Desafío" más pequeño */
                 margin-bottom: 20px;
             }
 
@@ -435,8 +436,10 @@
             }
 
             .error-message {
-                font-size: 0.9em;
+                color: #e74c3c;
+                margin-top: 8px;
                 margin-bottom: 15px;
+                font-size: 0.9em;
             }
 
             #introAnimationWrapper {
@@ -456,27 +459,28 @@
             }
 
             .animated-shape {
-                font-size: 60px;
+                font-size: 90px; /* Tamaño de figuras restaurado a 90px */
             }
 
             .animated-shape.triangle {
-                font-size: 60px;
+                font-size: 90px; /* Tamaño de figuras restaurado a 90px */
             }
 
+            /* Ajustes en los keyframes para mantener la posición con el nuevo tamaño */
             @keyframes circleCentralize {
-                100% { transform: translateY(-80px); }
+                100% { transform: translateY(-120px); } /* Ajuste a la posición original */
             }
 
             @keyframes squareCentralize {
-                100% { transform: translateY(80px); }
+                100% { transform: translateY(120px); } /* Ajuste a la posición original */
             }
 
             @keyframes circleToHorizontal {
-                100% { transform: translate(-100px, 0); }
+                100% { transform: translate(-150px, 0); } /* Ajuste a la posición original */
             }
 
             @keyframes squareToHorizontal {
-                100% { transform: translate(100px, -5px); }
+                100% { transform: translate(150px, -5px); } /* Ajuste a la posición original */
             }
 
             .loading-animation-text {
@@ -485,6 +489,7 @@
             }
         }
 
+        /* Ajustes para pantallas aún más pequeñas si es necesario */
         @media (max-width: 400px) {
             .radio-options-container {
                 flex-direction: column;
@@ -497,7 +502,6 @@
                 min-width: 0;
             }
         }
-
     </style>
 </head>
 <body>
