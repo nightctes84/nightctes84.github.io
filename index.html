@@ -248,7 +248,8 @@
 
         .animated-shape {
             position: absolute;
-            font-size: 10vw; /* AJUSTADO A 10vw */
+            /* AJUSTE CLAVE: Reducimos el tamaño base */
+            font-size: 8vw; /* Tamaño base de las figuras para pantallas grandes */
             opacity: 0; /* Aún invisible al inicio de sus animaciones individuales */
             line-height: 1;
             transition: transform 0.7s ease-in-out, color 0.7s ease-in-out;
@@ -257,7 +258,8 @@
 
         /* Ajuste específico para el triángulo para asegurar tamaño constante */
         .animated-shape.triangle {
-            font-size: 10vw; /* AJUSTADO A 10vw */
+            /* Usar el mismo tamaño base */
+            font-size: 8vw;
         }
 
         /* Keyframes de las figuras */
@@ -303,7 +305,8 @@
         /* Animación de centralización (separación vertical) */
         @keyframes circleCentralize {
             0% { transform: translateY(-100%); }
-            100% { transform: translateY(-150px); } /* Bajar más el círculo */
+            /* AJUSTE CLAVE: Usamos vw para la traslación vertical */
+            100% { transform: translateY(-10vw); } /* Distancia relativa al tamaño de las figuras */
         }
 
         @keyframes triangleCentralize {
@@ -313,14 +316,16 @@
 
         @keyframes squareCentralize {
             0% { transform: translateY(100%); }
-            100% { transform: translateY(150px); } /* Bajar más el cuadrado */
+            /* AJUSTE CLAVE: Usamos vw para la traslación vertical */
+            100% { transform: translateY(10vw); } /* Distancia relativa al tamaño de las figuras */
         }
 
         /* Animación de movimiento a horizontal */
         @keyframes circleToHorizontal {
-            0% { transform: translateY(-150px) scale(1); color: white; }
+            0% { transform: translateY(-10vw) scale(1); color: white; } /* También ajustamos el inicio */
             50% { color: #e74c3c; }
-            100% { transform: translate(-140px, 0) scale(1); color: #e74c3c; }
+            /* AJUSTE CLAVE: Usamos vw para la traslación horizontal */
+            100% { transform: translate(-9vw, 0) scale(1); color: #e74c3c; }
         }
 
         @keyframes triangleToHorizontal {
@@ -330,9 +335,10 @@
         }
 
         @keyframes squareToHorizontal {
-            0% { transform: translateY(150px) scale(1); color: white; }
+            0% { transform: translateY(10vw) scale(1); color: white; } /* También ajustamos el inicio */
             50% { color: #e74c3c; }
-            100% { transform: translate(140px, -5px) scale(1); color: #e74c3c; }
+            /* AJUSTE CLAVE: Usamos vw para la traslación horizontal */
+            100% { transform: translate(9vw, -5px) scale(1); color: #e74c3c; }
         }
 
         /* NUEVO Keyframe para el desvanecimiento del contenedor general de la intro */
@@ -406,7 +412,8 @@
                 height: 40%;
             }
             .animated-shape {
-                font-size: 15vw; /* AJUSTADO A 15vw */
+                /* AJUSTE CLAVE: Un poco más grande para mantener visibilidad en pantallas más estrechas */
+                font-size: 10vw;
             }
             .loading-animation-text {
                 font-size: 1.2em;
@@ -424,7 +431,8 @@
                 height: 35%;
             }
             .animated-shape {
-                font-size: 20vw; /* AJUSTADO A 20vw */
+                /* AJUSTE CLAVE: Un poco más grande para móviles para que no se vean diminutas */
+                font-size: 12vw;
             }
             .loading-animation-text {
                 font-size: 1em;
@@ -448,7 +456,7 @@
             </div>
 
             <div id="loadingText" class="loading-animation-text">
-                Comenzando...
+                Iniciando con animación...
             </div>
         </div>
 
@@ -608,4 +616,3 @@
     </script>
 </body>
 </html>
-
