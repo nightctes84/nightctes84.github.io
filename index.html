@@ -248,7 +248,7 @@
 
         .animated-shape {
             position: absolute;
-            font-size: 15vw; /* Tamaño base de las figuras */
+            font-size: 25vw; /* AUMENTADO: Antes 15vw -> Ahora 25vw */
             opacity: 0; /* Aún invisible al inicio de sus animaciones individuales */
             line-height: 1;
             transition: transform 0.7s ease-in-out, color 0.7s ease-in-out;
@@ -257,7 +257,7 @@
 
         /* Ajuste específico para el triángulo para asegurar tamaño constante */
         .animated-shape.triangle {
-            font-size: 15vw; /* Usar el mismo tamaño base */
+            font-size: 25vw; /* AUMENTADO: Antes 15vw -> Ahora 25vw */
         }
 
         /* Keyframes de las figuras */
@@ -406,7 +406,7 @@
                 height: 40%;
             }
             .animated-shape {
-                font-size: 20vw; /* Ajuste el tamaño de las figuras para pantallas más pequeñas */
+                font-size: 30vw; /* AUMENTADO: Antes 20vw -> Ahora 30vw */
             }
             .loading-animation-text {
                 font-size: 1.2em;
@@ -424,7 +424,7 @@
                 height: 35%;
             }
             .animated-shape {
-                font-size: 25vw; /* Ajuste el tamaño de las figuras para móviles */
+                font-size: 35vw; /* AUMENTADO: Antes 25vw -> Ahora 35vw */
             }
             .loading-animation-text {
                 font-size: 1em;
@@ -456,7 +456,7 @@
             <h1><span class="game-icon">🎮</span> Bienvenido al Desafío</h1>
             <h2>Ingresa tus datos</h2>
 
-           <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec">
+            <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec">
                 <div class="input-group">
                     <label for="username">Ingresa tu nombre</label>
                     <input type="text" id="username" name="nombre" placeholder="Tu nombre de jugador" maxlength="20" required>
@@ -559,12 +559,12 @@
             });
 
             // Crear FormData para enviar los datos
-const formData = new FormData();
-formData.append('nombre', username);
-formData.append('localidad', selectedCity);
-// ¡Añade estas dos líneas aquí! 👇
-formData.append('gamePage', 'Registro'); // O 'Inicio', 'Bienvenida', etc.
-formData.append('timeTaken', 0); // Establece el tiempo en 0 para el registro inicial
+            const formData = new FormData();
+            formData.append('nombre', username);
+            formData.append('localidad', selectedCity);
+            // ¡Añade estas dos líneas aquí! 👇
+            formData.append('gamePage', 'Registro'); // Se envía 'Registro' para la página inicial
+            formData.append('timeTaken', 0); // Establece el tiempo en 0 para el registro inicial
 
             try {
                 // Enviar datos a Google Apps Script
@@ -608,6 +608,5 @@ formData.append('timeTaken', 0); // Establece el tiempo en 0 para el registro in
     </script>
 </body>
 </html>
-
 
 
