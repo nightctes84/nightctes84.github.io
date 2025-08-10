@@ -188,6 +188,8 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            position: relative; /* Necesario para posicionar el span de carga */
+            overflow: hidden; /* Asegura que el texto se mantenga dentro del botón */
         }
 
         #startButton:hover {
@@ -201,6 +203,20 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+        }
+
+        /* Estilos para el texto de "Cargando..." dentro del botón */
+        #startButton .loading-text {
+            display: none; /* Inicialmente oculto */
+            color: white;
+            font-weight: bold;
+            animation: pulseText 1s infinite alternate; /* Animación de pulso para el texto de carga */
+        }
+
+        /* Animación de pulso para el texto de carga */
+        @keyframes pulseText {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
         }
 
         .error-message {
@@ -548,7 +564,7 @@
             </div>
 
             <div id="loadingText" class="loading-animation-text">
-                Iniciando con animación...
+                Iniciando ...
             </div>
         </div>
 
@@ -578,7 +594,10 @@
                     <div id="cityError" class="error-message">Por favor, selecciona tu ciudad.</div>
                 </div>
 
-                <button id="startButton" type="submit" disabled>Comenzar el Juego</button>
+                <button id="startButton" type="submit" disabled>
+                    <span class="button-text">Comenzar el Juego</span>
+                    <span class="loading-text">Cargando...</span>
+                </button>
             </form>
         </div>
     </div>
@@ -589,6 +608,8 @@
         const cityButtons = document.querySelectorAll('.city-button');
         const cityRadios = document.querySelectorAll('input[name="localidad"]');
         const startButton = document.getElementById('startButton');
+        const buttonText = startButton.querySelector('.button-text'); // Referencia al texto original
+        const loadingText = startButton.querySelector('.loading-text'); // Referencia al texto de carga
         const usernameError = document.getElementById('usernameError');
         const cityError = document.getElementById('cityError');
         const introAnimationWrapper = document.getElementById('introAnimationWrapper');
@@ -650,6 +671,15 @@
                 return;
             }
 
+            // Ocultar el texto original del botón y mostrar "Cargando..."
+            buttonText.style.display = 'none';
+            loadingText.style.display = 'inline-block'; // O 'block' si quieres que ocupe todo el ancho
+            // Cambiar el color del botón a amarillo al hacer click
+            startButton.style.backgroundColor = '#f1c40f'; // Establece el color amarillo
+            startButton.style.pointerEvents = 'none'; // Deshabilita el botón para evitar múltiples clics
+            startButton.style.cursor = 'wait'; // Cambia el cursor a "espera"
+
+
             const username = usernameInput.value.trim();
             let selectedCity = '';
             cityRadios.forEach(radio => {
@@ -685,6 +715,13 @@
                 console.error('Error de red o al enviar datos:', error);
                 // Aunque falle el envío, permitir continuar con el juego
                 window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
+            } finally {
+                // En caso de que la navegación falle por algún motivo, restaurar el botón
+                startButton.style.backgroundColor = '#27ae60'; // Vuelve al verde
+                buttonText.style.display = 'inline';
+                loadingText.style.display = 'none';
+                startButton.style.pointerEvents = 'auto'; // Habilita de nuevo el botón
+                startButton.style.cursor = 'pointer';
             }
         });
 
@@ -706,4 +743,4 @@
         });
     </script>
 </body>
-</html>  
+</html>
