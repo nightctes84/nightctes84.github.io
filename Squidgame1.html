@@ -177,18 +177,16 @@
         const submitButton = document.getElementById('submitButton');
         const nextButton = document.getElementById('nextButton');
         const feedbackMessage = document.getElementById('feedbackMessage');
-        const welcomeMessage = document.getElementById('welcomeMessage'); // Obtener el nuevo elemento
+        const welcomeMessage = document.getElementById('welcomeMessage');
         const correctAnwser = '100';
         const totalTime = 60; // 60 segundos
         let timeLeft = totalTime;
         let timerInterval;
         let selectedOption = null;
         let gameEnded = false;
-        let userName = ''; // Para almacenar el nombre del usuario
-        let userCity = ''; // Para almacenar la ciudad del usuario
-        // URL de tu script de Google Apps para enviar datos. ¡Verifica que esta sea la URL correcta de tu despliegue!
+        let userName = '';
+        let userCity = '';
         const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec';
-
 
         // Función para parsear parámetros de URL
         function getUrlParameter(name) {
@@ -210,8 +208,8 @@
             const formData = new FormData();
             formData.append('nombre', name);
             formData.append('localidad', city);
-            formData.append('gamePage', gamePage); // Nombre de la página del juego
-            formData.append('timeTaken', timeTaken); // Tiempo tomado o restante
+            formData.append('gamePage', gamePage);
+            formData.append('timeTaken', timeTaken);
 
             try {
                 const response = await fetch(googleAppsScriptURL, {
@@ -239,7 +237,7 @@
                 clearInterval(timerInterval);
                 if (!gameEnded) {
                     endGame("¡Se acabó el tiempo, queda eliminado! 💀", false);
-                    sendGameData(userName, userCity, '1', 0); // Registrar 0 segundos si el tiempo se agota
+                    sendGameData(userName, userCity, '1', 0);
                 }
             } else {
                 timeLeft--;
@@ -249,32 +247,35 @@
         // Función para terminar el juego con un mensaje
         function endGame(message, isCorrect = false) {
             gameEnded = true;
-            clearInterval(timerInterval); // Detener el temporizador
+            clearInterval(timerInterval);
             feedbackMessage.textContent = message;
+
+            // Ocultar el botón "Responder"
+            submitButton.style.display = 'none';
 
             if (isCorrect) {
                 feedbackMessage.classList.add('correct-message');
                 feedbackMessage.classList.remove('incorrect-message');
-                // Si es correcto, enviar el tiempo que se tardó en responder
-                sendGameData(userName, userCity, '1', totalTime - timeLeft); // Envía '1' como gamePage
-                // Mostrar botón "Siguiente" y configurar para ir a la próxima página
+                sendGameData(userName, userCity, '1', totalTime - timeLeft);
+                // Mostrar el botón "Siguiente"
                 nextButton.style.display = 'block';
-                // Después de 3 segundos, redirigir a la siguiente página. Esto da tiempo para que el usuario vea el mensaje.
+
+                // Redirigir a la siguiente página después de 3 segundos
                 setTimeout(() => {
                     window.location.href = `Squidgame2.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
-                }, 3000); // Redirige después de 3 segundos
-                
+                }, 3000);
+
             } else {
                 feedbackMessage.classList.add('incorrect-message');
                 feedbackMessage.classList.remove('correct-message');
-                // Si es incorrecto (y no fue por tiempo agotado, que ya se maneja arriba)
                 if (timeLeft > 0) {
-                    sendGameData(userName, userCity, '1', totalTime - timeLeft); // Envía '1' como gamePage
+                    sendGameData(userName, userCity, '1', totalTime - timeLeft);
                 }
-                // Si la respuesta es incorrecta, el botón "Siguiente" no se muestra.
+                // Si es incorrecto, el botón "Siguiente" permanece oculto.
+                nextButton.style.display = 'none';
             }
-            submitButton.disabled = true; // Deshabilitar el botón de responder una vez que el juego terminó
-            optionButtons.forEach(button => button.disabled = true); // Deshabilitar botones de opción
+            // Deshabilitar botones de opción después de que el juego terminó
+            optionButtons.forEach(button => button.disabled = true);
         }
 
         // Iniciar el temporizador cuando la página se carga
@@ -286,17 +287,17 @@
         // Event listeners para los botones de opción
         optionButtons.forEach(button => {
             button.addEventListener('click', () => {
-                if (gameEnded) return; // No permitir selección si el juego ya terminó
+                if (gameEnded) return;
                 optionButtons.forEach(btn => btn.classList.remove('selected'));
                 button.classList.add('selected');
                 selectedOption = button.dataset.value;
-                submitButton.disabled = false; // Habilitar el botón de responder
+                submitButton.disabled = false;
             });
         });
 
         // Event listener para el botón "Responder"
         submitButton.addEventListener('click', () => {
-            if (gameEnded) return; // No permitir responder si el juego ya terminó
+            if (gameEnded) return;
             if (selectedOption === null) {
                 alert("Por favor, selecciona una opción antes de responder.");
                 return;
@@ -308,20 +309,11 @@
             } else {
                 endGame("¡Respuesta incorrecta, queda eliminado! ❌", false);
             }
-            // Importante: El botón "Responder" ya se deshabilita dentro de endGame(),
-            // pero lo ponemos aquí también para mayor seguridad inmediata.
-            submitButton.disabled = true; 
+            // El botón "Responder" se oculta dentro de endGame(), ya no es necesario deshabilitarlo aquí.
         });
 
-        // El botón "Siguiente" ahora es manejado DENTRO de la función endGame()
-        // para asegurar que solo se muestre y redirija cuando la respuesta es correcta.
-        // Esto evita duplicaciones de usuarios y asegura que los datos de tiempo se envíen
-        // antes de la redirección.
-        nextButton.addEventListener('click', () => {
-            // Esta función puede estar vacía. La navegación ya se gestiona en endGame().
-            // Ya no necesitas 'alert' ni 'location.reload()' aquí.
-        });
+        // Se elimina el event listener del botón "Siguiente" ya que la navegación
+        // y el mostrado del botón se manejan completamente dentro de endGame().
     </script>
 </body>
 </html>
-
