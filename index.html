@@ -6,12 +6,13 @@
     <title>Bienvenido al Desafío: Juego del Calamar</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* Importamos la fuente Chakra Petch */
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap');
 
         body {
             font-family: 'Chakra Petch', sans-serif;
-            background-color: #0d1a26;
-            color: #ecf0f1;
+            background-color: #0d1a26; /* Fondo muy oscuro, casi negro */
+            color: #ecf0f1; /* Texto claro */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,61 +22,62 @@
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
-            overflow: hidden;
+            overflow: hidden; /* Evitar scroll si la animación se desborda temporalmente */
         }
 
         .container {
-            background-color: #1a2a3a;
+            background-color: #1a2a3a; /* Contenedor oscuro con un ligero matiz */
             padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-            max-width: 550px;
+            border-radius: 15px; /* Bordes más redondeados */
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
+            max-width: 550px; /* Un poco más ancho */
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            border: 2px solid #e74c3c;
-            position: relative;
-            overflow: hidden;
+            border: 2px solid #e74c3c; /* Borde rojo distintivo */
+            position: relative; /* Para el posicionamiento de la animación */
+            overflow: hidden; /* Asegurar que la animación no se salga del contenedor */
         }
 
+        /* Oculta todo el contenido del formulario inicialmente */
         .form-content {
             opacity: 0;
-            transition: opacity 0.8s ease-in-out;
-            pointer-events: none;
+            transition: opacity 0.8s ease-in-out; /* Transición suave para que aparezca */
+            pointer-events: none; /* Deshabilita interacciones mientras está oculto */
         }
 
         .form-content.active {
             opacity: 1;
-            pointer-events: all;
+            pointer-events: all; /* Habilita interacciones cuando está activo */
         }
 
         h1 {
-            color: #e74c3c;
+            color: #e74c3c; /* Rojo Squid Game */
             margin-bottom: 25px;
-            font-size: 3.2em;
+            font-size: 3.2em; /* Más grande para el título principal */
             text-transform: uppercase;
             letter-spacing: 3px;
             display: flex;
             justify-content: center;
             align-items: center;
-            text-shadow: 0 0 10px rgba(231, 76, 60, 0.7);
+            text-shadow: 0 0 10px rgba(231, 76, 60, 0.7); /* Resplandor rojo */
         }
 
         h1 .game-icon {
             margin-right: 20px;
-            font-size: 1.5em;
+            font-size: 1.5em; /* Tamaño del icono relativo al título */
             line-height: 1;
-            animation: pulse 1.5s infinite alternate;
+            animation: pulse 1.5s infinite alternate; /* Animación de pulso para el icono del título */
         }
 
         h2 {
-            color: #f1c40f;
+            color: #f1c40f; /* Amarillo/Dorado para formato título */
             font-size: 2em;
             margin-bottom: 35px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 0 0 8px rgba(241, 196, 15, 0.6);
+            text-shadow: 0 0 8px rgba(241, 196, 15, 0.6); /* Resplandor amarillo */
         }
 
         .input-group {
@@ -90,19 +92,19 @@
             display: block;
             margin-bottom: 10px;
             font-size: 1.2em;
-            color: #f1c40f;
+            color: #f1c40f; /* Amarillo para las etiquetas */
             text-align: center;
             width: 100%;
             letter-spacing: 0.8px;
         }
 
-        .input-group input {
+        .input-group input[type="text"] {
             width: calc(90% - 20px);
             max-width: 350px;
             padding: 15px 15px;
             border: 1px solid #7f8c8d;
-            border-radius: 8px;
-            background-color: #2b3e50;
+            border-radius: 8px; /* Más redondeado */
+            background-color: #2b3e50; /* Color de fondo del input más oscuro */
             color: #ecf0f1;
             font-size: 1.2em;
             box-sizing: border-box;
@@ -110,14 +112,14 @@
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .input-group input:focus {
-            border-color: #e74c3c;
-            box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+        .input-group input[type="text"]:focus {
+            border-color: #e74c3c; /* Borde rojo al enfocar */
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.5); /* Resplandor al enfocar */
             outline: none;
         }
 
-        .input-group input::placeholder {
-            color: #95a5a6;
+        .input-group input[type="text"]::placeholder {
+            color: #95a5a6; /* Placeholder un poco más oscuro */
         }
 
         .city-label {
@@ -132,18 +134,18 @@
         .radio-options-container {
             display: flex;
             justify-content: center;
-            gap: 25px;
+            gap: 25px; /* Más espacio entre los botones */
             margin-top: 15px;
             margin-bottom: 20px;
             width: 100%;
         }
 
         .city-button {
-            background-color: #34495e;
+            background-color: #34495e; /* Azul oscuro suave */
             color: white;
             padding: 15px 30px;
             border: none;
-            border-radius: 10px;
+            border-radius: 10px; /* Más redondeado */
             font-size: 1.2em;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
@@ -153,19 +155,19 @@
         }
 
         .city-button:hover {
-            background-color: #3f5870;
+            background-color: #3f5870; /* Un poco más claro al pasar el ratón */
             transform: translateY(-5px) scale(1.02);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
         }
 
         .city-button.selected {
-            background-color: #e74c3c;
-            border: 3px solid #c0392b;
+            background-color: #e74c3c; /* Rojo cuando está seleccionado */
+            border: 3px solid #c0392b; /* Borde más grueso y oscuro */
             transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(231, 76, 60, 0.7);
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.7); /* Resplandor rojo al seleccionar */
         }
 
-        .city-button input {
+        .city-button input[type="radio"] {
             position: absolute;
             opacity: 0;
             width: 0;
@@ -174,12 +176,12 @@
         }
 
         #startButton {
-            background-color: #27ae60;
+            background-color: #27ae60; /* Verde para iniciar */
             color: white;
             padding: 18px 50px;
             border: none;
             border-radius: 10px;
-            font-size: 1.8em;
+            font-size: 1.8em; /* Más grande */
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             margin-top: 30px;
@@ -189,13 +191,13 @@
         }
 
         #startButton:hover {
-            background-color: #2ecc71;
+            background-color: #2ecc71; /* Verde más claro */
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
         }
 
         #startButton:disabled {
-            background-color: #7f8c8d;
+            background-color: #7f8c8d; /* Gris cuando está deshabilitado */
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
@@ -212,49 +214,53 @@
             font-weight: bold;
         }
 
+        /* --- CONTENEDOR DE LA ANIMACIÓN INICIAL (Frase "Be Safe" + Figuras) --- */
         #introAnimationWrapper {
             position: absolute;
-            top: 0;
+            top: 0; /* Aseguramos que esté pegado al top del container */
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #1a2a3a;
-            z-index: 20;
+            background-color: #1a2a3a; /* Mismo color del contenedor para fundirse */
+            z-index: 20; /* Asegura que esté por encima del contenido del formulario */
             display: flex;
-            flex-direction: column;
-            justify-content: space-around;
+            flex-direction: column; /* Para apilar la frase y las figuras */
+            justify-content: space-around; /* Distribuye el espacio entre los elementos */
             align-items: center;
-            opacity: 1;
-            animation: introFadeOut 0.5s forwards 8s;
+            opacity: 1; /* Empieza visible */
+            animation: introFadeOut 0.5s forwards 8s; /* Se desvanecerá al final de la secuencia de animación */
             padding-top: 1%;
-            padding-bottom: 2%;
-            box-sizing: border-box;
+            padding-bottom: 2%; /* Agrega un padding inferior para el texto de carga */
+            box-sizing: border-box; /* Para que el padding no afecte el cálculo de height */
         }
 
         #animationContainer {
+            /* Mantiene los estilos de posicionamiento relativo dentro del wrapper */
             position: relative;
-            width: 100%;
-            height: 40%;
+            width: 100%; /* Ajusta el ancho para que las figuras se centren */
+            height: 40%; /* Ajustado para dar más espacio vertical a las figuras y al texto de carga */
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 20px;
-            margin-bottom: 0;
+            margin-top: 20px; /* Ajustado para empujar las figuras más abajo y separar de la frase */
+            margin-bottom: 0; /* Asegurar que no haya margen inferior extra */
         }
 
         .animated-shape {
             position: absolute;
-            font-size: 90px;
-            opacity: 0;
+            font-size: 15vw; /* Tamaño base de las figuras, responsivo con el viewport */
+            opacity: 0; /* Aún invisible al inicio de sus animaciones individuales */
             line-height: 1;
             transition: transform 0.7s ease-in-out, color 0.7s ease-in-out;
-            color: white;
+            color: white; /* Color inicial blanco */
         }
 
+        /* Ajuste específico para el triángulo para asegurar tamaño constante */
         .animated-shape.triangle {
-            font-size: 90px;
+            font-size: 15vw; /* Usar el mismo tamaño base */
         }
 
+        /* Keyframes de las figuras */
         .animated-shape.circle {
             animation: circleEnter 1.5s forwards 0.5s,
                        circleCentralize 0.5s forwards 2s,
@@ -269,8 +275,8 @@
 
         .animated-shape.square {
             animation: squareEnter 1.5s forwards 0.5s,
-                    squareCentralize 0.5s forwards 2s,
-                    squareToHorizontal 1.5s forwards 4.5s;
+                       squareCentralize 0.5s forwards 2s,
+                       squareToHorizontal 1.5s forwards 4.5s;
         }
 
         @keyframes pulse {
@@ -278,70 +284,76 @@
             100% { transform: scale(1.05); }
         }
 
+        /* Animación de entrada de las figuras */
         @keyframes circleEnter {
-            0% { opacity: 0; transform: translateY(-250%) scale(0.8); }
-            100% { opacity: 1; transform: translateY(-100%) scale(1); }
+            0% { opacity: 0; transform: translateY(-250%) scale(0.8); } /* Más arriba */
+            100% { opacity: 1; transform: translateY(-100%) scale(1); } /* Posición inicial más baja */
         }
 
         @keyframes triangleEnter {
-            0% { opacity: 0; transform: translateX(-200%) scale(1); }
-            100% { opacity: 1; transform: translateX(0) scale(1); }
+            0% { opacity: 0; transform: translateX(-200%) scale(1); } /* Sin escalado, tamaño inicial correcto */
+            100% { opacity: 1; transform: translateX(0) scale(1); } /* Tamaño constante */
         }
 
         @keyframes squareEnter {
-            0% { opacity: 0; transform: translateY(250%) scale(0.8); }
-            100% { opacity: 1; transform: translateY(100%) scale(1); }
+            0% { opacity: 0; transform: translateY(250%) scale(0.8); } /* Más abajo */
+            100% { opacity: 1; transform: translateY(100%) scale(1); } /* Posición inicial más baja */
         }
 
+        /* Animación de centralización (separación vertical) */
         @keyframes circleCentralize {
             0% { transform: translateY(-100%); }
-            100% { transform: translateY(-120px); }
+            100% { transform: translateY(-150px); } /* Bajar más el círculo */
         }
 
         @keyframes triangleCentralize {
-            0% { transform: translateX(0) scale(1); }
-            100% { transform: translateY(0) scale(1); }
+            0% { transform: translateX(0) scale(1); } /* Tamaño constante */
+            100% { transform: translateY(0px) scale(1); } /* Mantener en el centro vertical de las 3, tamaño constante */
         }
 
         @keyframes squareCentralize {
             0% { transform: translateY(100%); }
-            100% { transform: translateY(120px); }
+            100% { transform: translateY(150px); } /* Bajar más el cuadrado */
         }
 
+        /* Animación de movimiento a horizontal y CAMBIO DE COLOR */
         @keyframes circleToHorizontal {
-            0% { transform: translateY(-120px) scale(1); color: white; }
-            50% { color: #e74c3c; }
-            100% { transform: translate(-150px, 0) scale(1); color: #e74c3c; }
+            0% { transform: translateY(-150px) scale(1); color: white; }
+            50% { color: #e74c3c; } /* Rojo en el 50% de la animación */
+            100% { transform: translate(-140px, 0) scale(1); color: #e74c3c; } /* Termina en rojo */
         }
 
         @keyframes triangleToHorizontal {
-            0% { transform: translateY(0) scale(1); color: white; }
-            50% { color: #e74c3c; }
-            100% { transform: translate(0, 0) scale(1); color: #e74c3c; }
+            0% { transform: translateY(0px) scale(1); color: white; } /* Color inicial blanco */
+            50% { color: #e74c3c; } /* Rojo en el 50% de la animación */
+            100% { transform: translate(0, 0) scale(1); color: #e74c3c; } /* Termina en rojo */
         }
 
         @keyframes squareToHorizontal {
-            0% { transform: translateY(120px) scale(1); color: white; }
-            50% { color: #e74c3c; }
-            100% { transform: translate(150px, -5px) scale(1); color: #e74c3c; }
+            0% { transform: translateY(150px) scale(1); color: white; } /* Color inicial blanco */
+            50% { color: #e74c3c; } /* Rojo en el 50% de la animación */
+            100% { transform: translate(140px, -5px) scale(1); color: #e74c3c; } /* Termina en rojo */
         }
 
+        /* NUEVO Keyframe para el desvanecimiento del contenedor general de la intro */
         @keyframes introFadeOut {
             0% { opacity: 1; pointer-events: all; }
-            95% { opacity: 1; }
-            100% { opacity: 0; pointer-events: none; display: none; }
+            95% { opacity: 1; } /* Mantiene visible hasta casi el final */
+            100% { opacity: 0; pointer-events: none; display: none; } /* Se oculta completamente */
         }
 
+        /* --- Estilos para la frase "El Juego del Be Safe" dentro de la animación --- */
         .game-title-be-safe {
-            font-size: 3em;
+            font-size: 3em; /* Ajustado para que quepa bien en el contenedor */
             color: #ecf0f1;
             text-transform: uppercase;
             letter-spacing: 3px;
             position: relative;
             text-align: center;
             line-height: 1.2;
-            margin-top: 0;
-            margin-bottom: 5px;
+            margin-top: 0; /* Aseguramos que no haya margen superior adicional */
+            margin-bottom: 5px; /* Un margen pequeño para separar de las figuras */
+            /* La animación de glow de texto se aplica desde el inicio */
             animation: textGlowPulse 2s infinite alternate ease-in-out;
         }
 
@@ -349,6 +361,7 @@
             color: #e74c3c;
         }
 
+        /* Keyframes para la animación de pulso de resplandor de texto (usada por "Be Safe") */
         @keyframes textGlowPulse {
             0% {
                 text-shadow: 0 0 10px rgba(255, 255, 255, 0.3),
@@ -360,29 +373,50 @@
             }
         }
 
+        /* Nuevo estilo para el texto de carga */
         .loading-animation-text {
             font-family: 'Chakra Petch', sans-serif;
-            font-size: 1.5em;
-            color: #ecf0f1;
+            font-size: 1.5em; /* Tamaño de fuente para el texto de carga */
+            color: #ecf0f1; /* Mismo color que el texto principal de "Be Safe" */
             text-transform: uppercase;
             letter-spacing: 2px;
             text-align: center;
-            opacity: 0;
-            animation: fadeInOutLoading 3s infinite alternate forwards 5.5s;
-            margin-top: 40px;
-            padding-bottom: 20px;
+            opacity: 0; /* Inicialmente invisible */
+            animation: fadeInOutLoading 3s infinite alternate forwards 5.5s; /* Animación de fade in/out después de las figuras */
+            margin-top: 40px; /* Margen superior para colocarlo debajo del cuadrado */
+            padding-bottom: 20px; /* Pequeño padding inferior para darle espacio */
         }
 
+        /* Keyframes para la animación del texto de carga */
         @keyframes fadeInOutLoading {
             0% { opacity: 0; }
             50% { opacity: 1; }
             100% { opacity: 0; }
         }
 
+
         /* --- MEDIA QUERIES PARA AJUSTES EN PANTALLAS PEQUEÑAS (CELULAR) --- */
+        @media (max-width: 768px) {
+            .game-title-be-safe {
+                font-size: 2.5em;
+                letter-spacing: 2px;
+            }
+            #animationContainer {
+                margin-top: 30px; /* Ajuste para pantallas más pequeñas */
+                height: 40%;
+            }
+            .animated-shape {
+                font-size: 20vw; /* Ajuste el tamaño de las figuras para pantallas más pequeñas */
+            }
+            .loading-animation-text {
+                font-size: 1.2em;
+                margin-top: 30px;
+            }
+        }
+
         @media (max-width: 600px) {
             h1 {
-                font-size: 2.2em; /* Título "Bienvenido al Desafío" más pequeño */
+                font-size: 2.2em; /* Título "Bienvenido al Desafío" más pequeño, como solicitaste */
                 margin-bottom: 20px;
             }
 
@@ -405,7 +439,7 @@
                 margin-bottom: 5px;
             }
 
-            .input-group input {
+            .input-group input[type="text"] {
                 padding: 12px 10px;
                 font-size: 1em;
             }
@@ -448,7 +482,7 @@
             }
 
             .game-title-be-safe {
-                font-size: 2em;
+                font-size: 2em; /* Se mantiene este tamaño si la pantalla es <= 600px */
                 letter-spacing: 2px;
                 margin-bottom: 10px;
             }
@@ -458,31 +492,6 @@
                 height: 30%;
             }
 
-            .animated-shape {
-                font-size: 90px; /* Tamaño de figuras restaurado a 90px */
-            }
-
-            .animated-shape.triangle {
-                font-size: 90px; /* Tamaño de figuras restaurado a 90px */
-            }
-
-            /* Ajustes en los keyframes para mantener la posición con el nuevo tamaño */
-            @keyframes circleCentralize {
-                100% { transform: translateY(-120px); } /* Ajuste a la posición original */
-            }
-
-            @keyframes squareCentralize {
-                100% { transform: translateY(120px); } /* Ajuste a la posición original */
-            }
-
-            @keyframes circleToHorizontal {
-                100% { transform: translate(-150px, 0); } /* Ajuste a la posición original */
-            }
-
-            @keyframes squareToHorizontal {
-                100% { transform: translate(150px, -5px); } /* Ajuste a la posición original */
-            }
-
             .loading-animation-text {
                 font-size: 1.2em;
                 margin-top: 20px;
@@ -490,7 +499,13 @@
         }
 
         /* Ajustes para pantallas aún más pequeñas si es necesario */
-        @media (max-width: 400px) {
+        @media (max-width: 480px) { /* Este media query ya lo tenía tu archivo, lo mantengo para los .animated-shape */
+            .animated-shape {
+                font-size: 25vw; /* Ajuste el tamaño de las figuras para móviles muy pequeños */
+            }
+        }
+
+        @media (max-width: 400px) { /* Este es el media query para pantallas más pequeñas de 400px */
             .radio-options-container {
                 flex-direction: column;
                 align-items: center;
@@ -518,7 +533,7 @@
             </div>
 
             <div id="loadingText" class="loading-animation-text">
-                Iniciando con animación...
+                Iniciando...
             </div>
         </div>
 
@@ -526,7 +541,7 @@
             <h1><span class="game-icon">🎮</span> Bienvenido al Desafío</h1>
             <h2>Ingresa tus datos</h2>
 
-            <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlWFYwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec">
+           <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec">
                 <div class="input-group">
                     <label for="username">Ingresa tu nombre</label>
                     <input type="text" id="username" name="nombre" placeholder="Tu nombre de jugador" maxlength="20" required>
@@ -565,6 +580,7 @@
         const formContent = document.getElementById('formContent');
         const beSafeTitle = document.getElementById('beSafeTitle');
 
+        // Función para validar el formulario
         function validateForm() {
             let isValid = true;
 
@@ -589,9 +605,11 @@
                 cityError.style.display = 'none';
             }
 
+            // El botón de inicio ahora solo se habilita si el formulario es válido
             startButton.disabled = !isValid;
         }
 
+        // Event listeners para la validación
         usernameInput.addEventListener('input', validateForm);
         cityButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -607,6 +625,7 @@
             });
         });
 
+        // Manejador del envío del formulario modificado para enviar datos a Google Sheets
         dataForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
@@ -624,6 +643,7 @@
                 }
             });
 
+            // Crear FormData para enviar los datos
             const formData = new FormData();
             formData.append('nombre', username);
             formData.append('localidad', selectedCity);
@@ -631,6 +651,7 @@
             formData.append('timeTaken', 0);
 
             try {
+                // Enviar datos a Google Apps Script
                 const response = await fetch(dataForm.action, {
                     method: 'POST',
                     body: formData
@@ -638,29 +659,37 @@
 
                 if (response.ok) {
                     console.log('Datos enviados a Google Sheets con éxito!');
+                    // Redirigir a la primera pregunta después de enviar los datos
                     window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
                 } else {
                     console.error('Error al enviar datos a Google Sheets:', response.statusText);
+                    // Aunque falle el envío, permitir continuar con el juego
                     window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
                 }
             } catch (error) {
                 console.error('Error de red o al enviar datos:', error);
+                // Aunque falle el envío, permitir continuar con el juego
                 window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
             }
         });
 
+        // --- Lógica de la secuencia de animación inicial y aparición del formulario ---
         document.addEventListener('DOMContentLoaded', () => {
+            // Inicialmente, el formulario estará oculto y deshabilitado para interacciones
             formContent.classList.remove('active');
-            validateForm();
+            validateForm(); // Asegura que el botón esté deshabilitado al inicio
 
+            // Escuchamos el evento `animationend` del contenedor principal de la introducción
             introAnimationWrapper.addEventListener('animationend', (event) => {
+                // Aseguramos que solo reaccionamos a la animación principal de fade out
                 if (event.animationName === 'introFadeOut') {
-                    introAnimationWrapper.style.display = 'none';
-                    formContent.classList.add('active');
-                    validateForm();
+                    introAnimationWrapper.style.display = 'none'; // Oculta el contenedor de animación completamente
+                    formContent.classList.add('active'); // Muestra el contenido del formulario
+                    validateForm(); // Re-valida para habilitar el botón si el formulario es válido
                 }
             });
         });
     </script>
 </body>
 </html>
+
