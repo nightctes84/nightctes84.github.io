@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desafío Trivia: Juego del Calamar</title>
+    <title>Desafío Squidgame10</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #2c3e50; /* Azul/gris oscuro, inspirado en la estética de Squid Game */
-            color: #ecf0f1; /* Texto gris claro */
+            background-color: #0d1a26; /* Fondo muy oscuro, casi negro */
+            color: #ecf0f1; /* Texto claro */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,20 +21,21 @@
         }
 
         .container {
-            background-color: #34495e; /* Azul/gris oscuro ligeramente más claro */
+            background-color: #1a2a3a; /* Contenedor oscuro con un ligero matiz */
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            border-radius: 15px; /* Bordes más redondeados */
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
             max-width: 600px;
             width: 100%;
-            position: relative; /* Para posicionar el temporizador */
-            display: flex; /* Añadido para Flexbox */
-            flex-direction: column; /* Para apilar los elementos verticalmente */
+            display: flex;
+            flex-direction: column;
             align-items: center; /* Centrar horizontalmente los elementos hijos */
+            border: 2px solid #e74c3c; /* Borde rojo distintivo */
         }
 
         h1 {
             color: #e74c3c; /* Rojo, como los uniformes de los guardias o la sangre en Squid Game */
+            margin-top: 30px;
             margin-bottom: 30px;
             font-size: 2.5em;
         }
@@ -42,13 +43,16 @@
         .timer {
             font-size: 1.8em;
             color: #f1c40f; /* Amarillo/Dorado, como el dinero del premio */
-            margin-bottom: 20px;
-            position: absolute;
-            top: 20px;
-            right: 20px;
+            margin-bottom: 5px;
             background-color: rgba(0, 0, 0, 0.3);
             padding: 10px 15px;
             border-radius: 5px;
+        }
+
+        .welcome-message {
+            font-size: 1.5em;
+            color: #f1c40f;
+            margin-bottom: 20px;
         }
 
         p {
@@ -58,7 +62,7 @@
 
         .options-container {
             display: flex;
-            justify-content: center; /* Centrar los botones de opción */
+            justify-content: center;
             flex-wrap: wrap;
             gap: 15px;
             margin-bottom: 30px;
@@ -67,29 +71,34 @@
         .option-button {
             background-color: #2980b9; /* Azul */
             color: white;
-            padding: 15px 30px;
+            padding: 15px 20px;
             border: none;
             border-radius: 8px;
             font-size: 1.2em;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            min-width: 120px;
-            text-align: center; /* Centrar el texto en el botón */
+            min-width: 250px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-sizing: border-box;
         }
 
         .option-button:hover {
-            background-color: #3498db; /* Azul más claro al pasar el ratón */
+            background-color: #3498db;
             transform: translateY(-3px);
         }
 
         .option-button.selected {
-            background-color: #e74c3c; /* Rojo cuando está seleccionado */
+            background-color: #e74c3c;
             border: 2px solid #c0392b;
             transform: scale(1.05);
         }
 
         #submitButton {
-            background-color: #27ae60; /* Verde para enviar */
+            background-color: #27ae60;
             color: white;
             padding: 15px 40px;
             border: none;
@@ -101,16 +110,16 @@
         }
 
         #submitButton:hover {
-            background-color: #2ecc71; /* Verde más claro al pasar el ratón */
+            background-color: #2ecc71;
         }
 
         #submitButton:disabled {
-            background-color: #7f8c8d; /* Gris cuando está deshabilitado */
+            background-color: #7f8c8d;
             cursor: not-allowed;
         }
 
         #nextButton {
-            background-color: #f39c12; /* Naranja para siguiente */
+            background-color: #f39c12;
             color: white;
             padding: 15px 40px;
             border: none;
@@ -119,13 +128,13 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
             margin-top: 20px;
-            display: none; /* Oculto inicialmente */
-            margin-left: auto; /* Centrar el botón */
-            margin-right: auto; /* Centrar el botón */
+            display: none;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         #nextButton:hover {
-            background-color: #e67e22; /* Naranja más oscuro al pasar el ratón */
+            background-color: #e67e22;
         }
 
         .message {
@@ -135,29 +144,31 @@
         }
 
         .incorrect-message {
-            color: #e74c3c; /* Rojo para incorrecto */
+            color: #e74c3c;
         }
 
         .timeout-message {
-            color: #e74c3c; /* Rojo para tiempo agotado */
+            color: #e74c3c;
         }
 
         .correct-message {
-            color: #2ecc71; /* Verde para correcto */
+            color: #2ecc71;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="timer" id="timerDisplay">02:00</div>
-        <h1>¡Desafío del Juego del Calamar! 🦑</h1>
-        <p>¿Qué parte del cuerpo se utiliza para hacer compresiones durante RCP en un adulto?</p>
+        <div class="timer" id="timerDisplay">01:00</div>
+        <div class="welcome-message" id="welcomeMessage"></div>
+
+        <h1>¡DESAFÍO SQUIDGAME 10!</h1>
+        <p>Si estás realizando una tarea en el domicilio del cliente, y observas que no funciona tu detector de tensión, ¿Qué haces?</p>
 
         <div class="options-container">
-            <button class="option-button" data-value="A">Una sola mano en el abdomen</button>
-            <button class="option-button" data-value="B">Talón de las dos manos en el centro del pecho</button>
-            <button class="option-button" data-value="C">Dedos sobre el cuello</button>
-            <button class="option-button" data-value="D">Palma sobre el estómago</button>
+            <button class="option-button" data-value="dorso_mano">Comprobas con el dorso de la mano para no quedar pegado.</button>
+            <button class="option-button" data-value="destornillador">Comprobas con un destornillador buscapolo</button>
+            <button class="option-button" data-value="no_tarea">No realizas la tarea hasta no tener el detector de tensión en condiciones</button>
+            <button class="option-button" data-value="realizar_igualmente">Realizas la tarea igualmente, ya que por lo general no suele haber tensión</button>
         </div>
 
         <button id="submitButton">Responder</button>
@@ -172,12 +183,51 @@
         const submitButton = document.getElementById('submitButton');
         const nextButton = document.getElementById('nextButton');
         const feedbackMessage = document.getElementById('feedbackMessage');
-        const correctAnwser = 'B';
-        const totalTime = 120; // 2 minutos en segundos
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const correctAnwser = 'no_tarea';
+        const totalTime = 60;
         let timeLeft = totalTime;
         let timerInterval;
         let selectedOption = null;
         let gameEnded = false;
+        let userName = '';
+        let userCity = '';
+        const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec';
+
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+
+        userName = getUrlParameter('user');
+        userCity = getUrlParameter('city');
+        if (userName) {
+            welcomeMessage.textContent = `¡Bienvenido, ${userName}!`;
+        }
+
+        async function sendGameData(name, city, gamePage, timeTaken) {
+            const formData = new FormData();
+            formData.append('nombre', name);
+            formData.append('localidad', city);
+            formData.append('gamePage', gamePage);
+            formData.append('timeTaken', timeTaken);
+
+            try {
+                const response = await fetch(googleAppsScriptURL, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    console.log(`¡Datos del juego para ${gamePage} enviados a Google Sheets correctamente!`);
+                } else {
+                    console.error(`Error al enviar datos del juego para ${gamePage} a Google Sheets:`, response.statusText);
+                }
+            } catch (error) {
+                console.error(`Error de red o problema al enviar datos del juego para ${gamePage}:`, error);
+            }
+        }
 
         function updateTimer() {
             const minutes = Math.floor(timeLeft / 60);
@@ -188,6 +238,7 @@
                 clearInterval(timerInterval);
                 if (!gameEnded) {
                     endGame("¡Se acabó el tiempo, queda eliminado! 💀", false);
+                    sendGameData(userName, userCity, 'Squidgame10', 0);
                 }
             } else {
                 timeLeft--;
@@ -198,19 +249,25 @@
             gameEnded = true;
             clearInterval(timerInterval);
             feedbackMessage.textContent = message;
+            submitButton.style.display = 'none';
+
             if (isCorrect) {
                 feedbackMessage.classList.add('correct-message');
                 feedbackMessage.classList.remove('incorrect-message');
+                sendGameData(userName, userCity, 'Squidgame10', totalTime - timeLeft);
+                nextButton.style.display = 'block';
+                setTimeout(() => {
+                    window.location.href = `Squidgame12.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
+                }, 3000);
             } else {
                 feedbackMessage.classList.add('incorrect-message');
                 feedbackMessage.classList.remove('correct-message');
+                if (timeLeft > 0) {
+                    sendGameData(userName, userCity, 'Squidgame10', totalTime - timeLeft);
+                }
+                nextButton.style.display = 'none';
             }
-            submitButton.style.display = 'none';
             optionButtons.forEach(button => button.disabled = true);
-            if (isCorrect) {
-                nextButton.style.display = 'block';
-                nextButton.onclick = () => window.location.href = 'Squidgame11.html';
-            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -234,13 +291,11 @@
                 alert("Por favor, selecciona una opción antes de responder.");
                 return;
             }
-
             if (selectedOption === correctAnwser) {
                 endGame("¡Respuesta correcta! ¡Felicidades, sigues en el juego! 🎉", true);
             } else {
                 endGame("¡Respuesta incorrecta, queda eliminado! ❌", false);
             }
-            submitButton.disabled = true;
         });
     </script>
 </body>
