@@ -27,7 +27,7 @@
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
             max-width: 600px;
             width: 100%;
-            position: relative; /* Para posicionar el temporizador */
+            /* position: relative; Eliminado para que el temporizador se centre con el flexbox */
             display: flex; /* Añadido para Flexbox */
             flex-direction: column; /* Para apilar los elementos verticalmente */
             align-items: center; /* Centrar horizontalmente los elementos hijos */
@@ -36,6 +36,7 @@
 
         h1 {
             color: #e74c3c; /* Rojo, como los uniformes de los guardias o la sangre en Squid Game */
+            margin-top: 30px; /* Ajuste para dar espacio después del nombre de usuario */
             margin-bottom: 30px;
             font-size: 2.5em;
         }
@@ -43,11 +44,17 @@
         .timer {
             font-size: 1.8em;
             color: #f1c40f; /* Amarillo/Dorado, como el dinero del premio */
-            margin-bottom: 10px; /* Reducido para acercarlo al nombre de usuario */
+            margin-bottom: 5px; /* Reducido para acercarlo al nombre de usuario */
             background-color: rgba(0, 0, 0, 0.3);
             padding: 10px 15px;
             border-radius: 5px;
-            align-self: center; /* Centrar el timer dentro del flex container */
+            /* align-self: center; No es estrictamente necesario si el contenedor ya es align-items: center */
+        }
+
+        .welcome-message {
+            font-size: 1.5em;
+            color: #f1c40f;
+            margin-bottom: 20px; /* Ajustado para separar de la pregunta */
         }
 
         p {
@@ -78,6 +85,7 @@
             align-items: center;
             justify-content: center;
             text-align: center; /* Asegurar que el texto esté centrado si hay varias líneas */
+            box-sizing: border-box; /* Incluir padding y border en el tamaño total */
         }
 
         .option-button:hover {
@@ -147,11 +155,6 @@
 
         .correct-message {
             color: #2ecc71; /* Verde para correcto */
-        }
-        .welcome-message {
-            font-size: 1.5em;
-            color: #f1c40f;
-            margin-bottom: 20px; /* Ajustado para separar de la pregunta */
         }
     </style>
 </head>
