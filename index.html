@@ -408,6 +408,10 @@
             .animated-shape {
                 font-size: 20vw; /* Ajuste el tamaño de las figuras para pantallas más pequeñas */
             }
+            /* **Añadido para asegurar que el triángulo escale igual** */
+            .animated-shape.triangle {
+                font-size: 20vw;
+            }
             .loading-animation-text {
                 font-size: 1.2em;
                 margin-top: 30px;
@@ -492,6 +496,14 @@
                 height: 30%;
             }
 
+            /* **Añadido para asegurar que el triángulo escale igual** */
+            .animated-shape {
+                font-size: 25vw; /* Ajuste el tamaño de las figuras para móviles muy pequeños */
+            }
+            .animated-shape.triangle {
+                font-size: 25vw;
+            }
+
             .loading-animation-text {
                 font-size: 1.2em;
                 margin-top: 20px;
@@ -502,6 +514,9 @@
         @media (max-width: 480px) { /* Este media query ya lo tenía tu archivo, lo mantengo para los .animated-shape */
             .animated-shape {
                 font-size: 25vw; /* Ajuste el tamaño de las figuras para móviles muy pequeños */
+            }
+            .animated-shape.triangle { /* **Añadido para asegurar que el triángulo escale igual** */
+                font-size: 25vw;
             }
         }
 
@@ -533,7 +548,7 @@
             </div>
 
             <div id="loadingText" class="loading-animation-text">
-                Iniciando...
+                Iniciando con animación...
             </div>
         </div>
 
@@ -691,5 +706,4 @@
         });
     </script>
 </body>
-</html>
-
+</html>  
