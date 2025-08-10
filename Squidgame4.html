@@ -254,7 +254,7 @@
             if (isCorrect) {
                 feedbackMessage.classList.add('correct-message');
                 feedbackMessage.classList.remove('incorrect-message');
-                sendGameData(userName, userCity, 'Squidgame4', totalTime - timeLeft);
+                sendGameData(userName, userCity, '4', totalTime - timeLeft);
                 nextButton.style.display = 'block';
                 setTimeout(() => {
                     window.location.href = `Squidgame6.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
@@ -263,7 +263,7 @@
                 feedbackMessage.classList.add('incorrect-message');
                 feedbackMessage.classList.remove('correct-message');
                 if (timeLeft > 0) {
-                    sendGameData(userName, userCity, 'Squidgame4', totalTime - timeLeft);
+                    sendGameData(userName, userCity, '4', totalTime - timeLeft);
                 }
                 nextButton.style.display = 'none';
             }
@@ -300,3 +300,4 @@
     </script>
 </body>
 </html>
+
