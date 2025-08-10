@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desafío Squidgame10</title>
+    <title>Desafío Squidgame12</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -161,14 +161,14 @@
         <div class="timer" id="timerDisplay">01:00</div>
         <div class="welcome-message" id="welcomeMessage"></div>
 
-        <h1>¡DESAFÍO SQUIDGAME 10!</h1>
-        <p>Si estás realizando una tarea en el domicilio del cliente, y observas que no funciona tu detector de tensión, ¿Qué haces?</p>
+        <h1>¡DESAFÍO SQUIDGAME 12!</h1>
+        <p>¿Cuál sería la correcta inclinación de la escalera de mano que adoptarías, considerando la relación base/altura para garantizar su estabilidad?</p>
 
         <div class="options-container">
-            <button class="option-button" data-value="dorso_mano">Comprobas con el dorso de la mano para no quedar pegado.</button>
-            <button class="option-button" data-value="destornillador">Comprobas con un destornillador buscapolo</button>
-            <button class="option-button" data-value="no_tarea">No realizas la tarea hasta no tener el detector de tensión en condiciones</button>
-            <button class="option-button" data-value="realizar_igualmente">Realizas la tarea igualmente, ya que por lo general no suele haber tensión</button>
+            <button class="option-button" data-value="2/3">2/3</button>
+            <button class="option-button" data-value="1/3">1/3</button>
+            <button class="option-button" data-value="1/4">1/4</button>
+            <button class="option-button" data-value="1/5">1/5</button>
         </div>
 
         <button id="submitButton">Responder</button>
@@ -184,7 +184,7 @@
         const nextButton = document.getElementById('nextButton');
         const feedbackMessage = document.getElementById('feedbackMessage');
         const welcomeMessage = document.getElementById('welcomeMessage');
-        const correctAnwser = 'no_tarea';
+        const correctAnwser = '1/4';
         const totalTime = 60;
         let timeLeft = totalTime;
         let timerInterval;
@@ -238,7 +238,7 @@
                 clearInterval(timerInterval);
                 if (!gameEnded) {
                     endGame("¡Se acabó el tiempo, queda eliminado! 💀", false);
-                    sendGameData(userName, userCity, 'Squidgame10', 0);
+                    sendGameData(userName, userCity, 'Squidgame12', 0);
                 }
             } else {
                 timeLeft--;
@@ -254,317 +254,16 @@
             if (isCorrect) {
                 feedbackMessage.classList.add('correct-message');
                 feedbackMessage.classList.remove('incorrect-message');
-                sendGameData(userName, userCity, 'Squidgame10', totalTime - timeLeft);
+                sendGameData(userName, userCity, 'Squidgame12', totalTime - timeLeft);
                 nextButton.style.display = 'block';
                 setTimeout(() => {
-                    window.location.href = `Squidgame12.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
+                    window.location.href = `Squidgame14.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
                 }, 3000);
             } else {
                 feedbackMessage.classList.add('incorrect-message');
                 feedbackMessage.classList.remove('correct-message');
                 if (timeLeft > 0) {
-                    sendGameData(userName, userCity, 'Squidgame10', totalTime - timeLeft);
-                }
-                nextButton.style.display = 'none';
-            }
-            optionButtons.forEach(button => button.disabled = true);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            timerInterval = setInterval(updateTimer, 1000);
-            submitButton.disabled = true;
-        });
-
-        optionButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                if (gameEnded) return;
-                optionButtons.forEach(btn => btn.classList.remove('selected'));
-                button.classList.add('selected');
-                selectedOption = button.dataset.value;
-                submitButton.disabled = false;
-            });
-        });
-
-        submitButton.addEventListener('click', () => {
-            if (gameEnded) return;
-            if (selectedOption === null) {
-                alert("Por favor, selecciona una opción antes de responder.");
-                return;
-            }
-            if (selectedOption === correctAnwser) {
-                endGame("¡Respuesta correcta! ¡Felicidades, sigues en el juego! 🎉", true);
-            } else {
-                endGame("¡Respuesta incorrecta, queda eliminado! ❌", false);
-            }
-        });
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desafío Squidgame10</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #0d1a26; /* Fondo muy oscuro, casi negro */
-            color: #ecf0f1; /* Texto claro */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            flex-direction: column;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .container {
-            background-color: #1a2a3a; /* Contenedor oscuro con un ligero matiz */
-            padding: 40px;
-            border-radius: 15px; /* Bordes más redondeados */
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
-            max-width: 600px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Centrar horizontalmente los elementos hijos */
-            border: 2px solid #e74c3c; /* Borde rojo distintivo */
-        }
-
-        h1 {
-            color: #e74c3c; /* Rojo, como los uniformes de los guardias o la sangre en Squid Game */
-            margin-top: 30px;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-        }
-
-        .timer {
-            font-size: 1.8em;
-            color: #f1c40f; /* Amarillo/Dorado, como el dinero del premio */
-            margin-bottom: 5px;
-            background-color: rgba(0, 0, 0, 0.3);
-            padding: 10px 15px;
-            border-radius: 5px;
-        }
-
-        .welcome-message {
-            font-size: 1.5em;
-            color: #f1c40f;
-            margin-bottom: 20px;
-        }
-
-        p {
-            font-size: 1.4em;
-            margin-bottom: 30px;
-        }
-
-        .options-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .option-button {
-            background-color: #2980b9; /* Azul */
-            color: white;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            min-width: 250px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .option-button:hover {
-            background-color: #3498db;
-            transform: translateY(-3px);
-        }
-
-        .option-button.selected {
-            background-color: #e74c3c;
-            border: 2px solid #c0392b;
-            transform: scale(1.05);
-        }
-
-        #submitButton {
-            background-color: #27ae60;
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.5em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-        }
-
-        #submitButton:hover {
-            background-color: #2ecc71;
-        }
-
-        #submitButton:disabled {
-            background-color: #7f8c8d;
-            cursor: not-allowed;
-        }
-
-        #nextButton {
-            background-color: #f39c12;
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.5em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-            display: none;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        #nextButton:hover {
-            background-color: #e67e22;
-        }
-
-        .message {
-            font-size: 1.8em;
-            margin-top: 30px;
-            font-weight: bold;
-        }
-
-        .incorrect-message {
-            color: #e74c3c;
-        }
-
-        .timeout-message {
-            color: #e74c3c;
-        }
-
-        .correct-message {
-            color: #2ecc71;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="timer" id="timerDisplay">01:00</div>
-        <div class="welcome-message" id="welcomeMessage"></div>
-
-        <h1>¡DESAFÍO SQUIDGAME 10!</h1>
-        <p>Si estás realizando una tarea en el domicilio del cliente, y observas que no funciona tu detector de tensión, ¿Qué haces?</p>
-
-        <div class="options-container">
-            <button class="option-button" data-value="dorso_mano">Comprobas con el dorso de la mano para no quedar pegado.</button>
-            <button class="option-button" data-value="destornillador">Comprobas con un destornillador buscapolo</button>
-            <button class="option-button" data-value="no_tarea">No realizas la tarea hasta no tener el detector de tensión en condiciones</button>
-            <button class="option-button" data-value="realizar_igualmente">Realizas la tarea igualmente, ya que por lo general no suele haber tensión</button>
-        </div>
-
-        <button id="submitButton">Responder</button>
-        <button id="nextButton">Siguiente</button>
-
-        <div id="feedbackMessage" class="message"></div>
-    </div>
-
-    <script>
-        const timerDisplay = document.getElementById('timerDisplay');
-        const optionButtons = document.querySelectorAll('.option-button');
-        const submitButton = document.getElementById('submitButton');
-        const nextButton = document.getElementById('nextButton');
-        const feedbackMessage = document.getElementById('feedbackMessage');
-        const welcomeMessage = document.getElementById('welcomeMessage');
-        const correctAnwser = 'no_tarea';
-        const totalTime = 60;
-        let timeLeft = totalTime;
-        let timerInterval;
-        let selectedOption = null;
-        let gameEnded = false;
-        let userName = '';
-        let userCity = '';
-        const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec';
-
-        function getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-        };
-
-        userName = getUrlParameter('user');
-        userCity = getUrlParameter('city');
-        if (userName) {
-            welcomeMessage.textContent = `¡Bienvenido, ${userName}!`;
-        }
-
-        async function sendGameData(name, city, gamePage, timeTaken) {
-            const formData = new FormData();
-            formData.append('nombre', name);
-            formData.append('localidad', city);
-            formData.append('gamePage', gamePage);
-            formData.append('timeTaken', timeTaken);
-
-            try {
-                const response = await fetch(googleAppsScriptURL, {
-                    method: 'POST',
-                    body: formData
-                });
-                if (response.ok) {
-                    console.log(`¡Datos del juego para ${gamePage} enviados a Google Sheets correctamente!`);
-                } else {
-                    console.error(`Error al enviar datos del juego para ${gamePage} a Google Sheets:`, response.statusText);
-                }
-            } catch (error) {
-                console.error(`Error de red o problema al enviar datos del juego para ${gamePage}:`, error);
-            }
-        }
-
-        function updateTimer() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                if (!gameEnded) {
-                    endGame("¡Se acabó el tiempo, queda eliminado! 💀", false);
-                    sendGameData(userName, userCity, 'Squidgame10', 0);
-                }
-            } else {
-                timeLeft--;
-            }
-        }
-
-        function endGame(message, isCorrect = false) {
-            gameEnded = true;
-            clearInterval(timerInterval);
-            feedbackMessage.textContent = message;
-            submitButton.style.display = 'none';
-
-            if (isCorrect) {
-                feedbackMessage.classList.add('correct-message');
-                feedbackMessage.classList.remove('incorrect-message');
-                sendGameData(userName, userCity, 'Squidgame10', totalTime - timeLeft);
-                nextButton.style.display = 'block';
-                setTimeout(() => {
-                    window.location.href = `Squidgame12.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
-                }, 3000);
-            } else {
-                feedbackMessage.classList.add('incorrect-message');
-                feedbackMessage.classList.remove('correct-message');
-                if (timeLeft > 0) {
-                    sendGameData(userName, userCity, 'Squidgame10', totalTime - timeLeft);
+                    sendGameData(userName, userCity, 'Squidgame12', totalTime - timeLeft);
                 }
                 nextButton.style.display = 'none';
             }
