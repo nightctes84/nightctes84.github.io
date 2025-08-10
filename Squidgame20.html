@@ -1,303 +1,313 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desafío Squidgame20</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #0d1a26; /* Fondo muy oscuro, casi negro */
-            color: #ecf0f1; /* Texto claro */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            flex-direction: column;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafío Squidgame20</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0d1a26; /* Fondo muy oscuro, casi negro */
+            color: #ecf0f1; /* Texto claro */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
-        .container {
-            background-color: #1a2a3a; /* Contenedor oscuro con un ligero matiz */
-            padding: 40px;
-            border-radius: 15px; /* Bordes más redondeados */
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
-            max-width: 600px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Centrar horizontalmente los elementos hijos */
-            border: 2px solid #e74c3c; /* Borde rojo distintivo */
-        }
+        .container {
+            background-color: #1a2a3a; /* Contenedor oscuro con un ligero matiz */
+            padding: 40px;
+            border-radius: 15px; /* Bordes más redondeados */
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
+            max-width: 600px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centrar horizontalmente los elementos hijos */
+            border: 2px solid #e74c3c; /* Borde rojo distintivo */
+        }
 
-        h1 {
-            color: #e74c3c; /* Rojo, como los uniformes de los guardias o la sangre en Squid Game */
-            margin-top: 30px;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-        }
+        h1 {
+            color: #e74c3c; /* Rojo, como los uniformes de los guardias o la sangre en Squid Game */
+            margin-top: 30px;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
 
-        .timer {
-            font-size: 1.8em;
-            color: #f1c40f; /* Amarillo/Dorado, como el dinero del premio */
-            margin-bottom: 5px;
-            background-color: rgba(0, 0, 0, 0.3);
-            padding: 10px 15px;
-            border-radius: 5px;
-        }
+        .timer {
+            font-size: 1.8em;
+            color: #f1c40f; /* Amarillo/Dorado, como el dinero del premio */
+            margin-bottom: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
 
-        .welcome-message {
-            font-size: 1.5em;
-            color: #f1c40f;
-            margin-bottom: 20px;
-        }
+        .welcome-message {
+            font-size: 1.5em;
+            color: #f1c40f;
+            margin-bottom: 20px;
+        }
 
-        p {
-            font-size: 1.4em;
-            margin-bottom: 30px;
-        }
+        p {
+            font-size: 1.4em;
+            margin-bottom: 30px;
+        }
 
-        .options-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
+        .options-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
 
-        .option-button {
-            background-color: #2980b9; /* Azul */
-            color: white;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            min-width: 250px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            box-sizing: border-box;
-        }
+        .option-button {
+            background-color: #2980b9; /* Azul */
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            min-width: 250px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-sizing: border-box;
+        }
 
-        .option-button:hover {
-            background-color: #3498db;
-            transform: translateY(-3px);
-        }
+        .option-button:hover {
+            background-color: #3498db;
+            transform: translateY(-3px);
+        }
 
-        .option-button.selected {
-            background-color: #e74c3c;
-            border: 2px solid #c0392b;
-            transform: scale(1.05);
-        }
+        .option-button.selected {
+            background-color: #e74c3c;
+            border: 2px solid #c0392b;
+            transform: scale(1.05);
+        }
 
-        #submitButton {
-            background-color: #27ae60;
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.5em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-        }
+        #submitButton {
+            background-color: #27ae60;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
 
-        #submitButton:hover {
-            background-color: #2ecc71;
-        }
+        #submitButton:hover {
+            background-color: #2ecc71;
+        }
 
-        #submitButton:disabled {
-            background-color: #7f8c8d;
-            cursor: not-allowed;
-        }
+        #submitButton:disabled {
+            background-color: #7f8c8d;
+            cursor: not-allowed;
+        }
 
-        #nextButton {
-            background-color: #f39c12;
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.5em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-            display: none;
-            margin-left: auto;
-            margin-right: auto;
-        }
+        #nextButton {
+            background-color: #f39c12;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            display: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-        #nextButton:hover {
-            background-color: #e67e22;
-        }
+        #nextButton:hover {
+            background-color: #e67e22;
+        }
 
-        .message {
-            font-size: 1.8em;
-            margin-top: 30px;
-            font-weight: bold;
-        }
+        .message {
+            font-size: 1.8em;
+            margin-top: 30px;
+            font-weight: bold;
+        }
 
-        .incorrect-message {
-            color: #e74c3c;
-        }
+        .incorrect-message {
+            color: #e74c3c;
+        }
 
-        .timeout-message {
-            color: #e74c3c;
-        }
+        .timeout-message {
+            color: #e74c3c;
+        }
 
-        .correct-message {
-            color: #2ecc71;
-        }
-    </style>
+        .correct-message {
+            color: #2ecc71;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="timer" id="timerDisplay">01:00</div>
-        <div class="welcome-message" id="welcomeMessage"></div>
+    <div class="container">
+        <div class="timer" id="timerDisplay">01:00</div>
+        <div class="welcome-message" id="welcomeMessage"></div>
 
-        <h1>¡DESAFÍO SQUIDGAME 20!</h1>
-        <p>Te encontrás en el domicilio de un cliente y necesitas retirar un módem ubicado en la parte superior de un armario al que no llegas sin ayuda ¿Cómo resuelves la tarea para bajar el modem?</p>
+        <h1>¡DESAFÍO SQUIDGAME 20!</h1>
+        <p>Te encontrás en el domicilio de un cliente y necesitas retirar un módem ubicado en la parte superior de un armario al que no llegas sin ayuda ¿Cómo resuelves la tarea para bajar el modem?</p>
 
-        <div class="options-container">
-            <button class="option-button" data-value="silla">Para ahorrar tiempo utilizas una silla del domicilio que te parece estable.</button>
-            <button class="option-button" data-value="escalera_cliente">El cliente te proporciona una escalera de aluminio para realizar la tarea.</button>
-            <button class="option-button" data-value="escalera_prfv">Bajas de la unidad la escalera corta de PRFV</button>
-            <button class="option-button" data-value="mueble">Improvisas un acceso subiéndote al mueble si no hay otra opción.</button>
-        </div>
+        <div class="options-container">
+            <button class="option-button" data-value="silla">Para ahorrar tiempo utilizas una silla del domicilio que te parece estable.</button>
+            <button class="option-button" data-value="escalera_cliente">El cliente te proporciona una escalera de aluminio para realizar la tarea.</button>
+            <button class="option-button" data-value="escalera_prfv">Bajas de la unidad la escalera corta de PRFV</button>
+            <button class="option-button" data-value="mueble">Improvisas un acceso subiéndote al mueble si no hay otra opción.</button>
+        </div>
 
-        <button id="submitButton">Responder</button>
-        <button id="nextButton">Siguiente</button>
+        <button id="submitButton">Responder</button>
+        <button id="nextButton">Siguiente</button>
 
-        <div id="feedbackMessage" class="message"></div>
-    </div>
+        <div id="feedbackMessage" class="message"></div>
+    </div>
 
-    <script>
-        const timerDisplay = document.getElementById('timerDisplay');
-        const optionButtons = document.querySelectorAll('.option-button');
-        const submitButton = document.getElementById('submitButton');
-        const nextButton = document.getElementById('nextButton');
-        const feedbackMessage = document.getElementById('feedbackMessage');
-        const welcomeMessage = document.getElementById('welcomeMessage');
-        const correctAnwser = 'escalera_prfv';
-        const totalTime = 60;
-        let timeLeft = totalTime;
-        let timerInterval;
-        let selectedOption = null;
-        let gameEnded = false;
-        let userName = '';
-        let userCity = '';
-        const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec';
+    <script>
+        const timerDisplay = document.getElementById('timerDisplay');
+        const optionButtons = document.querySelectorAll('.option-button');
+        const submitButton = document.getElementById('submitButton');
+        const nextButton = document.getElementById('nextButton');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const correctAnwser = 'escalera_prfv';
+        const totalTime = 60;
+        let timeLeft = totalTime;
+        let timerInterval;
+        let selectedOption = null;
+        let gameEnded = false;
+        let userName = '';
+        let userCity = '';
+        const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec';
 
-        function getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-        };
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
 
-        userName = getUrlParameter('user');
-        userCity = getUrlParameter('city');
-        if (userName) {
-            welcomeMessage.textContent = `¡Bienvenido, ${userName}!`;
-        }
+        userName = getUrlParameter('user');
+        userCity = getUrlParameter('city');
+        if (userName) {
+            welcomeMessage.textContent = `¡Bienvenido, ${userName}!`;
+        }
 
-        async function sendGameData(name, city, gamePage, timeTaken) {
-            const formData = new FormData();
-            formData.append('nombre', name);
-            formData.append('localidad', city);
-            formData.append('gamePage', gamePage);
-            formData.append('timeTaken', timeTaken);
+        async function sendGameData(name, city, gamePage, timeTaken) {
+            const formData = new FormData();
+            formData.append('nombre', name);
+            formData.append('localidad', city);
+            formData.append('gamePage', gamePage);
+            formData.append('timeTaken', timeTaken);
 
-            try {
-                const response = await fetch(googleAppsScriptURL, {
-                    method: 'POST',
-                    body: formData
-                });
-                if (response.ok) {
-                    console.log(`¡Datos del juego para ${gamePage} enviados a Google Sheets correctamente!`);
-                } else {
-                    console.error(`Error al enviar datos del juego para ${gamePage} a Google Sheets:`, response.statusText);
-                }
-            } catch (error) {
-                console.error(`Error de red o problema al enviar datos del juego para ${gamePage}:`, error);
-            }
-        }
+            try {
+                const response = await fetch(googleAppsScriptURL, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    console.log(`¡Datos del juego para ${gamePage} enviados a Google Sheets correctamente!`);
+                } else {
+                    console.error(`Error al enviar datos del juego para ${gamePage} a Google Sheets:`, response.statusText);
+                }
+            } catch (error) {
+                console.error(`Error de red o problema al enviar datos del juego para ${gamePage}:`, error);
+            }
+        }
 
-        function updateTimer() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                if (!gameEnded) {
-                    endGame("¡Se acabó el tiempo, queda eliminado! 💀", false);
-                    sendGameData(userName, userCity, 'Squidgame20', 0);
-                }
-            } else {
-                timeLeft--;
-            }
-        }
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                if (!gameEnded) {
+                    endGame("¡Se acabó el tiempo, queda eliminado! 💀", false);
+                    sendGameData(userName, userCity, 'Squidgame20', 0);
+                }
+            } else {
+                timeLeft--;
+            }
+        }
 
-        function endGame(message, isCorrect = false) {
-            gameEnded = true;
-            clearInterval(timerInterval);
-            feedbackMessage.textContent = message;
-            submitButton.style.display = 'none';
+        function endGame(message, isCorrect = false) {
+            gameEnded = true;
+            clearInterval(timerInterval);
+            feedbackMessage.textContent = message;
+            submitButton.style.display = 'none';
 
-            if (isCorrect) {
-                feedbackMessage.classList.add('correct-message');
-                feedbackMessage.classList.remove('incorrect-message');
-                sendGameData(userName, userCity, 'Squidgame20', totalTime - timeLeft);
-                nextButton.style.display = 'block';
-                // Redirige a final.html después de 3 segundos
-                setTimeout(() => {
-                    window.location.href = `final.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
-                }, 3000);
-            } else {
-                feedbackMessage.classList.add('incorrect-message');
-                feedbackMessage.classList.remove('correct-message');
-                if (timeLeft > 0) {
-                    sendGameData(userName, userCity, 'Squidgame20', totalTime - timeLeft);
-                }
-                nextButton.style.display = 'none';
-            }
-            optionButtons.forEach(button => button.disabled = true);
-        }
+            if (isCorrect) {
+                feedbackMessage.classList.add('correct-message');
+                feedbackMessage.classList.remove('incorrect-message');
+                sendGameData(userName, userCity, 'Squidgame20', totalTime - timeLeft);
+                nextButton.style.display = 'block';
+                // No hay una "siguiente" página definida después de Squidgame20,
+                // así que podrías redirigir a una página de felicitación final
+                // o simplemente mantener el mensaje.
+                // Por ahora, no hay redirección automática después de 3 segundos,
+                // puedes decidir qué hacer en tu juego.
+                // Por ejemplo, para redirigir a una página de "fin del juego":
+                // setTimeout(() => {
+                //     window.location.href = `Squidgame_FinDelJuego.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
+                // }, 3000);
+            } else {
+                feedbackMessage.classList.add('incorrect-message');
+                feedbackMessage.classList.remove('correct-message');
+                if (timeLeft > 0) {
+                    sendGameData(userName, userCity, 'Squidgame20', totalTime - timeLeft);
+                }
+                nextButton.style.display = 'none';
+            }
+            optionButtons.forEach(button => button.disabled = true);
+        }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            timerInterval = setInterval(updateTimer, 1000);
-            submitButton.disabled = true;
-        });
+        document.addEventListener('DOMContentLoaded', () => {
+            timerInterval = setInterval(updateTimer, 1000);
+            submitButton.disabled = true;
+        });
 
-        optionButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                if (gameEnded) return;
-                optionButtons.forEach(btn => btn.classList.remove('selected'));
-                button.classList.add('selected');
-                selectedOption = button.dataset.value;
-                submitButton.disabled = false;
-            });
-        });
+        optionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (gameEnded) return;
+                optionButtons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                selectedOption = button.dataset.value;
+                submitButton.disabled = false;
+            });
+        });
 
-        submitButton.addEventListener('click', () => {
-            if (gameEnded) return;
-            if (selectedOption === null) {
-                alert("Por favor, selecciona una opción antes de responder.");
-                return;
-            }
-            if (selectedOption === correctAnwser) {
-                endGame("¡Respuesta correcta! ¡Felicidades, sigues en el juego! 🎉", true);
-            } else {
-                endGame("¡Respuesta incorrecta, queda eliminado! ❌", false);
-            }
-        });
-    </script>
+        submitButton.addEventListener('click', () => {
+            if (gameEnded) return;
+            if (selectedOption === null) {
+                alert("Por favor, selecciona una opción antes de responder.");
+                return;
+            }
+            if (selectedOption === correctAnwser) {
+                endGame("¡Respuesta correcta! ¡Felicidades, sigues en el juego! 🎉", true);
+            } else {
+                endGame("¡Respuesta incorrecta, queda eliminado! ❌", false);
+            }
+        });
+	 nextButton.addEventListener('click', () => {
+            if (gameEnded) { // Solo permite la redirección si el juego ha terminado (es decir, la respuesta fue correcta)
+                window.location.href = `final.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
+            }
+        });
+    </script>
 </body>
 </html>
