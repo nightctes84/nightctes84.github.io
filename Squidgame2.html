@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desafío Trivia: Juego del Calamar</title>
+    <title>Segundo Desafío: Juego del Calamar</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #2c3e50; /* Azul/gris oscuro, inspirado en la estética de Squid Game */
-            color: #ecf0f1; /* Texto gris claro */
+            background-color: #0d1a26; /* Fondo muy oscuro, casi negro */
+            color: #ecf0f1; /* Texto claro */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,20 +21,22 @@
         }
 
         .container {
-            background-color: #34495e; /* Azul/gris oscuro ligeramente más claro */
+            background-color: #1a2a3a; /* Contenedor oscuro con un ligero matiz */
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            border-radius: 15px; /* Bordes más redondeados */
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
             max-width: 600px;
             width: 100%;
-            position: relative; /* Para posicionar el temporizador */
-            display: flex; /* Añadido para Flexbox */
-            flex-direction: column; /* Para apilar los elementos verticalmente */
+            /* Eliminado position: relative; ya que los elementos internos se centran con flexbox */
+            display: flex;
+            flex-direction: column;
             align-items: center; /* Centrar horizontalmente los elementos hijos */
+            border: 2px solid #e74c3c; /* Borde rojo distintivo */
         }
 
         h1 {
             color: #e74c3c; /* Rojo, como los uniformes de los guardias o la sangre en Squid Game */
+            margin-top: 30px; /* Ajuste para dar espacio después del nombre de usuario */
             margin-bottom: 30px;
             font-size: 2.5em;
         }
@@ -42,13 +44,17 @@
         .timer {
             font-size: 1.8em;
             color: #f1c40f; /* Amarillo/Dorado, como el dinero del premio */
-            margin-bottom: 20px;
-            position: absolute;
-            top: 20px;
-            right: 20px;
+            margin-bottom: 5px; /* Reducido para acercarlo al nombre de usuario */
             background-color: rgba(0, 0, 0, 0.3);
             padding: 10px 15px;
             border-radius: 5px;
+            /* align-self: center; No es estrictamente necesario si el contenedor ya es align-items: center */
+        }
+
+        .welcome-message {
+            font-size: 1.5em;
+            color: #f1c40f;
+            margin-bottom: 20px; /* Ajustado para separar de la pregunta */
         }
 
         p {
@@ -67,14 +73,19 @@
         .option-button {
             background-color: #2980b9; /* Azul */
             color: white;
-            padding: 15px 30px;
+            padding: 15px 20px; /* Reducir padding horizontal para dar más espacio al texto */
             border: none;
             border-radius: 8px;
             font-size: 1.2em;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            min-width: 120px;
-            text-align: center; /* Centrar el texto en el botón */
+            min-width: 250px; /* Aumentar el min-width para que sean más anchos */
+            height: 80px; /* Establecer una altura fija para simetría */
+            display: flex; /* Usar flex para centrar el texto verticalmente y horizontalmente */
+            align-items: center;
+            justify-content: center;
+            text-align: center; /* Asegurar que el texto esté centrado si hay varias líneas */
+            box-sizing: border-box; /* Incluir padding y border en el tamaño total */
         }
 
         .option-button:hover {
@@ -149,15 +160,17 @@
 </head>
 <body>
     <div class="container">
-        <div class="timer" id="timerDisplay">02:00</div>
-        <h1>¡Desafío del Juego del Calamar! 🦑</h1>
-        <p>En caso de traumatismo por accidente de tránsito, ¿qué es lo más recomendable?</p>
+        <div class="timer" id="timerDisplay">01:00</div>
+        <div class="welcome-message" id="welcomeMessage"></div>
+
+        <h1>¡SEGUNDO DESAFIO!</h1>
+        <p>Al llegar a un domicilio, observas que el cliente tiene una mascota suelta en el interior. ¿cómo procederías?</p>
 
         <div class="options-container">
-            <button class="option-button" data-value="A">Abandonar el lugar rápidamente para evitar complicaciones.</button>
-            <button class="option-button" data-value="B">Mover a los heridos sin importar su condición.</button>
-            <button class="option-button" data-value="C">Señalizar la zona, verificar el estado de las personas involucradas y llamar a emergencias.</button>
-            <button class="option-button" data-value="D">Pedir el seguro a los otros conductores para determinar quién tuvo la culpa.</button>
+            <button class="option-button" data-value="calmar">Intentas calmar al animal llevándole comida o acariciándolo</button>
+            <button class="option-button" data-value="solicitar">Solicitas al cliente que retire al animal antes de ingresar</button>
+            <button class="option-button" data-value="ingresar">Ingresar rápidamente para evitar que el animal interfiera</button>
+            <button class="option-button" data-value="objeto">Utilizas un objeto para mantenerlo alejado y continuar la tarea</button>
         </div>
 
         <button id="submitButton">Responder</button>
@@ -172,13 +185,57 @@
         const submitButton = document.getElementById('submitButton');
         const nextButton = document.getElementById('nextButton');
         const feedbackMessage = document.getElementById('feedbackMessage');
-        const correctAnwser = 'C';
-        const totalTime = 120; // 2 minutos en segundos
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const correctAnwser = 'solicitar'; // La opción correcta es "Solicitas al cliente..."
+        const totalTime = 60; // 60 segundos
         let timeLeft = totalTime;
         let timerInterval;
         let selectedOption = null;
         let gameEnded = false;
+        let userName = '';
+        let userCity = '';
+        const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec';
 
+        // Función para parsear parámetros de URL
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+
+        // Obtener el nombre de usuario y la ciudad de la URL al cargar la página
+        userName = getUrlParameter('user');
+        userCity = getUrlParameter('city');
+        if (userName) {
+            welcomeMessage.textContent = `¡Bienvenido, ${userName}!`;
+        }
+
+        // Función para enviar datos al script de Google Apps
+        async function sendGameData(name, city, gamePage, timeTaken) {
+            const formData = new FormData();
+            formData.append('nombre', name);
+            formData.append('localidad', city);
+            formData.append('gamePage', gamePage); // ¡Importante! Aquí se envía '2'
+            formData.append('timeTaken', timeTaken);
+
+            try {
+                const response = await fetch(googleAppsScriptURL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    console.log(`¡Datos del juego para ${gamePage} enviados a Google Sheets correctamente!`);
+                } else {
+                    console.error(`Error al enviar datos del juego para ${gamePage} a Google Sheets:`, response.statusText);
+                }
+            } catch (error) {
+                console.error(`Error de red o problema al enviar datos del juego para ${gamePage}:`, error);
+            }
+        }
+
+        // Función para actualizar la visualización del temporizador
         function updateTimer() {
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
@@ -188,36 +245,54 @@
                 clearInterval(timerInterval);
                 if (!gameEnded) {
                     endGame("¡Se acabó el tiempo, queda eliminado! 💀", false);
+                    sendGameData(userName, userCity, '2', 0); // Envía '2' si el tiempo se agota
                 }
             } else {
                 timeLeft--;
             }
         }
 
+        // Función para terminar el juego con un mensaje
         function endGame(message, isCorrect = false) {
             gameEnded = true;
             clearInterval(timerInterval);
             feedbackMessage.textContent = message;
+
+            // Ocultar el botón "Responder"
+            submitButton.style.display = 'none';
+
             if (isCorrect) {
                 feedbackMessage.classList.add('correct-message');
                 feedbackMessage.classList.remove('incorrect-message');
+                sendGameData(userName, userCity, '2', totalTime - timeLeft); // Envía '2' si es correcto
+                // Mostrar el botón "Siguiente"
+                nextButton.style.display = 'block';
+
+                // Redirigir a la siguiente página (Squidgame3.html) después de 3 segundos
+                setTimeout(() => {
+                    window.location.href = `Squidgame3.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
+                }, 3000);
+
             } else {
                 feedbackMessage.classList.add('incorrect-message');
                 feedbackMessage.classList.remove('correct-message');
+                if (timeLeft > 0) {
+                    sendGameData(userName, userCity, '2', totalTime - timeLeft); // Envía '2' si es incorrecto (y queda tiempo)
+                }
+                // Si es incorrecto, el botón "Siguiente" permanece oculto.
+                nextButton.style.display = 'none';
             }
-            submitButton.style.display = 'none';
+            // Deshabilitar botones de opción después de que el juego terminó
             optionButtons.forEach(button => button.disabled = true);
-            if (isCorrect) {
-                nextButton.style.display = 'block';
-                nextButton.onclick = () => window.location.href = 'Squidgame3.html';
-            }
         }
 
+        // Iniciar el temporizador cuando la página se carga
         document.addEventListener('DOMContentLoaded', () => {
             timerInterval = setInterval(updateTimer, 1000);
-            submitButton.disabled = true;
+            submitButton.disabled = true; // Botón de responder deshabilitado hasta que se seleccione una opción
         });
 
+        // Event listeners para los botones de opción
         optionButtons.forEach(button => {
             button.addEventListener('click', () => {
                 if (gameEnded) return;
@@ -228,6 +303,7 @@
             });
         });
 
+        // Event listener para el botón "Responder"
         submitButton.addEventListener('click', () => {
             if (gameEnded) return;
             if (selectedOption === null) {
@@ -235,13 +311,17 @@
                 return;
             }
 
+            // Llamar a endGame para procesar la respuesta y enviar datos
             if (selectedOption === correctAnwser) {
                 endGame("¡Respuesta correcta! ¡Felicidades, sigues en el juego! 🎉", true);
             } else {
                 endGame("¡Respuesta incorrecta, queda eliminado! ❌", false);
             }
-            submitButton.disabled = true;
+            // El botón "Responder" se oculta dentro de endGame(), ya no es necesario deshabilitarlo aquí.
         });
+
+        // Se elimina el event listener del botón "Siguiente" ya que la navegación
+        // y el mostrado del botón se manejan completamente dentro de endGame().
     </script>
 </body>
 </html>
