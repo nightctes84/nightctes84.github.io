@@ -11,10 +11,20 @@
             background-color: #f4f4f4;
             color: #333;
         }
-        h1, h2 {
+        h1 {
             text-align: center;
             color: #0056b3;
             margin-bottom: 20px;
+        }
+        /* Ajuste para centrar el h2 sobre la tabla */
+        .city-table-wrapper { /* Nueva clase para envolver cada h2 y tabla */
+            text-align: center; /* Centra el texto (h2) */
+            flex-grow: 1;
+            min-width: 300px; /* Asegura que no se hagan demasiado pequeñas */
+        }
+        .city-table-wrapper h2 {
+            color: #0056b3;
+            margin-bottom: 10px; /* Espacio entre el título y la tabla */
         }
         .table-container {
             display: flex;
@@ -23,13 +33,13 @@
             gap: 20px;
         }
         table {
-            width: 48%; /* Casi la mitad del ancho para dos tablas */
+            width: 100%; /* La tabla ocupará el 100% del ancho de su contenedor (.city-table-wrapper) */
             border-collapse: collapse;
-            margin-top: 15px;
+            margin-top: 0; /* Quitamos el margen superior aquí, ya que el h2 tiene margen inferior */
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             background-color: #fff;
-            flex-grow: 1;
-            min-width: 300px; /* Asegura que no se hagan demasiado pequeñas */
+            margin-left: auto; /* Centrar la tabla si su ancho es menor que el del contenedor */
+            margin-right: auto; /* Centrar la tabla si su ancho es menor que el del contenedor */
         }
         th, td {
             border: 1px solid #ddd;
@@ -65,7 +75,7 @@
                 flex-direction: column;
                 align-items: center;
             }
-            table {
+            .city-table-wrapper {
                 width: 95%; /* Ocupa casi todo el ancho en pantallas pequeñas */
             }
         }
@@ -78,7 +88,7 @@
     <div id="errorMessage" class="error-message" style="display:none;"></div>
 
     <div class="table-container">
-        <div>
+        <div class="city-table-wrapper">
             <h2>Bahía Blanca</h2>
             <table id="bahiaBlancaTable">
                 <thead>
@@ -93,7 +103,7 @@
             </table>
         </div>
 
-        <div>
+        <div class="city-table-wrapper">
             <h2>Paraná</h2>
             <table id="paranaTable">
                 <thead>
@@ -124,10 +134,8 @@
             paranaTableBody.innerHTML = '';
 
             const SPREADSHEET_ID = '1kfNWpoj-Svouh1Q7xiug67MEjTWDdeItL96sCLS_p7w';
-            // **IMPORTANTE**: Reemplaza 'TU_API_KEY' con tu clave de API real de Google Cloud.
-            // Asegúrate de que tu clave de API esté restringida al servicio de Google Sheets API.
-            const API_KEY = 'AIzaSyAY4PTzTAqm0mwJvV742E0ZTUNQH63BQbg'; //
-            const RANGE = 'Hoja 1!A1:E'; //
+            const API_KEY = 'AIzaSyAY4PTzTAqm0mwJvV742E0ZTUNQH63BQbg'; // Tu clave de API real
+            const RANGE = 'Hoja 1!A1:E'; 
 
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
 
