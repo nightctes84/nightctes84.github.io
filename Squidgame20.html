@@ -254,7 +254,7 @@
             if (isCorrect) {
                 feedbackMessage.classList.add('correct-message');
                 feedbackMessage.classList.remove('incorrect-message');
-                sendGameData(userName, userCity, 'Squidgame20', totalTime - timeLeft);
+                sendGameData(userName, userCity, '20', totalTime - timeLeft);
                 nextButton.style.display = 'block';
                 // No hay una "siguiente" página definida después de Squidgame20,
                 // así que podrías redirigir a una página de felicitación final
@@ -269,7 +269,7 @@
                 feedbackMessage.classList.add('incorrect-message');
                 feedbackMessage.classList.remove('correct-message');
                 if (timeLeft > 0) {
-                    sendGameData(userName, userCity, 'Squidgame20', totalTime - timeLeft);
+                    sendGameData(userName, userCity, '20', totalTime - timeLeft);
                 }
                 nextButton.style.display = 'none';
             }
@@ -311,3 +311,4 @@
     </script>
 </body>
 </html>
+
