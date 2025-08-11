@@ -257,13 +257,13 @@
                 sendGameData(userName, userCity, '12', totalTime - timeLeft);
                 nextButton.style.display = 'block';
                 setTimeout(() => {
-                    window.location.href = `Squidgame14.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
+                    window.location.href = `Squidgame13.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
                 }, 3000);
             } else {
                 feedbackMessage.classList.add('incorrect-message');
                 feedbackMessage.classList.remove('correct-message');
                 if (timeLeft > 0) {
-                    sendGameData(userName, userCity, 'Squidgame12', totalTime - timeLeft);
+                    sendGameData(userName, userCity, '12', totalTime - timeLeft);
                 }
                 nextButton.style.display = 'none';
             }
@@ -300,4 +300,5 @@
     </script>
 </body>
 </html>
+
 
