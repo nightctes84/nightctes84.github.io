@@ -34,10 +34,10 @@
             const loadingDiv = document.getElementById('loading');
             loadingDiv.style.display = 'block'; // Mostrar mensaje de carga
 
-            // --- INICIO DE LA MODIFICACIÓN ---
+            // --- INICIO DE LA MODIFICACIÓN CON TU CLAVE DE API ---
             const SPREADSHEET_ID = '1kfNWpoj-Svouh1Q7xiug67MEjTWDdeItL96sCLS_p7w';
-            const API_KEY = 'TU_CLAVE_API_DE_GOOGLE'; // ¡IMPORTANTE: Reemplaza esto con tu clave de API real!
-            const RANGE = 'Sheet1!A1:E'; // Asegúrate que 'Sheet1' es el nombre correcto de tu pestaña y A1:E el rango deseado.
+            const API_KEY = 'AIzaSyAY4PTzTAqm0mwJvV742E0ZTUNQH63BQbg'; // ¡Tu clave de API real!
+            const RANGE = 'Sheet1!A1:E'; // Nombre de la pestaña y rango de columnas, verificado con tu hoja
 
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
             // --- FIN DE LA MODIFICACIÓN ---
@@ -55,14 +55,14 @@
 
                     rows.forEach(row => {
                         const tr = document.createElement('tr');
-                        // Asegúrate de que el orden de los índices (0, 1, 2, 3, 4) coincide con tus columnas
+                        // Asegúrate de que el orden de los índices (0, 1, 2, 3, 4) coincide con tus columnas en la hoja
                         // Timestamp, Nombre, Localidad, Game Page, Time Taken
                         tr.innerHTML = `
                             <td>${row[0] || ''}</td>
                             <td>${row[1] || ''}</td>
                             <td>${row[2] || ''}</td>
                             <td>${row[3] || ''}</td>
-                            <td>${row[4] || ''}</td>
+                            <td><td>${row[4] || ''}</td>
                         `;
                         tableBody.appendChild(tr);
                     });
