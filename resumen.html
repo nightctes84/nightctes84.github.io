@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progreso de Usuarios</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Progreso de Usuarios en Tiempo Real</h1>
+    <div id="loading">Cargando datos...</div>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Nombre</th>
+                <th>Localidad</th>
+                <th>Game Page</th>
+                <th>Time Taken</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+
+    <script>
+        async function fetchUserData() {
+            const tableBody = document.querySelector('#userTable tbody');
+            const loadingDiv = document.getElementById('loading');
+            loadingDiv.style.display = 'block'; // Mostrar mensaje de carga
+
+            // --- INICIO DE LA MODIFICACIÓN ---
+            const SPREADSHEET_ID = '1kfNWpoj-Svouh1Q7xiug67MEjTWDdeItL96sCLS_p7w';
+            const API_KEY = 'TU_CLAVE_API_DE_GOOGLE'; // ¡IMPORTANTE: Reemplaza esto con tu clave de API real!
+            const RANGE = 'Sheet1!A1:E'; // Asegúrate que 'Sheet1' es el nombre correcto de tu pestaña y A1:E el rango deseado.
+
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+            // --- FIN DE LA MODIFICACIÓN ---
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                tableBody.innerHTML = ''; // Limpiar tabla antes de añadir nuevos datos
+
+                // Verifica si hay datos y si la primera fila es un encabezado
+                if (data.values && data.values.length > 1) {
+                    // La primera fila se asume como encabezados, los datos reales comienzan desde la segunda fila
+                    const rows = data.values.slice(1); 
+
+                    rows.forEach(row => {
+                        const tr = document.createElement('tr');
+                        // Asegúrate de que el orden de los índices (0, 1, 2, 3, 4) coincide con tus columnas
+                        // Timestamp, Nombre, Localidad, Game Page, Time Taken
+                        tr.innerHTML = `
+                            <td>${row[0] || ''}</td>
+                            <td>${row[1] || ''}</td>
+                            <td>${row[2] || ''}</td>
+                            <td>${row[3] || ''}</td>
+                            <td>${row[4] || ''}</td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="5">No hay datos disponibles o la hoja está vacía.</td></tr>';
+                }
+
+            } catch (error) {
+                console.error('Error al obtener los datos:', error);
+                tableBody.innerHTML = '<tr><td colspan="5">Error al cargar los datos. Por favor, revisa la consola para más detalles.</td></tr>';
+            } finally {
+                loadingDiv.style.display = 'none'; // Ocultar mensaje de carga
+            }
+        }
+
+        // Cargar los datos la primera vez
+        fetchUserData();
+
+        // Actualizar los datos cada 5 segundos
+        setInterval(fetchUserData, 5000);
+    </script>
+</body>
+</html>
