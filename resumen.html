@@ -3,87 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Máximo Progreso de Usuarios</title>
+    <title>Progreso por Ciudad</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #0056b3;
+            margin-bottom: 20px;
+        }
+        .table-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        table {
+            width: 48%; /* Casi la mitad del ancho para dos tablas */
+            border-collapse: collapse;
+            margin-top: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background-color: #fff;
+            flex-grow: 1;
+            min-width: 300px; /* Asegura que no se hagan demasiado pequeñas */
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        #loading {
+            text-align: center;
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 30px;
+        }
+        .error-message {
+            color: #d9534f;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .table-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            table {
+                width: 95%; /* Ocupa casi todo el ancho en pantallas pequeñas */
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Máximo Progreso por Usuario</h1>
+    <h1>Progreso de Usuarios por Ciudad</h1>
+
     <div id="loading">Cargando datos...</div>
-    <table id="userSummaryTable">
-        <thead>
-            <tr>
-                <th>Nombre del Usuario</th>
-                <th>Máximo Game Page</th>
-            </tr>
-        </thead>
-        <tbody>
-            </tbody>
-    </table>
+    <div id="errorMessage" class="error-message" style="display:none;"></div>
+
+    <div class="table-container">
+        <div>
+            <h2>Bahía Blanca</h2>
+            <table id="bahiaBlancaTable">
+                <thead>
+                    <tr>
+                        <th>Nombre del Usuario</th>
+                        <th>Máximo Game Page</th>
+                        <th>Tiempo Total (segundos)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+
+        <div>
+            <h2>Paraná</h2>
+            <table id="paranaTable">
+                <thead>
+                    <tr>
+                        <th>Nombre del Usuario</th>
+                        <th>Máximo Game Page</th>
+                        <th>Tiempo Total (segundos)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+    </div>
 
     <script>
         async function fetchUserData() {
-            const tableBody = document.querySelector('#userSummaryTable tbody');
             const loadingDiv = document.getElementById('loading');
+            const errorMessageDiv = document.getElementById('errorMessage');
             loadingDiv.style.display = 'block'; // Mostrar mensaje de carga
+            errorMessageDiv.style.display = 'none'; // Ocultar cualquier error previo
+
+            const bahiaBlancaTableBody = document.querySelector('#bahiaBlancaTable tbody');
+            const paranaTableBody = document.querySelector('#paranaTable tbody');
+
+            // Limpiar tablas antes de añadir nuevos datos
+            bahiaBlancaTableBody.innerHTML = '';
+            paranaTableBody.innerHTML = '';
 
             const SPREADSHEET_ID = '1kfNWpoj-Svouh1Q7xiug67MEjTWDdeItL96sCLS_p7w';
-            const API_KEY = 'AIzaSyAY4PTzTAqm0mwJvV742E0ZTUNQH63BQbg'; // Tu clave de API real
-            const RANGE = 'Hoja 1!A1:E'; // Nombre de la pestaña y rango de columnas, verificado con tu hoja
+            // **IMPORTANTE**: Reemplaza 'TU_API_KEY' con tu clave de API real de Google Cloud.
+            // Asegúrate de que tu clave de API esté restringida al servicio de Google Sheets API.
+            const API_KEY = 'AIzaSyAY4PTzTAqm0mwJvV742E0ZTUNQH63BQbg'; //
+            const RANGE = 'Hoja 1!A1:E'; //
 
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
 
             try {
                 const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const data = await response.json();
 
-                tableBody.innerHTML = ''; // Limpiar tabla antes de añadir nuevos datos
-
-                // Verifica si hay datos y si la primera fila es un encabezado
                 if (data.values && data.values.length > 1) {
-                    const rows = data.values.slice(1); // Datos reales, excluyendo encabezados
+                    const rows = data.values.slice(1); // Excluir encabezados
 
-                    // Objeto para almacenar el Game Page máximo por cada usuario
-                    const maxGamePageByUser = new Map(); // Usamos Map para mantener el orden de inserción si es necesario, o un objeto {}
+                    const usersByCity = {
+                        'Bahía Blanca': new Map(),
+                        'Paraná': new Map()
+                    };
 
                     rows.forEach(row => {
-                        const userName = row[1]; // Columna 'nombre' (índice 1)
-                        const gamePageValue = parseInt(row[3]); // Columna 'gamePage' (índice 3), convertir a número
+                        const timestamp = row[0]; // Columna 'Timestamp' (índice 0)
+                        const userName = row[1];   // Columna 'nombre' (índice 1)
+                        const city = row[2];       // Columna 'localidad' (índice 2)
+                        const gamePageRaw = row[3]; // Columna 'gamePage' (índice 3)
+                        const timeTakenRaw = row[4]; // Columna 'timeTaken' (índice 4)
 
-                        // Asegurarse de que el userName y gamePageValue son válidos
-                        if (userName && !isNaN(gamePageValue)) {
-                            // Si el usuario no está en el mapa, o el gamePage actual es mayor al registrado
-                            if (!maxGamePageByUser.has(userName) || gamePageValue > maxGamePageByUser.get(userName)) {
-                                maxGamePageByUser.set(userName, gamePageValue);
+                        // Intentar parsear gamePage a número, manejando 'Registro' como 0
+                        let gamePageValue;
+                        if (gamePageRaw === 'Registro') {
+                            gamePageValue = 0;
+                        } else {
+                            gamePageValue = parseInt(gamePageRaw);
+                        }
+
+                        // Intentar parsear timeTaken a número
+                        const timeTakenValue = parseInt(timeTakenRaw);
+
+                        // Solo procesar si userName y city son válidos y gamePageValue es un número
+                        if (userName && city && !isNaN(gamePageValue)) {
+                            if (usersByCity[city]) {
+                                if (!usersByCity[city].has(userName)) {
+                                    usersByCity[city].set(userName, {
+                                        maxGamePage: -1, // Inicializar con un valor bajo para asegurar que el primer gamePage sea el máximo
+                                        totalTime: 0
+                                    });
+                                }
+
+                                const userData = usersByCity[city].get(userName);
+
+                                // Actualizar maxGamePage
+                                if (gamePageValue > userData.maxGamePage) {
+                                    userData.maxGamePage = gamePageValue;
+                                }
+
+                                // Sumar timeTaken si es un número válido
+                                if (!isNaN(timeTakenValue)) {
+                                    userData.totalTime += timeTakenValue;
+                                }
                             }
                         }
                     });
 
-                    // Si se encontraron usuarios con datos válidos, poblar la tabla
-                    if (maxGamePageByUser.size > 0) {
-                        maxGamePageByUser.forEach((maxGamePage, userName) => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                <td>${userName}</td>
-                                <td>${maxGamePage}</td>
-                            `;
-                            tableBody.appendChild(tr);
-                        });
-                    } else {
-                        tableBody.innerHTML = '<tr><td colspan="2">No se encontraron usuarios con datos válidos de Game Page.</td></tr>';
+                    // Función para poblar una tabla específica
+                    function populateTable(tableBody, usersMap) {
+                        if (usersMap.size > 0) {
+                            usersMap.forEach((data, userName) => {
+                                const tr = document.createElement('tr');
+                                tr.innerHTML = `
+                                    <td>${userName}</td>
+                                    <td>${data.maxGamePage === 0 ? 'Registro' : data.maxGamePage}</td>
+                                    <td>${data.totalTime}</td>
+                                `;
+                                tableBody.appendChild(tr);
+                            });
+                        } else {
+                            tableBody.innerHTML = '<tr><td colspan="3">No hay datos disponibles para esta ciudad.</td></tr>';
+                        }
                     }
 
+                    populateTable(bahiaBlancaTableBody, usersByCity['Bahía Blanca']);
+                    populateTable(paranaTableBody, usersByCity['Paraná']);
+
                 } else {
-                    tableBody.innerHTML = '<tr><td colspan="2">No hay datos disponibles o la hoja está vacía.</td></tr>';
+                    bahiaBlancaTableBody.innerHTML = '<tr><td colspan="3">No hay datos disponibles en la hoja de cálculo.</td></tr>';
+                    paranaTableBody.innerHTML = '<tr><td colspan="3">No hay datos disponibles en la hoja de cálculo.</td></tr>';
                 }
 
             } catch (error) {
                 console.error('Error al obtener los datos:', error);
-                tableBody.innerHTML = '<tr><td colspan="2">Error al cargar los datos. Por favor, revisa la consola para más detalles.</td></tr>';
+                errorMessageDiv.textContent = `Error al cargar los datos: ${error.message}. Por favor, revisa tu clave de API y el acceso a la hoja.`;
+                errorMessageDiv.style.display = 'block';
+                bahiaBlancaTableBody.innerHTML = '<tr><td colspan="3">Error al cargar.</td></tr>';
+                paranaTableBody.innerHTML = '<tr><td colspan="3">Error al cargar.</td></tr>';
             } finally {
                 loadingDiv.style.display = 'none'; // Ocultar mensaje de carga
             }
