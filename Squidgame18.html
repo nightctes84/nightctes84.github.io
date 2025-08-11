@@ -237,7 +237,7 @@
                 clearInterval(timerInterval);
                 if (!gameEnded) {
                     endGame("¡Se acabó el tiempo, queda eliminado! 💀", false);
-                    sendGameData(userName, userCity, 'Squidgame18', 0);
+                    sendGameData(userName, userCity, '18', 0);
                 }
             } else {
                 timeLeft--;
@@ -253,7 +253,7 @@
             if (isCorrect) {
                 feedbackMessage.classList.add('correct-message');
                 feedbackMessage.classList.remove('incorrect-message');
-                sendGameData(userName, userCity, 'Squidgame18', totalTime - timeLeft);
+                sendGameData(userName, userCity, '18', totalTime - timeLeft);
                 nextButton.style.display = 'block';
                 setTimeout(() => {
                     // Redirige a Squidgame20.html como se solicitó para la última pregunta
@@ -300,3 +300,4 @@
     </script>
 </body>
 </html>
+
