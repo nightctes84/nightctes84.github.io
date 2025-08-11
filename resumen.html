@@ -34,13 +34,13 @@
             const loadingDiv = document.getElementById('loading');
             loadingDiv.style.display = 'block'; // Mostrar mensaje de carga
 
-            // --- INICIO DE LA MODIFICACIÓN CON TU CLAVE DE API ---
             const SPREADSHEET_ID = '1kfNWpoj-Svouh1Q7xiug67MEjTWDdeItL96sCLS_p7w';
-            const API_KEY = 'AIzaSyAY4PTzTAqm0mwJvV742E0ZTUNQH63BQbg'; // ¡Tu clave de API real!
-            const RANGE = 'Sheet1!A1:E'; // Nombre de la pestaña y rango de columnas, verificado con tu hoja
+            const API_KEY = 'AIzaSyAY4PTzTAqm0mwJvV742E0ZTUNQH63BQbg'; // Tu clave de API real
+
+            // *** CAMBIO AQUÍ: 'Sheet1' a 'Hoja 1' ***
+            const RANGE = 'Hoja 1!A1:E'; // ¡CORREGIDO: Nombre de la pestaña es "Hoja 1" con espacio!
 
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-            // --- FIN DE LA MODIFICACIÓN ---
 
             try {
                 const response = await fetch(url);
@@ -48,21 +48,17 @@
 
                 tableBody.innerHTML = ''; // Limpiar tabla antes de añadir nuevos datos
 
-                // Verifica si hay datos y si la primera fila es un encabezado
                 if (data.values && data.values.length > 1) {
-                    // La primera fila se asume como encabezados, los datos reales comienzan desde la segunda fila
                     const rows = data.values.slice(1); 
 
                     rows.forEach(row => {
                         const tr = document.createElement('tr');
-                        // Asegúrate de que el orden de los índices (0, 1, 2, 3, 4) coincide con tus columnas en la hoja
-                        // Timestamp, Nombre, Localidad, Game Page, Time Taken
                         tr.innerHTML = `
                             <td>${row[0] || ''}</td>
                             <td>${row[1] || ''}</td>
                             <td>${row[2] || ''}</td>
                             <td>${row[3] || ''}</td>
-                            <td><td>${row[4] || ''}</td>
+                            <td>${row[4] || ''}</td>
                         `;
                         tableBody.appendChild(tr);
                     });
@@ -78,10 +74,7 @@
             }
         }
 
-        // Cargar los datos la primera vez
         fetchUserData();
-
-        // Actualizar los datos cada 5 segundos
         setInterval(fetchUserData, 5000);
     </script>
 </body>
