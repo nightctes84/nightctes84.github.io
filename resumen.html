@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progreso de Usuarios</title>
+    <title>Máximo Progreso de Usuarios</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
@@ -12,16 +12,13 @@
     </style>
 </head>
 <body>
-    <h1>Progreso de Usuarios en Tiempo Real</h1>
+    <h1>Máximo Progreso por Usuario</h1>
     <div id="loading">Cargando datos...</div>
-    <table id="userTable">
+    <table id="userSummaryTable">
         <thead>
             <tr>
-                <th>Timestamp</th>
-                <th>Nombre</th>
-                <th>Localidad</th>
-                <th>Game Page</th>
-                <th>Time Taken</th>
+                <th>Nombre del Usuario</th>
+                <th>Máximo Game Page</th>
             </tr>
         </thead>
         <tbody>
@@ -30,15 +27,13 @@
 
     <script>
         async function fetchUserData() {
-            const tableBody = document.querySelector('#userTable tbody');
+            const tableBody = document.querySelector('#userSummaryTable tbody');
             const loadingDiv = document.getElementById('loading');
             loadingDiv.style.display = 'block'; // Mostrar mensaje de carga
 
             const SPREADSHEET_ID = '1kfNWpoj-Svouh1Q7xiug67MEjTWDdeItL96sCLS_p7w';
             const API_KEY = 'AIzaSyAY4PTzTAqm0mwJvV742E0ZTUNQH63BQbg'; // Tu clave de API real
-
-            // *** CAMBIO AQUÍ: 'Sheet1' a 'Hoja 1' ***
-            const RANGE = 'Hoja 1!A1:E'; // ¡CORREGIDO: Nombre de la pestaña es "Hoja 1" con espacio!
+            const RANGE = 'Hoja 1!A1:E'; // Nombre de la pestaña y rango de columnas, verificado con tu hoja
 
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
 
@@ -48,33 +43,56 @@
 
                 tableBody.innerHTML = ''; // Limpiar tabla antes de añadir nuevos datos
 
+                // Verifica si hay datos y si la primera fila es un encabezado
                 if (data.values && data.values.length > 1) {
-                    const rows = data.values.slice(1); 
+                    const rows = data.values.slice(1); // Datos reales, excluyendo encabezados
+
+                    // Objeto para almacenar el Game Page máximo por cada usuario
+                    const maxGamePageByUser = new Map(); // Usamos Map para mantener el orden de inserción si es necesario, o un objeto {}
 
                     rows.forEach(row => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>${row[0] || ''}</td>
-                            <td>${row[1] || ''}</td>
-                            <td>${row[2] || ''}</td>
-                            <td>${row[3] || ''}</td>
-                            <td>${row[4] || ''}</td>
-                        `;
-                        tableBody.appendChild(tr);
+                        const userName = row[1]; // Columna 'nombre' (índice 1)
+                        const gamePageValue = parseInt(row[3]); // Columna 'gamePage' (índice 3), convertir a número
+
+                        // Asegurarse de que el userName y gamePageValue son válidos
+                        if (userName && !isNaN(gamePageValue)) {
+                            // Si el usuario no está en el mapa, o el gamePage actual es mayor al registrado
+                            if (!maxGamePageByUser.has(userName) || gamePageValue > maxGamePageByUser.get(userName)) {
+                                maxGamePageByUser.set(userName, gamePageValue);
+                            }
+                        }
                     });
+
+                    // Si se encontraron usuarios con datos válidos, poblar la tabla
+                    if (maxGamePageByUser.size > 0) {
+                        maxGamePageByUser.forEach((maxGamePage, userName) => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${userName}</td>
+                                <td>${maxGamePage}</td>
+                            `;
+                            tableBody.appendChild(tr);
+                        });
+                    } else {
+                        tableBody.innerHTML = '<tr><td colspan="2">No se encontraron usuarios con datos válidos de Game Page.</td></tr>';
+                    }
+
                 } else {
-                    tableBody.innerHTML = '<tr><td colspan="5">No hay datos disponibles o la hoja está vacía.</td></tr>';
+                    tableBody.innerHTML = '<tr><td colspan="2">No hay datos disponibles o la hoja está vacía.</td></tr>';
                 }
 
             } catch (error) {
                 console.error('Error al obtener los datos:', error);
-                tableBody.innerHTML = '<tr><td colspan="5">Error al cargar los datos. Por favor, revisa la consola para más detalles.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="2">Error al cargar los datos. Por favor, revisa la consola para más detalles.</td></tr>';
             } finally {
                 loadingDiv.style.display = 'none'; // Ocultar mensaje de carga
             }
         }
 
+        // Cargar los datos la primera vez
         fetchUserData();
+
+        // Actualizar los datos cada 5 segundos
         setInterval(fetchUserData, 5000);
     </script>
 </body>
