@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Primer Desafío: Juego del Calamar</title>
+    <title>Bienvenido al Desafío: Juego del Calamar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* Importamos la fuente Chakra Petch */
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap');
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #0d1a26; /* Fondo muy oscuro, casi negro */
+            font-family: 'Chakra Petch', sans-serif;
+            background-color: #000000; /* Fondo general NEGRO */
             color: #ecf0f1; /* Texto claro */
             display: flex;
             justify-content: center;
@@ -18,430 +22,736 @@
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
+            overflow: hidden; /* Evitar scroll si la animación se desborda temporalmente */
         }
 
         .container {
-            background-color: #1a2a3a; /* Contenedor oscuro con un ligero matiz */
+            /* Contenedor oscuro con un ligero matiz, ahora con la imagen de fondo */
+            background-color: #1a2a3a;
             padding: 40px;
             border-radius: 15px; /* Bordes más redondeados */
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
-            max-width: 600px;
+            max-width: 550px; /* Un poco más ancho */
             width: 100%;
-            position: relative; /* Para posicionar el temporizador */
-            display: flex; /* Añadido para Flexbox */
-            flex-direction: column; /* Para apilar los elementos verticalmente */
-            align-items: center; /* Centrar horizontalmente los elementos hijos */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             border: 2px solid #e74c3c; /* Borde rojo distintivo */
+            position: relative; /* Para el posicionamiento de la animación */
+            overflow: hidden; /* Asegurar que la animación no se salga del contenedor */
+
+            /* --- Fondo de imagen DENTRO del cuadrado rojo --- */
             background-image: url('fonde be safe.png'); /* Ruta a tu imagen PNG */
             background-size: cover; /* Cubre toda el área del contenedor */
             background-position: center; /* Centra la imagen */
             background-repeat: no-repeat; /* Evita que la imagen se repita */
+            /* Quitado: background-attachment: fixed; ya que la imagen está en el contenedor, no en el body */
+        }
+
+        /* Oculta todo el contenido del formulario inicialmente */
+        .form-content {
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out; /* Transición suave para que aparezca */
+            pointer-events: none; /* Deshabilita interacciones mientras está oculto */
+        }
+
+        .form-content.active {
+            opacity: 1;
+            pointer-events: all; /* Habilita interacciones cuando está activo */
         }
 
         h1 {
-            color: #e74c3c; /* Rojo, como los uniformes de los guardias o la sangre en Squid Game */
-            margin-bottom: 30px;
-            font-size: 2.5em;
-        }
-
-        .timer {
-            font-size: 1.8em;
-            color: #f1c40f; /* Amarillo/Dorado, como el dinero del premio */
-            margin-bottom: 10px; /* Reducido para acercarlo al nombre de usuario */
-            background-color: rgba(0, 0, 0, 0.3);
-            padding: 10px 15px;
-            border-radius: 5px;
-            align-self: center; /* Centrar el timer dentro del flex container */
-        }
-
-        p {
-            font-size: 1.4em;
-            margin-bottom: 30px;
-        }
-
-        .options-container {
-            display: flex;
-            justify-content: center; /* Centrar los botones de opción */
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .option-button {
-            background-color: #2980b9; /* Azul */
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            min-width: 120px;
-        }
-
-        .option-button:hover {
-            background-color: #3498db; /* Azul más claro al pasar el ratón */
-            transform: translateY(-3px);
-        }
-
-        .option-button.selected {
-            background-color: #e74c3c; /* Rojo cuando está seleccionado */
-            border: 2px solid #c0392b;
-            transform: scale(1.05);
-        }
-
-        #submitButton {
-            background-color: #27ae60; /* Verde para enviar */
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.5em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-        }
-
-        #submitButton:hover {
-            background-color: #2ecc71; /* Verde más claro al pasar el ratón */
-        }
-
-        #submitButton:disabled {
-            background-color: #7f8c8d; /* Gris cuando está deshabilitado */
-            cursor: not-allowed;
-        }
-
-        #nextButton {
-            background-color: #f39c12; /* Naranja para siguiente */
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.5em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-            display: none; /* Oculto inicialmente */
-            margin-left: auto; /* Centrar el botón */
-            margin-right: auto; /* Centrar el botón */
-        }
-
-        #nextButton:hover {
-            background-color: #e67e22; /* Naranja más oscuro al pasar el ratón */
-        }
-
-        .message {
-            font-size: 1.8em;
-            margin-top: 30px;
-            font-weight: bold;
-        }
-
-        /* Estas clases ya no se usarán directamente para incorrecto/timeout, pero las mantengo por si hay otros usos */
-        .incorrect-message {
-            color: #e74c3c; /* Rojo para incorrecto */
-        }
-
-        .timeout-message {
-            color: #e74c3c; /* Rojo para tiempo agotado */
-        }
-
-        .correct-message {
-            color: #2ecc71; /* Verde para correcto */
-        }
-        .welcome-message {
-            font-size: 1.5em;
-            color: #f1c40f;
-            margin-bottom: 20px; /* Ajustado para separar de la pregunta */
-        }
-
-        /* --- Estilos para el modal/alerta de GAME OVER --- */
-        .game-over-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
+            color: #e74c3c; /* Rojo Squid Game */
+            margin-bottom: 25px;
+            font-size: 3.2em; /* Más grande para el título principal */
+            text-transform: uppercase;
+            letter-spacing: 3px;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000; /* Asegura que esté por encima de todo */
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            text-shadow: 0 0 10px rgba(231, 76, 60, 0.7); /* Resplandor rojo */
         }
 
-        .game-over-modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .game-over-modal-content {
-            background: linear-gradient(135deg, #1a2a3a, #0d1a26); /* Degradado oscuro */
-            border: 3px solid #e74c3c; /* Borde rojo del Juego del Calamar */
-            border-radius: 20px;
-            padding: 50px;
-            box-shadow: 0 0 40px rgba(231, 76, 60, 0.7); /* Resplandor rojo intenso */
-            text-align: center;
-            transform: scale(0.8);
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            animation: pulse-glow 2s infinite alternate; /* Animación de pulso para el glow */
-        }
-
-        .game-over-modal-overlay.show .game-over-modal-content {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .game-over-modal-content h2 {
-            font-size: 4em; /* Más grande */
-            color: #e74c3c; /* Rojo intenso */
-            text-shadow: 0 0 15px rgba(231, 76, 60, 0.9); /* Sombra de texto brillante */
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-        }
-
-        .game-over-modal-content p {
+        h1 .game-icon {
+            /* OCULTAR EL ICONO DEL JOYSTICK - display: none; */
+            margin-right: 20px;
             font-size: 1.5em;
-            color: #f1c40f; /* Amarillo/Dorado para el texto secundario */
-            margin-bottom: 40px;
-            line-height: 1.6;
+            line-height: 1;
+            animation: pulse 1.5s infinite alternate;
+            display: none;
         }
 
-        .game-over-modal-content button {
-            background-color: #27ae60; /* Botón verde */
+        h2 {
+            color: #f1c40f; /* Amarillo/Dorado para formato título */
+            font-size: 2em;
+            margin-bottom: 35px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(241, 196, 15, 0.6); /* Resplandor amarillo */
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            color: #f1c40f; /* Amarillo para las etiquetas */
+            text-align: center;
+            width: 100%;
+            letter-spacing: 0.8px;
+        }
+
+        .input-group input {
+            width: calc(90% - 20px);
+            max-width: 350px;
+            padding: 15px 15px;
+            border: 1px solid #7f8c8d;
+            border-radius: 8px; /* Más redondeado */
+            background-color: #2b3e50; /* Color de fondo del input más oscuro */
+            color: #ecf0f1;
+            font-size: 1.2em;
+            box-sizing: border-box;
+            text-align: center;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: #e74c3c; /* Borde rojo al enfocar */
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.5); /* Resplandor al enfocar */
+            outline: none;
+        }
+
+        .input-group input::placeholder {
+            color: #95a5a6; /* Placeholder un poco más oscuro */
+        }
+
+        .city-label {
+            font-size: 1.2em;
+            color: #f1c40f;
+            margin-bottom: 15px;
+            text-align: center;
+            width: 100%;
+            letter-spacing: 0.8px;
+        }
+
+        .radio-options-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px; /* Más espacio entre los botones */
+            margin-top: 15px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .city-button {
+            background-color: #34495e; /* Azul oscuro suave */
             color: white;
-            padding: 15px 40px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px; /* Más redondeado */
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            min-width: 140px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .city-button:hover {
+            background-color: #3f5870; /* Un poco más claro al pasar el ratón */
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .city-button.selected {
+            background-color: #e74c3c; /* Rojo cuando está seleccionado */
+            border: 3px solid #c0392b; /* Borde más grueso y oscuro */
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.7); /* Resplandor rojo al seleccionar */
+        }
+
+        .city-button input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+        }
+
+        #startButton {
+            background-color: #27ae60; /* Verde para iniciar */
+            color: white;
+            padding: 18px 50px;
             border: none;
             border-radius: 10px;
-            font-size: 1.3em;
+            font-size: 1.8em; /* Más grande */
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            position: relative; /* Necesario para posicionar el span de carga */
+            overflow: hidden; /* Asegura que el texto se mantenga dentro del botón */
         }
 
-        .game-over-modal-content button:hover {
-            background-color: #2ecc71;
-            transform: translateY(-3px);
+        #startButton:hover {
+            background-color: #2ecc71; /* Verde más claro */
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
         }
 
-        /* Animación de pulso para el resplandor del modal */
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 30px rgba(231, 76, 60, 0.7); }
-            100% { box-shadow: 0 0 50px rgba(231, 76, 60, 1), 0 0 20px rgba(231, 76, 60, 0.5); }
+        #startButton:disabled {
+            background-color: #7f8c8d; /* Gris cuando está deshabilitado */
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
-        /* Media queries para responsividad del modal */
+        /* Estilos para el texto de "Cargando..." dentro del botón */
+        #startButton .loading-text {
+            display: none; /* Inicialmente oculto */
+            color: white;
+            font-weight: bold;
+            animation: pulseText 1s infinite alternate; /* Animación de pulso para el texto de carga */
+        }
+
+        /* Animación de pulso para el texto de carga */
+        @keyframes pulseText {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            font-size: 1em;
+            display: none;
+            text-align: center;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        /* --- CONTENEDOR DE LA ANIMACIÓN INICIAL (Frase "Be Safe" + Figuras) --- */
+        #introAnimationWrapper {
+            position: absolute;
+            top: 0; /* Aseguramos que esté pegado al top del container */
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a2a3a; /* Mismo color del contenedor para fundirse */
+            z-index: 20; /* Asegura que esté por encima del contenido del formulario */
+            display: flex;
+            flex-direction: column; /* Para apilar la frase y las figuras */
+            justify-content: space-around; /* Distribuye el espacio entre los elementos */
+            align-items: center;
+            opacity: 1; /* Empieza visible */
+            animation: introFadeOut 0.5s forwards 8s; /* Se desvanecerá al final de la secuencia de animación */
+            padding-top: 1%;
+            padding-bottom: 2%; /* Agrega un padding inferior para el texto de carga */
+            box-sizing: border-box; /* Para que el padding no afecte el cálculo de height */
+        }
+
+        #animationContainer {
+            /* Mantiene los estilos de posicionamiento relativo dentro del wrapper */
+            position: relative;
+            width: 100%; /* Ajusta el ancho para que las figuras se centren */
+            height: 40%; /* Ajustado para dar más espacio vertical a las figuras y al texto de carga */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px; /* Ajustado para empujar las figuras más abajo y separar de la frase */
+            margin-bottom: 0; /* Asegurar que no haya margen inferior extra */
+        }
+
+        .animated-shape {
+            position: absolute;
+            font-size: 15vw; /* Tamaño base de las figuras, responsivo con el viewport */
+            opacity: 0; /* Aún invisible al inicio de sus animaciones individuales */
+            line-height: 1;
+            transition: transform 0.7s ease-in-out, color 0.7s ease-in-out;
+            color: white; /* Color inicial blanco */
+        }
+
+        /* Ajuste específico para el triángulo para asegurar tamaño constante */
+        .animated-shape.triangle {
+            font-size: 15vw; /* Usar el mismo tamaño base */
+        }
+
+        /* Keyframes de las figuras */
+        .animated-shape.circle {
+            animation: circleEnter 1.5s forwards 0.5s,
+                       circleCentralize 0.5s forwards 2s,
+                       circleToHorizontal 1.5s forwards 4.5s;
+        }
+
+        .animated-shape.triangle {
+            animation: triangleEnter 1.5s forwards 0.5s,
+                       triangleCentralize 0.5s forwards 2s,
+                       triangleToHorizontal 1.5s forwards 4.5s;
+        }
+
+        .animated-shape.square {
+            animation: squareEnter 1.5s forwards 0.5s,
+                       squareCentralize 0.5s forwards 2s,
+                       squareToHorizontal 1.5s forwards 4.5s;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        /* Animación de entrada de las figuras */
+        @keyframes circleEnter {
+            0% { opacity: 0; transform: translateY(-250%) scale(0.8); } /* Más arriba */
+            100% { opacity: 1; transform: translateY(-100%) scale(1); } /* Posición inicial más baja */
+        }
+
+        @keyframes triangleEnter {
+            0% { opacity: 0; transform: translateX(-200%) scale(1); } /* Sin escalado, tamaño inicial correcto */
+            100% { opacity: 1; transform: translateX(0) scale(1); } /* Tamaño constante */
+        }
+
+        @keyframes squareEnter {
+            0% { opacity: 0; transform: translateY(250%) scale(0.8); } /* Más abajo */
+            100% { opacity: 1; transform: translateY(100%) scale(1); } /* Posición inicial más baja */
+        }
+
+        /* Animación de centralización (separación vertical) */
+        @keyframes circleCentralize {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(-150px); } /* Bajar más el círculo */
+        }
+
+        @keyframes triangleCentralize {
+            0% { transform: translateX(0) scale(1); } /* Tamaño constante */
+            100% { transform: translateY(0px) scale(1); } /* Mantener en el centro vertical de las 3, tamaño constante */
+        }
+
+        @keyframes squareCentralize {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(150px); } /* Bajar más el cuadrado */
+        }
+
+        /* Animación de movimiento a horizontal y CAMBIO DE COLOR */
+        @keyframes circleToHorizontal {
+            0% { transform: translateY(-150px) scale(1); color: white; }
+            50% { color: #e74c3c; } /* Rojo en el 50% de la animación */
+            100% { transform: translate(-140px, 0) scale(1); color: #e74c3c; } /* Termina en rojo */
+        }
+
+        @keyframes triangleToHorizontal {
+            0% { transform: translateY(0px) scale(1); color: white; } /* Color inicial blanco */
+            50% { color: #e74c3c; } /* Rojo en el 50% de la animación */
+            100% { transform: translate(0, 0) scale(1); color: #e74c3c; } /* Termina en rojo */
+        }
+
+        @keyframes squareToHorizontal {
+            0% { transform: translateY(150px) scale(1); color: white; } /* Color inicial blanco */
+            50% { color: #e74c3c; } /* Rojo en el 50% de la animación */
+            100% { transform: translate(140px, -5px) scale(1); color: #e74c3c; } /* Termina en rojo */
+        }
+
+        /* NUEVO Keyframe para el desvanecimiento del contenedor general de la intro */
+        @keyframes introFadeOut {
+            0% { opacity: 1; pointer-events: all; }
+            95% { opacity: 1; } /* Mantiene visible hasta casi el final */
+            100% { opacity: 0; pointer-events: none; display: none; } /* Se oculta completamente */
+        }
+
+        /* --- Estilos para la frase "El Juego del Be Safe" dentro de la animación --- */
+        .game-title-be-safe {
+            font-size: 3em; /* Ajustado para que quepa bien en el contenedor */
+            color: #ecf0f1;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            text-align: center;
+            line-height: 1.2;
+            margin-top: 0; /* Aseguramos que no haya margen superior adicional */
+            margin-bottom: 5px; /* Un margen pequeño para separar de las figuras */
+            /* La animación de glow de texto se aplica desde el inicio */
+            animation: textGlowPulse 2s infinite alternate ease-in-out;
+        }
+
+        .game-title-be-safe .red-char-be-safe {
+            color: #e74c3c;
+        }
+
+        /* Keyframes para la animación de pulso de resplandor de texto (usada por "Be Safe") */
+        @keyframes textGlowPulse {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.3),
+                             0 0 20px rgba(231, 76, 60, 0.4);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.6),
+                             0 0 40px rgba(231, 76, 60, 0.8);
+            }
+        }
+
+        /* Nuevo estilo para el texto de carga */
+        .loading-animation-text {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.5em; /* Tamaño de fuente para el texto de carga */
+            color: #ecf0f1; /* Mismo color que el texto principal de "Be Safe" */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            opacity: 0; /* Inicialmente invisible */
+            animation: fadeInOutLoading 3s infinite alternate forwards 5.5s; /* Animación de fade in/out después de las figuras */
+            margin-top: 40px; /* Margen superior para colocarlo debajo del cuadrado */
+            padding-bottom: 20px; /* Pequeño padding inferior para darle espacio */
+        }
+
+        /* Keyframes para la animación del texto de carga */
+        @keyframes fadeInOutLoading {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+
+        /* --- MEDIA QUERIES PARA AJUSTES EN PANTALLAS PEQUEÑAS (CELULAR) --- */
         @media (max-width: 768px) {
-            .game-over-modal-content {
-                padding: 30px;
-                max-width: 90%;
-            }
-            .game-over-modal-content h2 {
-                font-size: 3em;
-            }
-            .game-over-modal-content p {
-                font-size: 1.2em;
-            }
-            .game-over-modal-content button {
-                padding: 12px 30px;
-                font-size: 1.1em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .game-over-modal-content {
-                padding: 20px;
-            }
-            .game-over-modal-content h2 {
+            .game-title-be-safe {
                 font-size: 2.5em;
-                letter-spacing: 3px;
+                letter-spacing: 2px;
             }
-            .game-over-modal-content p {
-                font-size: 1em;
+            #animationContainer {
+                margin-top: 30px; /* Ajuste para pantallas más pequeñas */
+                height: 40%;
             }
-            .game-over-modal-content button {
-                padding: 10px 25px;
-                font-size: 1em;
+            .animated-shape {
+                font-size: 20vw; /* Ajuste el tamaño de las figuras para pantallas más pequeñas */
+            }
+            /* **Añadido para asegurar que el triángulo escale igual** */
+            .animated-shape.triangle {
+                font-size: 20vw;
+            }
+            .loading-animation-text {
+                font-size: 1.2em;
+                margin-top: 30px;
             }
         }
 
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.2em; /* Título "Bienvenido al Desafío" más pequeño, como solicitaste */
+                margin-bottom: 20px;
+            }
+
+            h1 .game-icon {
+                font-size: 1.2em;
+                margin-right: 10px;
+            }
+
+            h2 {
+                font-size: 1.6em;
+                margin-bottom: 25px;
+            }
+
+            .input-group {
+                margin-bottom: 20px;
+            }
+
+            .input-group label {
+                font-size: 1em;
+                margin-bottom: 5px;
+            }
+
+            .input-group input {
+                padding: 12px 10px;
+                font-size: 1em;
+            }
+
+            .city-label {
+                font-size: 1em;
+                margin-bottom: 10px;
+            }
+
+            .radio-options-container {
+                gap: 15px;
+                margin-top: 10px;
+                margin-bottom: 15px;
+                flex-direction: row;
+                justify-content: space-around;
+            }
+
+            .city-button {
+                padding: 10px 20px;
+                font-size: 0.9em;
+                min-width: auto;
+            }
+
+            #startButton {
+                font-size: 1.4em;
+                padding: 15px 35px;
+                margin-top: 20px;
+            }
+
+            .error-message {
+                color: #e74c3c;
+                margin-top: 8px;
+                margin-bottom: 15px;
+                font-size: 0.9em;
+            }
+
+            #introAnimationWrapper {
+                padding-top: 5%;
+                padding-bottom: 5%;
+            }
+
+            .game-title-be-safe {
+                font-size: 2em; /* Se mantiene este tamaño si la pantalla es <= 600px */
+                letter-spacing: 2px;
+                margin-bottom: 10px;
+            }
+
+            #animationContainer {
+                margin-top: 15px;
+                height: 30%;
+            }
+
+            /* **Añadido para asegurar que el triángulo escale igual** */
+            .animated-shape {
+                font-size: 25vw; /* Ajuste el tamaño de las figuras para móviles muy pequeños */
+            }
+            .animated-shape.triangle {
+                font-size: 25vw;
+            }
+
+            .loading-animation-text {
+                font-size: 1.2em;
+                margin-top: 20px;
+            }
+        }
+
+        /* Ajustes para pantallas aún más pequeñas si es necesario */
+        @media (max-width: 480px) { /* Este media query ya lo tenía tu archivo, lo mantengo para los .animated-shape */
+            .animated-shape {
+                font-size: 25vw; /* Ajuste el tamaño de las figuras para móviles muy pequeños */
+            }
+            .animated-shape.triangle { /* **Añadido para asegurar que el triángulo escale igual** */
+                font-size: 25vw;
+            }
+        }
+
+        @media (max-width: 400px) { /* Este es el media query para pantallas más pequeñas de 400px */
+            .radio-options-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .city-button {
+                width: 80%;
+                min-width: 0;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="timer" id="timerDisplay">01:00</div>
-        <div class="welcome-message" id="welcomeMessage"></div>
+        <div id="introAnimationWrapper">
+            <div class="game-title-be-safe" id="beSafeTitle">
+                El Juego D<span class="red-char-be-safe">E</span>L <br>BE SA<span class="red-char-be-safe">F</span>E
+            </div>
 
-        <h1>¡PRIMER DESAFIO!</h1>
-        <p>¿Qué es lo primero que hay que hacer si hay un accidente de tránsito con heridos?</p>
+            <div id="animationContainer">
+                <span class="animated-shape circle">&#x25CB;</span>
+                <span class="animated-shape triangle">&#x25B3;</span>
+                <span class="animated-shape square">&#x25A1;</span>
+            </div>
 
-        <div class="options-container">
-            <button class="option-button" data-value="irse">Irse rápido para no tener problemas.</button>
-            <button class="option-button" data-value="mover">Mover a los heridos como sea.</button>
-            <button class="option-button" data-value="senalizar">Señalizar, ver cómo están y llamar a emergencias.</button>
-            <button class="option-button" data-value="pedir_seguro">Pedir el seguro para ver quién fue el culpable.</button>
+            <div id="loadingText" class="loading-animation-text">
+                Iniciando ...
+            </div>
         </div>
 
-        <button id="submitButton">Responder</button>
-        <button id="nextButton">Siguiente</button>
+        <div class="form-content" id="formContent">
+            <h1>Bienvenido al Desafío</h1>
+            <h2>Ingresa tus datos</h2>
 
-        <div id="feedbackMessage" class="message"></div>
-    </div>
+           <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec">
+                <div class="input-group">
+                    <label for="username">Ingresa tu nombre</label>
+                    <input type="text" id="username" name="nombre" placeholder="Tu nombre de jugador" maxlength="20" required>
+                    <div id="usernameError" class="error-message">Por favor, ingresa tu nombre.</div>
+                </div>
 
-    <div class="game-over-modal-overlay" id="gameOverModal">
-        <div class="game-over-modal-content">
-            <h2>GAME OVER</h2>
-            <p>Has sido eliminado del juego.</p>
-            <button id="restartButton">Salir</button> </div>
+                <div class="input-group">
+                    <span class="city-label">Ciudad</span>
+                    <div class="radio-options-container">
+                        <button class="city-button" type="button" data-value="Bahía Blanca">
+                            <input type="radio" id="bahiaBlanca" name="localidad" value="Bahía Blanca">
+                            Bahía Blanca
+                        </button>
+                        <button class="city-button" type="button" data-value="Paraná">
+                            <input type="radio" id="parana" name="localidad" value="Paraná">
+                            Paraná
+                        </button>
+                    </div>
+                    <div id="cityError" class="error-message">Por favor, selecciona tu ciudad.</div>
+                </div>
+
+                <button id="startButton" type="submit" disabled>
+                    <span class="button-text">Comenzar el Juego</span>
+                    <span class="loading-text">Cargando...</span>
+                </button>
+            </form>
+        </div>
     </div>
 
     <script>
-        const timerDisplay = document.getElementById('timerDisplay');
-        const optionButtons = document.querySelectorAll('.option-button');
-        const submitButton = document.getElementById('submitButton');
-        const nextButton = document.getElementById('nextButton');
-        const feedbackMessage = document.getElementById('feedbackMessage'); // Se mantiene para mensajes correctos
-        const welcomeMessage = document.getElementById('welcomeMessage');
-        const correctAnwser = 'senalizar';
-        const totalTime = 60;
-        let timeLeft = totalTime;
-        let timerInterval;
-        let selectedOption = null;
-        let gameEnded = false;
-        let userName = '';
-        let userCity = '';
-        const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec';
+        const dataForm = document.getElementById('dataForm');
+        const usernameInput = document.getElementById('username');
+        const cityButtons = document.querySelectorAll('.city-button');
+        // Se corrigió esta línea para que seleccione correctamente los radios por nombre
+        const cityRadios = document.querySelectorAll('input[name="localidad"]');
+        const startButton = document.getElementById('startButton');
+        const buttonText = startButton.querySelector('.button-text'); // Referencia al texto original
+        const loadingText = startButton.querySelector('.loading-text'); // Referencia al texto de carga
+        const usernameError = document.getElementById('usernameError');
+        const cityError = document.getElementById('cityError');
+        const introAnimationWrapper = document.getElementById('introAnimationWrapper');
+        const formContent = document.getElementById('formContent');
+        const beSafeTitle = document.getElementById('beSafeTitle');
 
-        // Elementos del modal
-        const gameOverModal = document.getElementById('gameOverModal');
-        const restartButton = document.getElementById('restartButton');
+        // Función para validar el formulario
+        function validateForm() {
+            let isValid = true;
 
-        // Función para parsear parámetros de URL
-        function getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-        };
+            if (usernameInput.value.trim() === '') {
+                usernameError.style.display = 'block';
+                isValid = false;
+            } else {
+                usernameError.style.display = 'none';
+            }
 
-        // Obtener el nombre de usuario y la ciudad de la URL al cargar la página
-        userName = getUrlParameter('user');
-        userCity = getUrlParameter('city');
-        if (userName) {
-            welcomeMessage.textContent = `¡Jugador: ${userName}!`;
+            let citySelected = false;
+            cityRadios.forEach(radio => {
+                if (radio.checked) {
+                    citySelected = true;
+                }
+            });
+
+            if (!citySelected) {
+                cityError.style.display = 'block';
+                isValid = false;
+            } else {
+                cityError.style.display = 'none';
+            }
+
+            // El botón de inicio ahora solo se habilita si el formulario es válido
+            startButton.disabled = !isValid;
         }
 
-        // Función para enviar datos al script de Google Apps
-        async function sendGameData(name, city, gamePage, timeTaken) {
+        // Event listeners para la validación
+        usernameInput.addEventListener('input', validateForm);
+        cityButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                cityButtons.forEach(btn => btn.classList.remove('selected'));
+                cityRadios.forEach(radio => radio.checked = false);
+
+                button.classList.add('selected');
+                const radioInsideButton = button.querySelector('input');
+                if (radioInsideButton) {
+                    radioInsideButton.checked = true;
+                }
+                validateForm();
+            });
+        });
+
+        // Manejador del envío del formulario modificado para enviar datos a Google Sheets
+        dataForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            validateForm();
+
+            if (startButton.disabled) {
+                return;
+            }
+
+            // Ocultar el texto original del botón y mostrar "Cargando..."
+            buttonText.style.display = 'none';
+            loadingText.style.display = 'inline-block'; // O 'block' si quieres que ocupe todo el ancho
+            // Cambiar el color del botón a amarillo al hacer click
+            startButton.style.backgroundColor = '#f1c40f'; // Establece el color amarillo
+            startButton.style.pointerEvents = 'none'; // Deshabilita el botón para evitar múltiples clics
+            startButton.style.cursor = 'wait'; // Cambia el cursor a "espera"
+
+
+            const username = usernameInput.value.trim();
+            let selectedCity = '';
+            cityRadios.forEach(radio => {
+                if (radio.checked) {
+                    selectedCity = radio.value;
+                }
+            });
+
+            // Crear FormData para enviar los datos
             const formData = new FormData();
-            formData.append('nombre', name);
-            formData.append('localidad', city);
-            formData.append('gamePage', gamePage);
-            formData.append('timeTaken', timeTaken);
+            formData.append('nombre', username);
+            formData.append('localidad', selectedCity);
+            formData.append('gamePage', 'Registro');
+            formData.append('timeTaken', 0);
 
             try {
-                const response = await fetch(googleAppsScriptURL, {
+                // Enviar datos a Google Apps Script
+                const response = await fetch(dataForm.action, {
                     method: 'POST',
                     body: formData
                 });
 
                 if (response.ok) {
-                    console.log(`¡Datos del juego para ${gamePage} enviados a Google Sheets correctamente!`);
+                    console.log('Datos enviados a Google Sheets con éxito!');
+                    // Redirigir a la primera pregunta después de enviar los datos
+                    window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
                 } else {
-                    console.error(`Error al enviar datos del juego para ${gamePage} a Google Sheets:`, response.statusText);
+                    console.error('Error al enviar datos a Google Sheets:', response.statusText);
+                    // Aunque falle el envío, permitir continuar con el juego
+                    window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
                 }
             } catch (error) {
-                console.error(`Error de red o problema al enviar datos del juego para ${gamePage}:`, error);
+                console.error('Error de red o al enviar datos:', error);
+                // Aunque falle el envío, permitir continuar con el juego
+                window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
+            } finally {
+                // En caso de que la navegación falle por algún motivo, restaurar el botón
+                startButton.style.backgroundColor = '#27ae60'; // Vuelve al verde
+                buttonText.style.display = 'inline';
+                loadingText.style.display = 'none';
+                startButton.style.pointerEvents = 'auto'; // Habilita de nuevo el botón
+                startButton.style.cursor = 'pointer';
             }
-        }
-
-        // Función para actualizar la visualización del temporizador
-        function updateTimer() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                if (!gameEnded) {
-                    endGame(false); // Llamar endGame con false para tiempo agotado
-                    sendGameData(userName, userCity, '1', 0); // Registrar 0 tiempo si se agotó
-                }
-            } else {
-                timeLeft--;
-            }
-        }
-
-        // Función para terminar el juego con un mensaje o mostrar el GAME OVER modal
-        function endGame(isCorrect) {
-            gameEnded = true;
-            clearInterval(timerInterval);
-
-            // Deshabilitar botones de opción y submit
-            optionButtons.forEach(button => button.disabled = true);
-            submitButton.style.display = 'none';
-
-            if (isCorrect) {
-                feedbackMessage.textContent = "¡Respuesta correcta! ¡Felicidades, sigues en el juego! 🎉";
-                feedbackMessage.classList.add('correct-message');
-                feedbackMessage.classList.remove('incorrect-message'); // Asegurarse de quitar si estuvo antes
-                nextButton.style.display = 'block';
-                sendGameData(userName, userCity, '1', totalTime - timeLeft);
-
-                setTimeout(() => {
-                    window.location.href = `Squidgame2.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
-                }, 3000);
-
-            } else {
-                // Mostrar el modal de GAME OVER
-                gameOverModal.classList.add('show');
-                // feedbackMessage se mantiene vacío para no mostrar el texto si es GAME OVER
-                feedbackMessage.textContent = "";
-                sendGameData(userName, userCity, '1', totalTime - timeLeft); // Enviar tiempo al perder
-            }
-        }
-
-        // Iniciar el temporizador cuando la página se carga
-        document.addEventListener('DOMContentLoaded', () => {
-            timerInterval = setInterval(updateTimer, 1000);
-            submitButton.disabled = true; // Botón de responder deshabilitado hasta que se seleccione una opción
         });
 
-        // Event listeners para los botones de opción
-        optionButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                if (gameEnded) return;
-                optionButtons.forEach(btn => btn.classList.remove('selected'));
-                button.classList.add('selected');
-                selectedOption = button.dataset.value;
-                submitButton.disabled = false;
+        // --- Lógica de la secuencia de animación inicial y aparición del formulario ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicialmente, el formulario estará oculto y deshabilitado para interacciones
+            formContent.classList.remove('active');
+            validateForm(); // Asegura que el botón esté deshabilitado al inicio
+
+            // Escuchamos el evento `animationend` del contenedor principal de la introducción
+            introAnimationWrapper.addEventListener('animationend', (event) => {
+                // Aseguramos que solo reaccionamos a la animación principal de fade out
+                if (event.animationName === 'introFadeOut') {
+                    introAnimationWrapper.style.display = 'none'; // Oculta el contenedor de animación completamente
+                    formContent.classList.add('active'); // Muestra el contenido del formulario
+                    validateForm(); // Re-valida para habilitar el botón si el formulario es válido
+                }
             });
         });
-
-        // Event listener para el botón "Responder"
-        submitButton.addEventListener('click', () => {
-            if (gameEnded) return;
-            if (selectedOption === null) {
-                alert("Por favor, selecciona una opción antes de responder.");
-                return;
-            }
-
-            if (selectedOption === correctAnwser) {
-                endGame(true);
-            } else {
-                endGame(false);
-            }
-        });
-
-        // Event listener para el botón "Salir" del modal de GAME OVER
-        restartButton.addEventListener('click', () => {
-            // Redirigir a la página game over.html
-            window.location.href = `game over.html`; // CAMBIO: Ahora redirige a "game over.html"
-        });
-
     </script>
 </body>
 </html>
