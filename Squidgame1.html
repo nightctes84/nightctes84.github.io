@@ -32,7 +32,7 @@
             flex-direction: column; /* Para apilar los elementos verticalmente */
             align-items: center; /* Centrar horizontalmente los elementos hijos */
             border: 2px solid #e74c3c; /* Borde rojo distintivo */
-            background-image: url('fonde be safe.PNG'); /* Ruta a tu imagen PNG, asegurando la mayúscula en PNG */
+            background-image: url('fonde be safe.png'); /* Ruta a tu imagen PNG */
             background-size: cover; /* Cubre toda el área del contenedor */
             background-position: center; /* Centra la imagen */
             background-repeat: no-repeat; /* Evita que la imagen se repita */
@@ -436,11 +436,12 @@
             }
         });
 
-        // Event listener para el botón "Salir" del modal de GAME OVER (antes "restartButton")
+        // Event listener para el botón "Salir" del modal de GAME OVER
         restartButton.addEventListener('click', () => {
             // Redirigir a la página game over.html
-            window.location.href = `game over.html`;
+            window.location.href = `game over.html`; // CAMBIO: Ahora redirige a "game over.html"
         });
+
     </script>
 </body>
 </html>
