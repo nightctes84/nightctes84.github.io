@@ -98,6 +98,7 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
+        /* El botón .restart-button ya no se usará, pero los estilos se mantienen por si los quieres reutilizar */
         .restart-button {
             background-color: #27ae60; /* Verde vibrante */
             color: white;
@@ -229,11 +230,11 @@
     <div class="stars" id="stars-container"></div>
 
     <div class="game-over-container">
-        <div class="icon-failure">✖</div> <h1>¡Desafío Finalizado!</h1>
+        <div class="icon-failure">✖</div>
+        <h1>¡Desafío Finalizado!</h1>
         <p>A veces, el camino hacia la meta tiene giros inesperados. En el mundo de <span class="highlight-text">Be Safe</span>, cada experiencia es una oportunidad para <span class="highlight-text">aprender y mejorar</span>.</p>
         <p class="motivational-text">No es el fin, es solo el comienzo de tu siguiente nivel. ¡Tu esfuerzo es valioso!</p>
-        <button class="restart-button" onclick="restartGame()">Volver a Intentarlo</button>
-    </div>
+        </div>
 
     <script>
         // Función para generar estrellas de fondo
@@ -257,12 +258,8 @@
         // Llama a la función para crear estrellas cuando se carga la página
         document.addEventListener('DOMContentLoaded', createStars);
 
-        // Función para reiniciar el juego
-        function restartGame() {
-            // Redirige al usuario a la página de inicio o a la primera pregunta
-            // Asegúrate de que esta URL sea la correcta para el inicio de tu juego
-            window.location.href = 'index.html'; // O 'Squidgame1.html' si quieres que inicie directamente ahí
-        }
+        // La función restartGame ya no es necesaria si no hay botón que la llame
+        // Si necesitas que esta página redirija automáticamente o tenga otra acción, deberías añadirla aquí.
     </script>
 </body>
 </html>
