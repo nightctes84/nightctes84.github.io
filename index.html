@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡Fin del Desafío! - Be Safe</title>
+    <title>Bienvenido al Desafío: Juego del Calamar</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap" rel="stylesheet">
     <style>
         /* Importamos la fuente Chakra Petch */
@@ -11,14 +11,14 @@
 
         body {
             font-family: 'Chakra Petch', sans-serif;
-            /* Modificación aquí para usar la imagen de fondo con el nombre CORREGIDO */
-            background-image: url('fonde be safe.PNG'); /* ¡CORREGIDO: "fonde" con 'e' al final! */
+            /* MODIFICACIÓN CLAVE AQUÍ: La imagen de fondo ahora se aplica al BODY */
+            background-image: url('fonde be safe.PNG'); /* Ruta a tu imagen PNG, nombre EXACTO */
             background-size: cover; /* Cubre todo el fondo */
             background-position: center; /* Centra la imagen */
             background-repeat: no-repeat; /* Evita que la imagen se repita */
             background-attachment: fixed; /* Mantiene la imagen fija al hacer scroll (opcional) */
             background-color: #000000; /* Color de fallback si la imagen no carga */
-            color: #ecf0f1;
+            color: #ecf0f1; /* Texto claro */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -28,249 +28,735 @@
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
-            overflow: hidden; /* Para animaciones */
+            overflow: hidden; /* Evitar scroll si la animación se desborda temporalmente */
         }
 
-        .game-over-container {
-            /* Mantén un color de fondo semitransparente para que la imagen se vea detrás */
-            background-color: rgba(26, 42, 58, 0.9); /* Ligeramente más opaco para que el texto resalte */
-            padding: 50px 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8); /* Sombra más profunda */
-            max-width: 650px; /* Ancho un poco mayor */
+        .container {
+            /* Contenedor oscuro con un ligero matiz, AHORA SIN LA IMAGEN DE FONDO */
+            background-color: rgba(26, 42, 58, 0.9); /* Un fondo semi-transparente para que la imagen del body se vea detrás */
+            padding: 40px;
+            border-radius: 15px; /* Bordes más redondeados */
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
+            max-width: 550px; /* Un poco más ancho */
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            border: 3px solid #e74c3c; /* Borde rojo distintivo */
-            position: relative;
-            overflow: hidden;
-            animation: fadeInScale 0.8s ease-out forwards; /* Animación de entrada */
+            border: 2px solid #e74c3c; /* Borde rojo distintivo */
+            position: relative; /* Para el posicionamiento de la animación */
+            overflow: hidden; /* Asegurar que la animación no se salga del contenedor */
+
+            /* --- ESTAS PROPIEDADES FUERON MOVIDAS AL BODY --- */
+            /* background-image: url('fonde be safe.png'); */
+            /* background-size: cover; */
+            /* background-position: center; */
+            /* background-repeat: no-repeat; */
         }
 
-        /* Animación de entrada del contenedor */
-        @keyframes fadeInScale {
-            0% { opacity: 0; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
+        /* Oculta todo el contenido del formulario inicialmente */
+        .form-content {
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out; /* Transición suave para que aparezca */
+            pointer-events: none; /* Deshabilita interacciones mientras está oculto */
         }
 
-        .icon-failure {
-            font-size: 8em; /* Ícono grande */
-            color: #e74c3c; /* Rojo de fallo */
-            margin-bottom: 20px;
-            animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both infinite; /* Animación de vibración */
-            text-shadow: 0 0 15px rgba(231, 76, 60, 0.7);
-        }
-
-        /* Keyframes para la animación de vibración */
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
+        .form-content.active {
+            opacity: 1;
+            pointer-events: all; /* Habilita interacciones cuando está activo */
         }
 
         h1 {
             color: #e74c3c; /* Rojo Squid Game */
             margin-bottom: 25px;
-            font-size: 3.5em; /* Título principal grande */
+            font-size: 3.2em; /* Más grande para el título principal */
             text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 0 0 15px rgba(231, 76, 60, 0.8); /* Resplandor */
+            letter-spacing: 3px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 0 10px rgba(231, 76, 60, 0.7); /* Resplandor rojo */
         }
 
-        p {
-            font-size: 1.6em; /* Mensaje un poco más grande */
-            line-height: 1.6;
-            margin-bottom: 30px;
-            color: #bdc3c7; /* Texto más suave */
+        h1 .game-icon {
+            /* OCULTAR EL ICONO DEL JOYSTICK - display: none; */
+            margin-right: 20px;
+            font-size: 1.5em;
+            line-height: 1;
+            animation: pulse 1.5s infinite alternate;
+            display: none;
         }
 
-        .highlight-text {
-            color: #f1c40f; /* Amarillo para resaltar palabras clave */
-            font-weight: bold;
-            text-shadow: 0 0 8px rgba(241, 196, 15, 0.5);
-        }
-
-        .motivational-text {
-            font-style: italic;
-            font-size: 1.3em;
-            margin-top: 20px;
-            color: #95a5a6;
-            animation: textFadeIn 1.5s ease-in forwards 0.5s; /* Animación de entrada del texto motivacional */
-        }
-
-        @keyframes textFadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .restart-button {
-            background-color: #27ae60; /* Verde vibrante */
-            color: white;
-            padding: 18px 45px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.9em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            margin-top: 40px;
+        h2 {
+            color: #f1c40f; /* Amarillo/Dorado para formato título */
+            font-size: 2em;
+            margin-bottom: 35px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-            animation: buttonPulse 2s infinite alternate; /* Animación de pulso para el botón */
+            text-shadow: 0 0 8px rgba(241, 196, 15, 0.6); /* Resplandor amarillo */
         }
 
-        .restart-button:hover {
-            background-color: #2ecc71;
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7);
+        .input-group {
+            margin-bottom: 30px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .restart-button:active {
-            transform: translateY(0) scale(0.98);
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            color: #f1c40f; /* Amarillo para las etiquetas */
+            text-align: center;
+            width: 100%;
+            letter-spacing: 0.8px;
+        }
+
+        .input-group input {
+            width: calc(90% - 20px);
+            max-width: 350px;
+            padding: 15px 15px;
+            border: 1px solid #7f8c8d;
+            border-radius: 8px; /* Más redondeado */
+            background-color: #2b3e50; /* Color de fondo del input más oscuro */
+            color: #ecf0f1;
+            font-size: 1.2em;
+            box-sizing: border-box;
+            text-align: center;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: #e74c3c; /* Borde rojo al enfocar */
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.5); /* Resplandor al enfocar */
+            outline: none;
+        }
+
+        .input-group input::placeholder {
+            color: #95a5a6; /* Placeholder un poco más oscuro */
+        }
+
+        .city-label {
+            font-size: 1.2em;
+            color: #f1c40f;
+            margin-bottom: 15px;
+            text-align: center;
+            width: 100%;
+            letter-spacing: 0.8px;
+        }
+
+        .radio-options-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px; /* Más espacio entre los botones */
+            margin-top: 15px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .city-button {
+            background-color: #34495e; /* Azul oscuro suave */
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px; /* Más redondeado */
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            min-width: 140px;
+            position: relative;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
-        /* Animación de pulso para el botón */
-        @keyframes buttonPulse {
-            0% { transform: scale(1); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); }
-            100% { transform: scale(1.03); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7); }
+        .city-button:hover {
+            background-color: #3f5870; /* Un poco más claro al pasar el ratón */
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
         }
 
-        /* Estrellas decorativas de fondo */
-        .stars {
-            position: fixed;
-            top: 0;
+        .city-button.selected {
+            background-color: #e74c3c; /* Rojo cuando está seleccionado */
+            border: 3px solid #c0392b; /* Borde más grueso y oscuro */
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.7); /* Resplandor rojo al seleccionar */
+        }
+
+        .city-button input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+        }
+
+        #startButton {
+            background-color: #27ae60; /* Verde para iniciar */
+            color: white;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.8em; /* Más grande */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            position: relative; /* Necesario para posicionar el span de carga */
+            overflow: hidden; /* Asegura que el texto se mantenga dentro del botón */
+        }
+
+        #startButton:hover {
+            background-color: #2ecc71; /* Verde más claro */
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        #startButton:disabled {
+            background-color: #7f8c8d; /* Gris cuando está deshabilitado */
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Estilos para el texto de "Cargando..." dentro del botón */
+        #startButton .loading-text {
+            display: none; /* Inicialmente oculto */
+            color: white;
+            font-weight: bold;
+            animation: pulseText 1s infinite alternate; /* Animación de pulso para el texto de carga */
+        }
+
+        /* Animación de pulso para el texto de carga */
+        @keyframes pulseText {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            font-size: 1em;
+            display: none;
+            text-align: center;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        /* --- CONTENEDOR DE LA ANIMACIÓN INICIAL (Frase "Be Safe" + Figuras) --- */
+        #introAnimationWrapper {
+            position: absolute;
+            top: 0; /* Aseguramos que esté pegado al top del container */
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
+            background-color: rgba(26, 42, 58, 0.95); /* Fondo para la intro, opaco para tapar la imagen del body */
+            z-index: 20; /* Asegura que esté por encima del contenido del formulario */
+            display: flex;
+            flex-direction: column; /* Para apilar la frase y las figuras */
+            justify-content: space-around; /* Distribuye el espacio entre los elementos */
+            align-items: center;
+            opacity: 1; /* Empieza visible */
+            animation: introFadeOut 0.5s forwards 8s; /* Se desvanecerá al final de la secuencia de animación */
+            padding-top: 1%;
+            padding-bottom: 2%; /* Agrega un padding inferior para el texto de carga */
+            box-sizing: border-box; /* Para que el padding no afecte el cálculo de height */
         }
 
-        .star {
+        #animationContainer {
+            /* Mantiene los estilos de posicionamiento relativo dentro del wrapper */
+            position: relative;
+            width: 100%; /* Ajusta el ancho para que las figuras se centren */
+            height: 40%; /* Ajustado para dar más espacio vertical a las figuras y al texto de carga */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px; /* Ajustado para empujar las figuras más abajo y separar de la frase */
+            margin-bottom: 0; /* Asegurar que no haya margen inferior extra */
+        }
+
+        .animated-shape {
             position: absolute;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            animation: twinkle 4s infinite ease-in-out alternate;
+            font-size: 15vw; /* Tamaño base de las figuras, responsivo con el viewport */
+            opacity: 0; /* Aún invisible al inicio de sus animaciones individuales */
+            line-height: 1;
+            transition: transform 0.7s ease-in-out, color 0.7s ease-in-out;
+            color: white; /* Color inicial blanco */
         }
 
-        /* Keyframes para el parpadeo de las estrellas */
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
+        /* Ajuste específico para el triángulo para asegurar tamaño constante */
+        .animated-shape.triangle {
+            font-size: 15vw; /* Usar el mismo tamaño base */
         }
+
+        /* Keyframes de las figuras */
+        .animated-shape.circle {
+            animation: circleEnter 1.5s forwards 0.5s,
+                       circleCentralize 0.5s forwards 2s,
+                       circleToHorizontal 1.5s forwards 4.5s;
+        }
+
+        .animated-shape.triangle {
+            animation: triangleEnter 1.5s forwards 0.5s,
+                       triangleCentralize 0.5s forwards 2s,
+                       triangleToHorizontal 1.5s forwards 4.5s;
+        }
+
+        .animated-shape.square {
+            animation: squareEnter 1.5s forwards 0.5s,
+                       squareCentralize 0.5s forwards 2s,
+                       squareToHorizontal 1.5s forwards 4.5s;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        /* Animación de entrada de las figuras */
+        @keyframes circleEnter {
+            0% { opacity: 0; transform: translateY(-250%) scale(0.8); } /* Más arriba */
+            100% { opacity: 1; transform: translateY(-100%) scale(1); } /* Posición inicial más baja */
+        }
+
+        @keyframes triangleEnter {
+            0% { opacity: 0; transform: translateX(-200%) scale(1); } /* Sin escalado, tamaño inicial correcto */
+            100% { opacity: 1; transform: translateX(0) scale(1); } /* Tamaño constante */
+        }
+
+        @keyframes squareEnter {
+            0% { opacity: 0; transform: translateY(250%) scale(0.8); } /* Más abajo */
+            100% { opacity: 1; transform: translateY(100%) scale(1); } /* Posición inicial más baja */
+        }
+
+        /* Animación de centralización (separación vertical) */
+        @keyframes circleCentralize {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(-150px); } /* Bajar más el círculo */
+        }
+
+        @keyframes triangleCentralize {
+            0% { transform: translateX(0) scale(1); } /* Tamaño constante */
+            100% { transform: translateY(0px) scale(1); } /* Mantener en el centro vertical de las 3, tamaño constante */
+        }
+
+        @keyframes squareCentralize {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(150px); } /* Bajar más el cuadrado */
+        }
+
+        /* Animación de movimiento a horizontal y CAMBIO DE COLOR */
+        @keyframes circleToHorizontal {
+            0% { transform: translateY(-150px) scale(1); color: white; }
+            50% { color: #e74c3c; } /* Rojo en el 50% de la animación */
+            100% { transform: translate(-140px, 0) scale(1); color: #e74c3c; } /* Termina en rojo */
+        }
+
+        @keyframes triangleToHorizontal {
+            0% { transform: translateY(0px) scale(1); color: white; } /* Color inicial blanco */
+            50% { color: #e74c3c; } /* Rojo en el 50% de la animación */
+            100% { transform: translate(0, 0) scale(1); color: #e74c3c; } /* Termina en rojo */
+        }
+
+        @keyframes squareToHorizontal {
+            0% { transform: translateY(150px) scale(1); color: white; } /* Color inicial blanco */
+            50% { color: #e74c3c; } /* Rojo en el 50% de la animación */
+            100% { transform: translate(140px, -5px) scale(1); color: #e74c3c; } /* Termina en rojo */
+        }
+
+        /* NUEVO Keyframe para el desvanecimiento del contenedor general de la intro */
+        @keyframes introFadeOut {
+            0% { opacity: 1; pointer-events: all; }
+            95% { opacity: 1; } /* Mantiene visible hasta casi el final */
+            100% { opacity: 0; pointer-events: none; display: none; } /* Se oculta completamente */
+        }
+
+        /* --- Estilos para la frase "El Juego del Be Safe" dentro de la animación --- */
+        .game-title-be-safe {
+            font-size: 3em; /* Ajustado para que quepa bien en el contenedor */
+            color: #ecf0f1;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            text-align: center;
+            line-height: 1.2;
+            margin-top: 0; /* Aseguramos que no haya margen superior adicional */
+            margin-bottom: 5px; /* Un margen pequeño para separar de las figuras */
+            /* La animación de glow de texto se aplica desde el inicio */
+            animation: textGlowPulse 2s infinite alternate ease-in-out;
+        }
+
+        .game-title-be-safe .red-char-be-safe {
+            color: #e74c3c;
+        }
+
+        /* Keyframes para la animación de pulso de resplandor de texto (usada por "Be Safe") */
+        @keyframes textGlowPulse {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.3),
+                             0 0 20px rgba(231, 76, 60, 0.4);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.6),
+                             0 0 40px rgba(231, 76, 60, 0.8);
+            }
+        }
+
+        /* Nuevo estilo para el texto de carga */
+        .loading-animation-text {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.5em; /* Tamaño de fuente para el texto de carga */
+            color: #ecf0f1; /* Mismo color que el texto principal de "Be Safe" */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            opacity: 0; /* Inicialmente invisible */
+            animation: fadeInOutLoading 3s infinite alternate forwards 5.5s; /* Animación de fade in/out después de las figuras */
+            margin-top: 40px; /* Margen superior para colocarlo debajo del cuadrado */
+            padding-bottom: 20px; /* Pequeño padding inferior para darle espacio */
+        }
+
+        /* Keyframes para la animación del texto de carga */
+        @keyframes fadeInOutLoading {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
 
         /* --- MEDIA QUERIES PARA AJUSTES EN PANTALLAS PEQUEÑAS (CELULAR) --- */
         @media (max-width: 768px) {
-            .game-over-container {
-                padding: 40px 20px;
-                border-radius: 15px;
+            .game-title-be-safe {
+                font-size: 2.5em;
+                letter-spacing: 2px;
             }
-
-            .icon-failure {
-                font-size: 6em;
+            #animationContainer {
+                margin-top: 30px; /* Ajuste para pantallas más pequeñas */
+                height: 40%;
             }
-
-            h1 {
-                font-size: 2.8em;
-                letter-spacing: 3px;
-                margin-bottom: 20px;
+            .animated-shape {
+                font-size: 20vw; /* Ajuste el tamaño de las figuras para pantallas más pequeñas */
             }
-
-            p {
-                font-size: 1.4em;
-                margin-bottom: 25px;
+            /* **Añadido para asegurar que el triángulo escale igual** */
+            .animated-shape.triangle {
+                font-size: 20vw;
             }
-
-            .motivational-text {
-                font-size: 1.1em;
-                margin-top: 15px;
-            }
-
-            .restart-button {
-                font-size: 1.6em;
-                padding: 15px 35px;
+            .loading-animation-text {
+                font-size: 1.2em;
                 margin-top: 30px;
             }
         }
 
-        @media (max-width: 480px) {
-            .game-over-container {
-                padding: 30px 15px;
-                border-radius: 12px;
-            }
-
-            .icon-failure {
-                font-size: 5em;
-                margin-bottom: 15px;
-            }
-
+        @media (max-width: 600px) {
             h1 {
-                font-size: 2em;
-                letter-spacing: 2px;
-                margin-bottom: 15px;
-            }
-
-            p {
-                font-size: 1.2em;
+                font-size: 2.2em; /* Título "Bienvenido al Desafío" más pequeño, como solicitaste */
                 margin-bottom: 20px;
             }
 
-            .motivational-text {
-                font-size: 1em;
-                margin-top: 10px;
+            h1 .game-icon {
+                font-size: 1.2em;
+                margin-right: 10px;
             }
 
-            .restart-button {
-                font-size: 1.3em;
-                padding: 12px 25px;
-                margin-top: 25px;
+            h2 {
+                font-size: 1.6em;
+                margin-bottom: 25px;
+            }
+
+            .input-group {
+                margin-bottom: 20px;
+            }
+
+            .input-group label {
+                font-size: 1em;
+                margin-bottom: 5px;
+            }
+
+            .input-group input {
+                padding: 12px 10px;
+                font-size: 1em;
+            }
+
+            .city-label {
+                font-size: 1em;
+                margin-bottom: 10px;
+            }
+
+            .radio-options-container {
+                gap: 15px;
+                margin-top: 10px;
+                margin-bottom: 15px;
+                flex-direction: row;
+                justify-content: space-around;
+            }
+
+            .city-button {
+                padding: 10px 20px;
+                font-size: 0.9em;
+                min-width: auto;
+            }
+
+            #startButton {
+                font-size: 1.4em;
+                padding: 15px 35px;
+                margin-top: 20px;
+            }
+
+            .error-message {
+                color: #e74c3c;
+                margin-top: 8px;
+                margin-bottom: 15px;
+                font-size: 0.9em;
+            }
+
+            #introAnimationWrapper {
+                padding-top: 5%;
+                padding-bottom: 5%;
+            }
+
+            .game-title-be-safe {
+                font-size: 2em; /* Se mantiene este tamaño si la pantalla es <= 600px */
+                letter-spacing: 2px;
+                margin-bottom: 10px;
+            }
+
+            #animationContainer {
+                margin-top: 15px;
+                height: 30%;
+            }
+
+            /* **Añadido para asegurar que el triángulo escale igual** */
+            .animated-shape {
+                font-size: 25vw; /* Ajuste el tamaño de las figuras para móviles muy pequeños */
+            }
+            .animated-shape.triangle {
+                font-size: 25vw;
+            }
+
+            .loading-animation-text {
+                font-size: 1.2em;
+                margin-top: 20px;
+            }
+        }
+
+        /* Ajustes para pantallas aún más pequeñas si es necesario */
+        @media (max-width: 480px) { /* Este media query ya lo tenía tu archivo, lo mantengo para los .animated-shape */
+            .animated-shape {
+                font-size: 25vw; /* Ajuste el tamaño de las figuras para móviles muy pequeños */
+            }
+            .animated-shape.triangle { /* **Añadido para asegurar que el triángulo escale igual** */
+                font-size: 25vw;
+            }
+        }
+
+        @media (max-width: 400px) { /* Este es el media query para pantallas más pequeñas de 400px */
+            .radio-options-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .city-button {
+                width: 80%;
+                min-width: 0;
             }
         }
     </style>
 </head>
 <body>
-    <div class="stars" id="stars-container"></div>
+    <div class="container">
+        <div id="introAnimationWrapper">
+            <div class="game-title-be-safe" id="beSafeTitle">
+                El Juego D<span class="red-char-be-safe">E</span>L <br>BE SA<span class="red-char-be-safe">F</span>E
+            </div>
 
-    <div class="game-over-container">
-        <div class="icon-failure">✖</div>
-        <h1>¡Desafío Finalizado!</h1>
-        <p>A veces, el camino hacia la meta tiene giros inesperados. En el mundo de <span class="highlight-text">Be Safe</span>, cada experiencia es una oportunidad para <span class="highlight-text">aprender y mejorar</span>.</p>
-        <p class="motivational-text">No es el fin, es solo el comienzo de tu siguiente nivel. ¡Tu esfuerzo es valioso!</p>
-        <button class="restart-button" onclick="restartGame()">Volver a Intentarlo</button>
+            <div id="animationContainer">
+                <span class="animated-shape circle">&#x25CB;</span>
+                <span class="animated-shape triangle">&#x25B3;</span>
+                <span class="animated-shape square">&#x25A1;</span>
+            </div>
+
+            <div id="loadingText" class="loading-animation-text">
+                Iniciando ...
+            </div>
+        </div>
+
+        <div class="form-content" id="formContent">
+            <h1>Bienvenido al Desafío</h1>
+            <h2>Ingresa tus datos</h2>
+
+           <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec">
+                <div class="input-group">
+                    <label for="username">Ingresa tu nombre</label>
+                    <input type="text" id="username" name="nombre" placeholder="Tu nombre de jugador" maxlength="20" required>
+                    <div id="usernameError" class="error-message">Por favor, ingresa tu nombre.</div>
+                </div>
+
+                <div class="input-group">
+                    <span class="city-label">Ciudad</span>
+                    <div class="radio-options-container">
+                        <button class="city-button" type="button" data-value="Bahía Blanca">
+                            <input type="radio" id="bahiaBlanca" name="localidad" value="Bahía Blanca">
+                            Bahía Blanca
+                        </button>
+                        <button class="city-button" type="button" data-value="Paraná">
+                            <input type="radio" id="parana" name="localidad" value="Paraná">
+                            Paraná
+                        </button>
+                    </div>
+                    <div id="cityError" class="error-message">Por favor, selecciona tu ciudad.</div>
+                </div>
+
+                <button id="startButton" type="submit" disabled>
+                    <span class="button-text">Comenzar el Juego</span>
+                    <span class="loading-text">Cargando...</span>
+                </button>
+            </form>
+        </div>
     </div>
 
     <script>
-        // Función para generar estrellas de fondo
-        function createStars() {
-            const container = document.getElementById('stars-container');
-            const numStars = 70; // Cantidad de estrellas
+        const dataForm = document.getElementById('dataForm');
+        const usernameInput = document.getElementById('username');
+        const cityButtons = document.querySelectorAll('.city-button');
+        // Se corrigió esta línea para que seleccione correctamente los radios por nombre
+        const cityRadios = document.querySelectorAll('input[name="localidad"]');
+        const startButton = document.getElementById('startButton');
+        const buttonText = startButton.querySelector('.button-text'); // Referencia al texto original
+        const loadingText = startButton.querySelector('.loading-text'); // Referencia al texto de carga
+        const usernameError = document.getElementById('usernameError');
+        const cityError = document.getElementById('cityError');
+        const introAnimationWrapper = document.getElementById('introAnimationWrapper');
+        const formContent = document.getElementById('formContent');
+        const beSafeTitle = document.getElementById('beSafeTitle');
 
-            for (let i = 0; i < numStars; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                star.style.width = `${Math.random() * 3 + 1}px`; // Tamaño entre 1px y 4px
-                star.style.height = star.style.width;
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.animationDuration = `${Math.random() * 3 + 2}s`; // Duración de animación entre 2s y 5s
-                star.style.animationDelay = `${Math.random() * 2}s`; // Retraso para que no todas parpadeen a la vez
-                container.appendChild(star);
+        // Función para validar el formulario
+        function validateForm() {
+            let isValid = true;
+
+            if (usernameInput.value.trim() === '') {
+                usernameError.style.display = 'block';
+                isValid = false;
+            } else {
+                usernameError.style.display = 'none';
             }
+
+            let citySelected = false;
+            cityRadios.forEach(radio => {
+                if (radio.checked) {
+                    citySelected = true;
+                }
+            });
+
+            if (!citySelected) {
+                cityError.style.display = 'block';
+                isValid = false;
+            } else {
+                cityError.style.display = 'none';
+            }
+
+            // El botón de inicio ahora solo se habilita si el formulario es válido
+            startButton.disabled = !isValid;
         }
 
-        // Llama a la función para crear estrellas cuando se carga la página
-        document.addEventListener('DOMContentLoaded', createStars);
+        // Event listeners para la validación
+        usernameInput.addEventListener('input', validateForm);
+        cityButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                cityButtons.forEach(btn => btn.classList.remove('selected'));
+                cityRadios.forEach(radio => radio.checked = false);
 
-        // Función para reiniciar el juego
-        function restartGame() {
-            // Redirige al usuario a la página de inicio o a la primera pregunta
-            // Asegúrate de que esta URL sea la correcta para el inicio de tu juego
-            window.location.href = 'index.html'; // O 'Squidgame1.html' si quieres que inicie directamente ahí
-        }
+                button.classList.add('selected');
+                const radioInsideButton = button.querySelector('input');
+                if (radioInsideButton) {
+                    radioInsideButton.checked = true;
+                }
+                validateForm();
+            });
+        });
+
+        // Manejador del envío del formulario modificado para enviar datos a Google Sheets
+        dataForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            validateForm();
+
+            if (startButton.disabled) {
+                return;
+            }
+
+            // Ocultar el texto original del botón y mostrar "Cargando..."
+            buttonText.style.display = 'none';
+            loadingText.style.display = 'inline-block'; // O 'block' si quieres que ocupe todo el ancho
+            // Cambiar el color del botón a amarillo al hacer click
+            startButton.style.backgroundColor = '#f1c40f'; // Establece el color amarillo
+            startButton.style.pointerEvents = 'none'; // Deshabilita el botón para evitar múltiples clics
+            startButton.style.cursor = 'wait'; // Cambia el cursor a "espera"
+
+
+            const username = usernameInput.value.trim();
+            let selectedCity = '';
+            cityRadios.forEach(radio => {
+                if (radio.checked) {
+                    selectedCity = radio.value;
+                }
+            });
+
+            // Crear FormData para enviar los datos
+            const formData = new FormData();
+            formData.append('nombre', username);
+            formData.append('localidad', selectedCity);
+            formData.append('gamePage', 'Registro');
+            formData.append('timeTaken', 0);
+
+            try {
+                // Enviar datos a Google Apps Script
+                const response = await fetch(dataForm.action, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    console.log('Datos enviados a Google Sheets con éxito!');
+                    // Redirigir a la primera pregunta después de enviar los datos
+                    window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
+                } else {
+                    console.error('Error al enviar datos a Google Sheets:', response.statusText);
+                    // Aunque falle el envío, permitir continuar con el juego
+                    window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
+                }
+            } catch (error) {
+                console.error('Error de red o al enviar datos:', error);
+                // Aunque falle el envío, permitir continuar con el juego
+                window.location.href = `Squidgame1.html?user=${encodeURIComponent(username)}&city=${encodeURIComponent(selectedCity)}`;
+            } finally {
+                // En caso de que la navegación falle por algún motivo, restaurar el botón
+                startButton.style.backgroundColor = '#27ae60'; // Vuelve al verde
+                buttonText.style.display = 'inline';
+                loadingText.style.display = 'none';
+                startButton.style.pointerEvents = 'auto'; // Habilita de nuevo el botón
+                startButton.style.cursor = 'pointer';
+            }
+        });
+
+        // --- Lógica de la secuencia de animación inicial y aparición del formulario ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicialmente, el formulario estará oculto y deshabilitado para interacciones
+            formContent.classList.remove('active');
+            validateForm(); // Asegura que el botón esté deshabilitado al inicio
+
+            // Escuchamos el evento `animationend` del contenedor principal de la introducción
+            introAnimationWrapper.addEventListener('animationend', (event) => {
+                // Aseguramos que solo reaccionamos a la animación principal de fade out
+                if (event.animationName === 'introFadeOut') {
+                    introAnimationWrapper.style.display = 'none'; // Oculta el contenedor de animación completamente
+                    formContent.classList.add('active'); // Muestra el contenido del formulario
+                    validateForm(); // Re-valida para habilitar el botón si el formulario es válido
+                }
+            });
+        });
     </script>
 </body>
 </html>
