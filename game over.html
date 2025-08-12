@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Fin del Desafío! - Be Safe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Importamos la fuente Chakra Petch */
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap');
+
+        body {
+            font-family: 'Chakra Petch', sans-serif;
+            background: linear-gradient(135deg, #1a2a3a, #000000); /* Degradado de fondo moderno */
+            color: #ecf0f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden; /* Para animaciones */
+        }
+
+        .game-over-container {
+            background-color: rgba(26, 42, 58, 0.95); /* Fondo semitransparente oscuro */
+            padding: 50px 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8); /* Sombra más profunda */
+            max-width: 650px; /* Ancho un poco mayor */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 3px solid #e74c3c; /* Borde rojo distintivo */
+            position: relative;
+            overflow: hidden;
+            animation: fadeInScale 0.8s ease-out forwards; /* Animación de entrada */
+        }
+
+        /* Animación de entrada del contenedor */
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .icon-failure {
+            font-size: 8em; /* Ícono grande */
+            color: #e74c3c; /* Rojo de fallo */
+            margin-bottom: 20px;
+            animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both infinite; /* Animación de vibración */
+            text-shadow: 0 0 15px rgba(231, 76, 60, 0.7);
+        }
+
+        /* Keyframes para la animación de vibración */
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        h1 {
+            color: #e74c3c; /* Rojo Squid Game */
+            margin-bottom: 25px;
+            font-size: 3.5em; /* Título principal grande */
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 15px rgba(231, 76, 60, 0.8); /* Resplandor */
+        }
+
+        p {
+            font-size: 1.6em; /* Mensaje un poco más grande */
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #bdc3c7; /* Texto más suave */
+        }
+
+        .highlight-text {
+            color: #f1c40f; /* Amarillo para resaltar palabras clave */
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(241, 196, 15, 0.5);
+        }
+
+        .motivational-text {
+            font-style: italic;
+            font-size: 1.3em;
+            margin-top: 20px;
+            color: #95a5a6;
+            animation: textFadeIn 1.5s ease-in forwards 0.5s; /* Animación de entrada del texto motivacional */
+        }
+
+        @keyframes textFadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .restart-button {
+            background-color: #27ae60; /* Verde vibrante */
+            color: white;
+            padding: 18px 45px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.9em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            margin-top: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            animation: buttonPulse 2s infinite alternate; /* Animación de pulso para el botón */
+        }
+
+        .restart-button:hover {
+            background-color: #2ecc71;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7);
+        }
+
+        .restart-button:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animación de pulso para el botón */
+        @keyframes buttonPulse {
+            0% { transform: scale(1); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); }
+            100% { transform: scale(1.03); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7); }
+        }
+
+        /* Estrellas decorativas de fondo */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: twinkle 4s infinite ease-in-out alternate;
+        }
+
+        /* Keyframes para el parpadeo de las estrellas */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* --- MEDIA QUERIES PARA AJUSTES EN PANTALLAS PEQUEÑAS (CELULAR) --- */
+        @media (max-width: 768px) {
+            .game-over-container {
+                padding: 40px 20px;
+                border-radius: 15px;
+            }
+
+            .icon-failure {
+                font-size: 6em;
+            }
+
+            h1 {
+                font-size: 2.8em;
+                letter-spacing: 3px;
+                margin-bottom: 20px;
+            }
+
+            p {
+                font-size: 1.4em;
+                margin-bottom: 25px;
+            }
+
+            .motivational-text {
+                font-size: 1.1em;
+                margin-top: 15px;
+            }
+
+            .restart-button {
+                font-size: 1.6em;
+                padding: 15px 35px;
+                margin-top: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-over-container {
+                padding: 30px 15px;
+                border-radius: 12px;
+            }
+
+            .icon-failure {
+                font-size: 5em;
+                margin-bottom: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+                letter-spacing: 2px;
+                margin-bottom: 15px;
+            }
+
+            p {
+                font-size: 1.2em;
+                margin-bottom: 20px;
+            }
+
+            .motivational-text {
+                font-size: 1em;
+                margin-top: 10px;
+            }
+
+            .restart-button {
+                font-size: 1.3em;
+                padding: 12px 25px;
+                margin-top: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars-container"></div>
+
+    <div class="game-over-container">
+        <div class="icon-failure">✖</div> <h1>¡Desafío Finalizado!</h1>
+        <p>A veces, el camino hacia la meta tiene giros inesperados. En el mundo de <span class="highlight-text">Be Safe</span>, cada experiencia es una oportunidad para <span class="highlight-text">aprender y mejorar</span>.</p>
+        <p class="motivational-text">No es el fin, es solo el comienzo de tu siguiente nivel. ¡Tu esfuerzo es valioso!</p>
+        <button class="restart-button" onclick="restartGame()">Volver a Intentarlo</button>
+    </div>
+
+    <script>
+        // Función para generar estrellas de fondo
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            const numStars = 70; // Cantidad de estrellas
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = `${Math.random() * 3 + 1}px`; // Tamaño entre 1px y 4px
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDuration = `${Math.random() * 3 + 2}s`; // Duración de animación entre 2s y 5s
+                star.style.animationDelay = `${Math.random() * 2}s`; // Retraso para que no todas parpadeen a la vez
+                container.appendChild(star);
+            }
+        }
+
+        // Llama a la función para crear estrellas cuando se carga la página
+        document.addEventListener('DOMContentLoaded', createStars);
+
+        // Función para reiniciar el juego
+        function restartGame() {
+            // Redirige al usuario a la página de inicio o a la primera pregunta
+            // Asegúrate de que esta URL sea la correcta para el inicio de tu juego
+            window.location.href = 'index.html'; // O 'Squidgame1.html' si quieres que inicie directamente ahí
+        }
+    </script>
+</body>
+</html>
