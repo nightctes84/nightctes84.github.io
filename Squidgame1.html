@@ -20,23 +20,24 @@
             box-sizing: border-box;
         }
 
-        .container {
-            background-color: #1a2a3a; /* Contenedor oscuro con un ligero matiz */
-            padding: 40px;
-            border-radius: 15px; /* Bordes más redondeados */
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
-            max-width: 600px;
-            width: 100%;
-            position: relative; /* Para posicionar el temporizador */
-            display: flex; /* Añadido para Flexbox */
-            flex-direction: column; /* Para apilar los elementos verticalmente */
-            align-items: center; /* Centrar horizontalmente los elementos hijos */
-            border: 2px solid #e74c3c; /* Borde rojo distintivo */
-            background-image: url('fonde be safe.png'); /* Ruta a tu imagen PNG */
-            background-size: cover; /* Cubre toda el área del contenedor */
-            background-position: center; /* Centra la imagen */
-            background-repeat: no-repeat; /* Evita que la imagen se repita */
-        }
+      .container {
+    background-image: url('fonde be safe.PNG'); /* La imagen de fondo ahora se aplica al .container */
+    background-size: cover; /* Cubre todo el fondo del contenedor */
+    background-position: center; /* Centra la imagen en el contenedor */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    /* Añadimos un color de fondo semi-transparente SOBRE la imagen para que el texto resalte */
+    background-color: rgba(26, 42, 58, 0.7); /* Menos opaco para ver más la imagen */
+    padding: 40px;
+    border-radius: 15px; /* Bordes más redondeados */
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
+    max-width: 600px; /* Se mantiene del segundo código original */
+    width: 100%;
+    position: relative; /* Para posicionar el temporizador (se mantiene del segundo código original) */
+    display: flex; /* Añadido para Flexbox (se mantiene del segundo código original) */
+    flex-direction: column; /* Para apilar los elementos verticalmente (se mantiene del segundo código original) */
+    align-items: center; /* Centrar horizontalmente los elementos hijos (se mantiene del segundo código original) */
+    border: 2px solid #e74c3c; /* Borde rojo distintivo (se mantiene del segundo código original) */
+}
 
         h1 {
             color: #e74c3c; /* Rojo, como los uniformes de los guardias o la sangre en Squid Game */
@@ -445,3 +446,4 @@
     </script>
 </body>
 </html>
+
