@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Segundo Desafío: Juego del Calamar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -21,41 +22,96 @@
         }
 
         .container {
-            background-color: #1a2a3a; /* Contenedor oscuro con un ligero matiz */
+            background-image: url('fonde be safe.PNG'); /* La imagen de fondo ahora se aplica al .container */
+            background-size: cover; /* Cubre todo el fondo del contenedor */
+            background-position: center; /* Centra la imagen en el contenedor */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
+            /* Añadimos un color de fondo semi-transparente SOBRE la imagen para que el texto resalte */
+            background-color: rgba(26, 42, 58, 0.7); /* Menos opaco para ver más la imagen */
             padding: 40px;
             border-radius: 15px; /* Bordes más redondeados */
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
-            max-width: 600px;
+            max-width: 600px; /* Se mantiene del segundo código original */
             width: 100%;
-            /* Eliminado position: relative; ya que los elementos internos se centran con flexbox */
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Centrar horizontalmente los elementos hijos */
-            border: 2px solid #e74c3c; /* Borde rojo distintivo */
+            position: relative; /* Para posicionar el temporizador (se mantiene del segundo código original) */
+            display: flex; /* Añadido para Flexbox (se mantiene del segundo código original) */
+            flex-direction: column; /* Para apilar los elementos verticalmente (se mantiene del segundo código original) */
+            align-items: center; /* Centrar horizontalmente los elementos hijos (se mantiene del segundo código original) */
+            border: 2px solid #e74c3c; /* Borde rojo distintivo (se mantiene del segundo código original) */
         }
 
         h1 {
             color: #e74c3c; /* Rojo, como los uniformes de los guardias o la sangre en Squid Game */
-            margin-top: 30px; /* Ajuste para dar espacio después del nombre de usuario */
             margin-bottom: 30px;
             font-size: 2.5em;
         }
 
+        /* --- Estilos MODIFICADOS para el contador --- */
         .timer {
-            font-size: 1.8em;
-            color: #f1c40f; /* Amarillo/Dorado, como el dinero del premio */
-            margin-bottom: 5px; /* Reducido para acercarlo al nombre de usuario */
-            background-color: rgba(0, 0, 0, 0.3);
-            padding: 10px 15px;
-            border-radius: 5px;
-            /* align-self: center; No es estrictamente necesario si el contenedor ya es align-items: center */
+            font-family: 'Share Tech Mono', monospace; /* Fuente de estilo tecnológico */
+            font-size: 2.5em; /* Tamaño más grande para visibilidad */
+            color: #00ff00; /* Verde brillante, como un display digital */
+            background: linear-gradient(145deg, #1a1a1a, #0a0a0a); /* Gradiente sutil para el fondo */
+            padding: 15px 30px; /* Más padding para un look robusto */
+            border-radius: 10px; /* Bordes ligeramente redondeados */
+            border: 2px solid #00cc00; /* Borde verde más claro */
+            box-shadow:
+                0 0 5px #00ff00, /* Sombra interior suave */
+                0 0 10px #00ff00, /* Resplandor exterior */
+                0 0 20px #00ff00, /* Mayor resplandor */
+                inset 0 0 8px rgba(0, 255, 0, 0.6); /* Sombra interna para profundidad */
+            align-self: center; /* Centrar el timer dentro del flex container */
+            margin-bottom: 20px; /* Espacio debajo del contador */
+            text-shadow: 0 0 5px #00ff00; /* Sombra de texto para el efecto de brillo */
+            position: relative;
+            overflow: hidden; /* Asegurar que el pseudo-elemento no se desborde */
         }
 
-        .welcome-message {
-            font-size: 1.5em;
-            color: #f1c40f;
-            margin-bottom: 20px; /* Ajustado para separar de la pregunta */
+        /* Efecto de "glitch" o línea parpadeante */
+        .timer::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -10%;
+            width: 120%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(0, 255, 0, 0.5), transparent);
+            transform: translateY(-50%) rotate(2deg);
+            animation: glitch-line 2s infinite linear;
+            opacity: 0.7;
         }
+
+        @keyframes glitch-line {
+            0%, 100% { top: 40%; opacity: 0.7; }
+            20% { top: 60%; opacity: 0.5; }
+            40% { top: 30%; opacity: 0.8; }
+            60% { top: 70%; opacity: 0.6; }
+            80% { top: 45%; opacity: 0.7; }
+        }
+
+        /* Pequeña animación de parpadeo para los números */
+        .timer span {
+            animation: text-flicker 1.5s infinite alternate;
+        }
+
+        @keyframes text-flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow:
+                    -0.08rem -0.02rem 0.05rem #fff,
+                    0.08rem 0.02rem 0.05rem #fff,
+                    0 0 1rem #00ff00,
+                    0 0 2rem #00ff00,
+                    0 0 3rem #00ff00,
+                    0 0 4rem #00ff00,
+                    0 0 5rem #00ff00,
+                    0 0 6rem #00ff00;
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
+        /* --- FIN Estilos MODIFICADOS para el contador --- */
+
 
         p {
             font-size: 1.4em;
@@ -73,19 +129,13 @@
         .option-button {
             background-color: #2980b9; /* Azul */
             color: white;
-            padding: 15px 20px; /* Reducir padding horizontal para dar más espacio al texto */
+            padding: 15px 30px;
             border: none;
             border-radius: 8px;
             font-size: 1.2em;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            min-width: 250px; /* Aumentar el min-width para que sean más anchos */
-            height: 80px; /* Establecer una altura fija para simetría */
-            display: flex; /* Usar flex para centrar el texto verticalmente y horizontalmente */
-            align-items: center;
-            justify-content: center;
-            text-align: center; /* Asegurar que el texto esté centrado si hay varias líneas */
-            box-sizing: border-box; /* Incluir padding y border en el tamaño total */
+            min-width: 120px;
         }
 
         .option-button:hover {
@@ -145,6 +195,7 @@
             font-weight: bold;
         }
 
+        /* Estas clases ya no se usarán directamente para incorrecto/timeout, pero las mantengo por si hay otros usos */
         .incorrect-message {
             color: #e74c3c; /* Rojo para incorrecto */
         }
@@ -156,12 +207,131 @@
         .correct-message {
             color: #2ecc71; /* Verde para correcto */
         }
+        .welcome-message {
+            font-size: 1.5em;
+            color: #f1c40f;
+            margin-bottom: 20px; /* Ajustado para separar de la pregunta */
+        }
+
+        /* --- Estilos para el modal/alerta de GAME OVER --- */
+        .game-over-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Asegura que esté por encima de todo */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .game-over-modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .game-over-modal-content {
+            background: linear-gradient(135deg, #1a2a3a, #0d1a26); /* Degradado oscuro */
+            border: 3px solid #e74c3c; /* Borde rojo del Juego del Calamar */
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 0 40px rgba(231, 76, 60, 0.7); /* Resplandor rojo intenso */
+            text-align: center;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            animation: pulse-glow 2s infinite alternate; /* Animación de pulso para el glow */
+        }
+
+        .game-over-modal-overlay.show .game-over-modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .game-over-modal-content h2 {
+            font-size: 4em; /* Más grande */
+            color: #e74c3c; /* Rojo intenso */
+            text-shadow: 0 0 15px rgba(231, 76, 60, 0.9); /* Sombra de texto brillante */
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+        }
+
+        .game-over-modal-content p {
+            font-size: 1.5em;
+            color: #f1c40f; /* Amarillo/Dorado para el texto secundario */
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .game-over-modal-content button {
+            background-color: #27ae60; /* Botón verde */
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .game-over-modal-content button:hover {
+            background-color: #2ecc71;
+            transform: translateY(-3px);
+        }
+
+        /* Animación de pulso para el resplandor del modal */
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 30px rgba(231, 76, 60, 0.7); }
+            100% { box-shadow: 0 0 50px rgba(231, 76, 60, 1), 0 0 20px rgba(231, 76, 60, 0.5); }
+        }
+
+        /* Media queries para responsividad del modal */
+        @media (max-width: 768px) {
+            .game-over-modal-content {
+                padding: 30px;
+                max-width: 90%;
+            }
+            .game-over-modal-content h2 {
+                font-size: 3em;
+            }
+            .game-over-modal-content p {
+                font-size: 1.2em;
+            }
+            .game-over-modal-content button {
+                padding: 12px 30px;
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-over-modal-content {
+                padding: 20px;
+            }
+            .game-over-modal-content h2 {
+                font-size: 2.5em;
+                letter-spacing: 3px;
+            }
+            .game-over-modal-content p {
+                font-size: 1em;
+            }
+            .game-over-modal-content button {
+                padding: 10px 25px;
+                font-size: 1em;
+            }
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="timer" id="timerDisplay">01:00</div>
-        <div class="welcome-message" id="welcomeMessage"></div>
+        <div class="timer" id="timerDisplay"><span>01:00</span></div> <div class="welcome-message" id="welcomeMessage"></div>
 
         <h1>¡SEGUNDO DESAFIO!</h1>
         <p>Al llegar a un domicilio, observas que el cliente tiene una mascota suelta en el interior. ¿cómo procederías?</p>
@@ -179,6 +349,14 @@
         <div id="feedbackMessage" class="message"></div>
     </div>
 
+    <div class="game-over-modal-overlay" id="gameOverModal">
+        <div class="game-over-modal-content">
+            <h2>GAME OVER</h2>
+            <p>Has sido eliminado del juego.</p>
+            <button id="restartButton">Salir</button>
+        </div>
+    </div>
+
     <script>
         const timerDisplay = document.getElementById('timerDisplay');
         const optionButtons = document.querySelectorAll('.option-button');
@@ -187,14 +365,18 @@
         const feedbackMessage = document.getElementById('feedbackMessage');
         const welcomeMessage = document.getElementById('welcomeMessage');
         const correctAnwser = 'solicitar'; // La opción correcta es "Solicitas al cliente..."
-        const totalTime = 60; // 60 segundos
+        const totalTime = 60;
         let timeLeft = totalTime;
         let timerInterval;
         let selectedOption = null;
         let gameEnded = false;
         let userName = '';
         let userCity = '';
-        const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec';
+        const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlWFWo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec';
+
+        // Elementos del modal
+        const gameOverModal = document.getElementById('gameOverModal');
+        const restartButton = document.getElementById('restartButton');
 
         // Función para parsear parámetros de URL
         function getUrlParameter(name) {
@@ -208,7 +390,7 @@
         userName = getUrlParameter('user');
         userCity = getUrlParameter('city');
         if (userName) {
-            welcomeMessage.textContent = `¡Bienvenido, ${userName}!`;
+            welcomeMessage.textContent = `¡Jugador: ${userName}!`;
         }
 
         // Función para enviar datos al script de Google Apps
@@ -216,7 +398,7 @@
             const formData = new FormData();
             formData.append('nombre', name);
             formData.append('localidad', city);
-            formData.append('gamePage', gamePage); // ¡Importante! Aquí se envía '2'
+            formData.append('gamePage', gamePage);
             formData.append('timeTaken', timeTaken);
 
             try {
@@ -239,51 +421,48 @@
         function updateTimer() {
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
-            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            // Accedemos al <span> dentro del timerDisplay
+            timerDisplay.querySelector('span').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
 
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
                 if (!gameEnded) {
-                    endGame("¡Se acabó el tiempo, queda eliminado! 💀", false);
-                    sendGameData(userName, userCity, '2', 0); // Envía '2' si el tiempo se agota
+                    endGame(false); // Llamar endGame con false para tiempo agotado
+                    sendGameData(userName, userCity, '1', 0); // Registrar 0 tiempo si se agotó
                 }
             } else {
                 timeLeft--;
             }
         }
 
-        // Función para terminar el juego con un mensaje
-        function endGame(message, isCorrect = false) {
+        // Función para terminar el juego con un mensaje o mostrar el GAME OVER modal
+        function endGame(isCorrect) {
             gameEnded = true;
             clearInterval(timerInterval);
-            feedbackMessage.textContent = message;
 
-            // Ocultar el botón "Responder"
+            // Deshabilitar botones de opción y submit
+            optionButtons.forEach(button => button.disabled = true);
             submitButton.style.display = 'none';
 
             if (isCorrect) {
+                feedbackMessage.textContent = "¡Respuesta correcta! ¡Felicidades, sigues en el juego! 🎉";
                 feedbackMessage.classList.add('correct-message');
-                feedbackMessage.classList.remove('incorrect-message');
-                sendGameData(userName, userCity, '2', totalTime - timeLeft); // Envía '2' si es correcto
-                // Mostrar el botón "Siguiente"
+                feedbackMessage.classList.remove('incorrect-message'); // Asegurarse de quitar si estuvo antes
                 nextButton.style.display = 'block';
+                sendGameData(userName, userCity, '1', totalTime - timeLeft);
 
-                // Redirigir a la siguiente página (Squidgame3.html) después de 3 segundos
                 setTimeout(() => {
                     window.location.href = `Squidgame3.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
                 }, 3000);
 
             } else {
-                feedbackMessage.classList.add('incorrect-message');
-                feedbackMessage.classList.remove('correct-message');
-                if (timeLeft > 0) {
-                    sendGameData(userName, userCity, '2', totalTime - timeLeft); // Envía '2' si es incorrecto (y queda tiempo)
-                }
-                // Si es incorrecto, el botón "Siguiente" permanece oculto.
-                nextButton.style.display = 'none';
+                // Mostrar el modal de GAME OVER
+                gameOverModal.classList.add('show');
+                // feedbackMessage se mantiene vacío para no mostrar el texto si es GAME OVER
+                feedbackMessage.textContent = "";
+                sendGameData(userName, userCity, '1', totalTime - timeLeft); // Enviar tiempo al perder
             }
-            // Deshabilitar botones de opción después de que el juego terminó
-            optionButtons.forEach(button => button.disabled = true);
         }
 
         // Iniciar el temporizador cuando la página se carga
@@ -311,17 +490,18 @@
                 return;
             }
 
-            // Llamar a endGame para procesar la respuesta y enviar datos
             if (selectedOption === correctAnwser) {
-                endGame("¡Respuesta correcta! ¡Felicidades, sigues en el juego! 🎉", true);
+                endGame(true);
             } else {
-                endGame("¡Respuesta incorrecta, queda eliminado! ❌", false);
+                endGame(false);
             }
-            // El botón "Responder" se oculta dentro de endGame(), ya no es necesario deshabilitarlo aquí.
         });
 
-        // Se elimina el event listener del botón "Siguiente" ya que la navegación
-        // y el mostrado del botón se manejan completamente dentro de endGame().
+        // Event listener para el botón "Salir" del modal de GAME OVER
+        restartButton.addEventListener('click', () => {
+            // Redirigir a la página game over.html
+            window.location.href = `game over.html`;
+        });
     </script>
 </body>
 </html>
