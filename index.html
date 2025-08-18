@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido al Desafío: Juego del Calamar</title>
+    <title>Bienvenido al Desafío: Squid Game</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap" rel="stylesheet">
     <style>
         /* Importamos la fuente Chakra Petch */
@@ -239,7 +239,7 @@
             font-weight: bold;
         }
 
-        /* --- CONTENEDOR DE LA ANIMACIÓN INICIAL (Frase "Be Safe" + Figuras) --- */
+        /* --- CONTENEDOR DE LA ANIMACIÓN INICIAL (Frase "Squid Game" + Figuras) --- */
         #introAnimationWrapper {
             position: absolute;
             top: 0; /* Aseguramos que esté pegado al top del container */
@@ -367,8 +367,8 @@
             100% { opacity: 0; pointer-events: none; display: none; } /* Se oculta completamente */
         }
 
-        /* --- Estilos para la frase "El Juego del Be Safe" dentro de la animación --- */
-        .game-title-be-safe {
+        /* --- Estilos para la frase "Squid Game" dentro de la animación --- */
+        .game-title {
             font-size: 3em; /* Ajustado para que quepa bien en el contenedor */
             color: #ecf0f1;
             text-transform: uppercase;
@@ -382,11 +382,11 @@
             animation: textGlowPulse 2s infinite alternate ease-in-out;
         }
 
-        .game-title-be-safe .red-char-be-safe {
+        .game-title .red-char {
             color: #e74c3c;
         }
 
-        /* Keyframes para la animación de pulso de resplandor de texto (usada por "Be Safe") */
+        /* Keyframes para la animación de pulso de resplandor de texto (usada por "Squid Game") */
         @keyframes textGlowPulse {
             0% {
                 text-shadow: 0 0 10px rgba(255, 255, 255, 0.3),
@@ -402,7 +402,7 @@
         .loading-animation-text {
             font-family: 'Chakra Petch', sans-serif;
             font-size: 1.5em; /* Tamaño de fuente para el texto de carga */
-            color: #ecf0f1; /* Mismo color que el texto principal de "Be Safe" */
+            color: #ecf0f1; /* Mismo color que el texto principal de "Squid Game" */
             text-transform: uppercase;
             letter-spacing: 2px;
             text-align: center;
@@ -422,7 +422,7 @@
 
         /* --- MEDIA QUERIES PARA AJUSTES EN PANTALLAS PEQUEÑAS (CELULAR) --- */
         @media (max-width: 768px) {
-            .game-title-be-safe {
+            .game-title {
                 font-size: 2.5em;
                 letter-spacing: 2px;
             }
@@ -510,7 +510,7 @@
                 padding-bottom: 5%;
             }
 
-            .game-title-be-safe {
+            .game-title {
                 font-size: 2em; /* Se mantiene este tamaño si la pantalla es <= 600px */
                 letter-spacing: 2px;
                 margin-bottom: 10px;
@@ -562,8 +562,8 @@
 <body>
     <div class="container">
         <div id="introAnimationWrapper">
-            <div class="game-title-be-safe" id="beSafeTitle">
-                El Juego D<span class="red-char-be-safe">E</span>L <br>BE SA<span class="red-char-be-safe">F</span>E
+            <div class="game-title" id="gameTitle">
+                Squid <span class="red-char">G</span>ame
             </div>
 
             <div id="animationContainer">
@@ -583,8 +583,8 @@
 
            <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec">
                 <div class="input-group">
-                    <label for="username">Ingresa tu nombre</label>
-                    <input type="text" id="username" name="nombre" placeholder="Tu nombre de jugador" maxlength="20" required>
+                    <label for="username">Ingresa tu Nombre y Apellido</label>
+                    <input type="text" id="username" name="nombre" placeholder="Nombre y Apellido" maxlength="20" required>
                     <div id="usernameError" class="error-message">Por favor, ingresa tu nombre.</div>
                 </div>
 
@@ -624,7 +624,7 @@
         const cityError = document.getElementById('cityError');
         const introAnimationWrapper = document.getElementById('introAnimationWrapper');
         const formContent = document.getElementById('formContent');
-        const beSafeTitle = document.getElementById('beSafeTitle');
+        const gameTitle = document.getElementById('gameTitle'); // Se cambió de beSafeTitle a gameTitle
 
         // Función para validar el formulario
         function validateForm() {
