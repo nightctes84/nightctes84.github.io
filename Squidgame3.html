@@ -80,7 +80,7 @@
         let gameEnded = false;
         let userName = '';
         let userCity = '';
-        const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlWFWo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec';
+       onst googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec'; // ✅ misma URL que funciona en Squidgame2
 
         const gameOverModal = document.getElementById('gameOverModal');
         const restartButton = document.getElementById('restartButton');
@@ -99,19 +99,21 @@
         }
 
         async function sendGameData(name, city, gamePage, timeTaken) {
-            const formData = new FormData();
-            formData.append('nombre', name);
-            formData.append('localidad', city);
-            formData.append('gamePage', gamePage);
-            formData.append('timeTaken', timeTaken);
+        const formData = new FormData();
+        formData.append('nombre', name);
+        formData.append('localidad', city);
+        formData.append('gamePage', gamePage);
+        formData.append('timeTaken', timeTaken);
 
-            try {
-                await fetch(googleAppsScriptURL, { method: 'POST', body: formData });
-                console.log(`Datos enviados correctamente para página ${gamePage}`);
-            } catch (err) {
-                console.error("Error al enviar", err);
-            }
+        try {
+            await fetch(googleAppsScriptURL, { method: 'POST', body: formData });
+            console.log(`✅ Datos enviados correctamente para página ${gamePage}`);
+        } catch (err) {
+            console.error("❌ Error al enviar", err);
         }
+                }
+
+        
 
         function updateTimer() {
             const minutes = Math.floor(timeLeft / 60);
@@ -175,3 +177,4 @@
     </script>
 </body>
 </html>
+
