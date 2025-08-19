@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squid Safe</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #0d1117; /* Dark background */
+            font-family: 'Orbitron', sans-serif; /* Futuristic font */
+            color: #e0e0e0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .game-over-container {
+            background-color: #1a1e24;
+            border: 2px solid #ff4136; /* Red border matching image */
+            box-shadow: 0 0 40px #ff4136, 0 0 20px #ff4136 inset; /* Glow effect */
+            padding: 50px;
+            border-radius: 15px;
+            text-align: center;
+            animation: pulse-border 2s infinite alternate; /* Pulsating border */
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes pulse-border {
+            0% {
+                box-shadow: 0 0 40px #ff4136, 0 0 20px #ff4136 inset;
+            }
+            100% {
+                box-shadow: 0 0 60px #ff4136, 0 0 30px #ff4136 inset;
+            }
+        }
+
+        h1 {
+            font-size: 4em;
+            color: #ff4136; /* Red color for "Squid Safe" */
+            text-shadow: 0 0 15px #ff4136, 0 0 5px #ff4136;
+            margin-bottom: 20px;
+            animation: glitch 1.5s infinite alternate; /* Glitch effect */
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-2px, 2px);
+            }
+            40% {
+                transform: translate(-2px, -2px);
+            }
+            60% {
+                transform: translate(2px, 2px);
+            }
+            80% {
+                transform: translate(2px, -2px);
+            }
+            100% {
+                transform: translate(0);
+            }
+        }
+
+        p {
+            font-size: 1.5em;
+            color: #ffd700; /* Gold color for "Tiempo Final" */
+            margin-bottom: 30px;
+        }
+
+        #countdown {
+            font-size: 3.5em;
+            color: #00ff00; /* Green for timer */
+            text-shadow: 0 0 10px #00ff00, 0 0 5px #00ff00;
+            margin-top: 30px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px; /* Spacing between segments */
+        }
+
+        .timer-segment {
+            background-color: #2e3440;
+            padding: 20px 30px; /* Increased padding for larger boxes */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            min-width: 120px; /* Increased minimum width for larger boxes */
+            text-align: center;
+        }
+
+        .timer-segment span {
+            display: block;
+            font-size: 0.4em;
+            color: #90ee90;
+            margin-top: 5px;
+        }
+
+        /* Removed .separator CSS as per request */
+
+        .button-exit {
+            background-color: #28a745; /* Green button */
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .button-exit:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
+        }
+
+        /* Background animated dots */
+        .background-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .dot {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: move-dot 20s infinite linear;
+        }
+
+        @keyframes move-dot {
+            0% {
+                transform: translate(0, 0);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y));
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-dots"></div>
+    <div class="game-over-container">
+        <h1>Squid Safe</h1>
+        <p>Tiempo Final</p>
+        <div id="countdown">
+            <div class="timer-segment">
+                <span id="minutes">00</span>
+                <span>MINUTOS</span>
+            </div>
+            <div class="timer-segment">
+                <span id="seconds">00</span>
+                <span>SEGUNDOS</span>
+            </div>
+        </div>
+        <button class="button-exit" onclick="location.reload()">Salir</button>
+    </div>
+
+    <script>
+        const startingMinutes = 20;
+        let time = startingMinutes * 60; // Total seconds
+
+        const countdownEl = document.getElementById('countdown');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+
+        // Function to create random background dots
+        function createDot() {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            const size = Math.random() * 5 + 2; // size between 2px and 7px
+            dot.style.width = `${size}px`;
+            dot.style.height = `${size}px`;
+            dot.style.left = `${Math.random() * 100}vw`;
+            dot.style.top = `${Math.random() * 100}vh`;
+
+            // Random destination for the dot
+            const destX = (Math.random() * 200 - 100); // -100 to 100 vw
+            const destY = (Math.random() * 200 - 100); // -100 to 100 vh
+            dot.style.setProperty('--x', `${destX}vw`);
+            dot.style.setProperty('--y', `${destY}vh`);
+
+            dot.style.animationDuration = `${Math.random() * 15 + 10}s`; // 10 to 25 seconds
+            dot.style.animationDelay = `${Math.random() * 5}s`; // Random delay
+            document.querySelector('.background-dots').appendChild(dot);
+
+            // Remove dot after animation to prevent accumulation
+            dot.addEventListener('animationend', () => {
+                dot.remove();
+                createDot(); // Create a new one
+            });
+        }
+
+        // Create initial dots
+        for (let i = 0; i < 50; i++) {
+            createDot();
+        }
+
+        function updateCountdown() {
+            const minutes = Math.floor(time / 60);
+            let seconds = time % 60;
+
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            minutesEl.innerHTML = minutes < 10 ? '0' + minutes : minutes;
+            secondsEl.innerHTML = seconds;
+
+            if (time <= 0) {
+                clearInterval(countdownInterval);
+                minutesEl.innerHTML = '00';
+                secondsEl.innerHTML = '00';
+                // You can add logic here for what happens when the timer reaches zero
+                // For example, redirect the user or show a "Time's Up!" message.
+            }
+
+            time--;
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call to display immediately
+    </script>
+</body>
+</html>
