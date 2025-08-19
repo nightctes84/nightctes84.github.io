@@ -6,7 +6,179 @@
     <title>Segundo Desafío: Juego del Calamar</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        /* (Se mantienen los estilos originales que ya tenías) */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0d1a26;
+            color: #ecf0f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-image: url('fonde be safe.PNG');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: rgba(26, 42, 58, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid #e74c3c;
+        }
+
+        h1 {
+            color: #e74c3c;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .timer {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 2.5em;
+            color: #00ff00;
+            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+            padding: 15px 30px;
+            border-radius: 10px;
+            border: 2px solid #00cc00;
+            box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, inset 0 0 8px rgba(0,255,0,0.6);
+            align-self: center;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px #00ff00;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .options-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option-button {
+            background-color: #2980b9;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            min-width: 120px;
+        }
+
+        .option-button:hover {
+            background-color: #3498db;
+            transform: translateY(-3px);
+        }
+
+        .option-button.selected {
+            background-color: #e74c3c;
+            border: 2px solid #c0392b;
+            transform: scale(1.05);
+        }
+
+        #submitButton, #nextButton {
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.5em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #submitButton {
+            background-color: #27ae60;
+        }
+        #submitButton:hover {
+            background-color: #2ecc71;
+        }
+        #submitButton:disabled {
+            background-color: #7f8c8d;
+            cursor: not-allowed;
+        }
+
+        #nextButton {
+            background-color: #f39c12;
+            display: none;
+        }
+        #nextButton:hover {
+            background-color: #e67e22;
+        }
+
+        .message {
+            font-size: 1.8em;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+        .correct-message { color: #2ecc71; }
+        .incorrect-message, .timeout-message { color: #e74c3c; }
+
+        .welcome-message {
+            font-size: 1.5em;
+            color: #f1c40f;
+            margin-bottom: 20px;
+        }
+
+        .game-over-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .game-over-modal-overlay.show {
+            opacity: 1; visibility: visible;
+        }
+        .game-over-modal-content {
+            background: linear-gradient(135deg, #1a2a3a, #0d1a26);
+            border: 3px solid #e74c3c;
+            border-radius: 20px;
+            padding: 50px; text-align: center;
+            transform: scale(0.8); opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            animation: pulse-glow 2s infinite alternate;
+        }
+        .game-over-modal-overlay.show .game-over-modal-content {
+            transform: scale(1); opacity: 1;
+        }
+        .game-over-modal-content h2 {
+            font-size: 4em; color: #e74c3c;
+            text-shadow: 0 0 15px rgba(231,76,60,0.9);
+            margin-bottom: 20px; text-transform: uppercase;
+            letter-spacing: 5px;
+        }
+        .game-over-modal-content p {
+            font-size: 1.5em; color: #f1c40f; margin-bottom: 40px;
+        }
+        .game-over-modal-content button {
+            background-color: #27ae60; color: white;
+            padding: 15px 40px; border: none; border-radius: 10px;
+            font-size: 1.3em; cursor: pointer;
+        }
+        .game-over-modal-content button:hover {
+            background-color: #2ecc71;
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 30px rgba(231,76,60,0.7); }
+            100% { box-shadow: 0 0 50px rgba(231,76,60,1), 0 0 20px rgba(231,76,60,0.5); }
+        }
     </style>
 </head>
 <body>
@@ -14,8 +186,8 @@
         <div class="timer" id="timerDisplay"><span>01:00</span></div>
         <div class="welcome-message" id="welcomeMessage"></div>
 
-        <h1>¡SEGUNDO DESAFIO!</h1>
-        <p>Al llegar a un domicilio, observas que el cliente tiene una mascota suelta en el interior. ¿cómo procederías?</p>
+        <h1>¡SEGUNDO DESAFÍO!</h1>
+        <p>Al llegar a un domicilio, observas que el cliente tiene una mascota suelta en el interior. ¿Cómo procederías?</p>
 
         <div class="options-container">
             <button class="option-button" data-value="calmar">Intentas calmar al animal llevándole comida o acariciándolo</button>
@@ -26,7 +198,6 @@
 
         <button id="submitButton">Responder</button>
         <button id="nextButton">Siguiente</button>
-
         <div id="feedbackMessage" class="message"></div>
     </div>
 
@@ -45,7 +216,7 @@
         const nextButton = document.getElementById('nextButton');
         const feedbackMessage = document.getElementById('feedbackMessage');
         const welcomeMessage = document.getElementById('welcomeMessage');
-        const correctAnswer = 'solicitar'; 
+        const correctAnswer = 'solicitar';
         const totalTime = 60;
         let timeLeft = totalTime;
         let timerInterval;
@@ -71,7 +242,7 @@
         const userCity = getUrlParameter('city');
         if (userName) welcomeMessage.textContent = `¡Jugador: ${userName}!`;
 
-        // Enviar datos a Google Sheets
+        // Enviar datos
         async function sendGameData(name, city, gamePage, timeTaken) {
             const formData = new FormData();
             formData.append('nombre', name);
@@ -91,8 +262,7 @@
         function updateTimer() {
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
-            timerDisplay.querySelector('span').textContent =
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            timerDisplay.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
                 if (!gameEnded) {
@@ -107,7 +277,7 @@
         function endGame(isCorrect) {
             gameEnded = true;
             clearInterval(timerInterval);
-            optionButtons.forEach(button => button.disabled = true);
+            optionButtons.forEach(btn => btn.disabled = true);
             submitButton.style.display = 'none';
 
             if (isCorrect) {
@@ -129,12 +299,12 @@
             submitButton.disabled = true;
         });
 
-        optionButtons.forEach(button => {
-            button.addEventListener('click', () => {
+        optionButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
                 if (gameEnded) return;
-                optionButtons.forEach(btn => btn.classList.remove('selected'));
-                button.classList.add('selected');
-                selectedOption = button.dataset.value;
+                optionButtons.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedOption = btn.dataset.value;
                 submitButton.disabled = false;
             });
         });
