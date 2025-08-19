@@ -401,19 +401,12 @@
             formData.append('timeTaken', timeTaken);
 
             try {
-                const response = await fetch(googleAppsScriptURL, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
-                    console.log(`¡Datos del juego para ${gamePage} enviados a Google Sheets correctamente!`);
-                } else {
-                    console.error(`Error al enviar datos del juego para ${gamePage} a Google Sheets:`, response.statusText);
-                }
-            } catch (error) {
-                console.error(`Error de red o problema al enviar datos del juego para ${gamePage}:`, error);
-            }
+        await fetch(googleAppsScriptURL, { method: 'POST', body: formData });
+        console.log("Datos enviados correctamente");
+    } catch (err) {
+        console.error("Error al enviar", err);
+    }
+}
         }
 
         // Función para actualizar la visualización del temporizador
@@ -500,3 +493,4 @@
     </script>
 </body>
 </html>
+
