@@ -173,16 +173,20 @@
                 <span>SEGUNDOS</span>
             </div>
         </div>
-        <button class="button-exit" onclick="location.reload()">Salir</button>
+        <button class="button-exit" id="startButton">Empezar</button>
     </div>
+
+    <audio id="calecita-music" src="calecita.mp3" preload="auto"></audio>
 
     <script>
         const startingMinutes = 20;
         let time = startingMinutes * 60; // Total seconds
+        let countdownInterval; // Variable para almacenar el ID del intervalo
 
-        const countdownEl = document.getElementById('countdown');
         const minutesEl = document.getElementById('minutes');
         const secondsEl = document.getElementById('seconds');
+        const startButton = document.getElementById('startButton');
+        const audio = document.getElementById('calecita-music');
 
         // Function to create random background dots
         function createDot() {
@@ -228,15 +232,41 @@
                 clearInterval(countdownInterval);
                 minutesEl.innerHTML = '00';
                 secondsEl.innerHTML = '00';
-                // You can add logic here for what happens when the timer reaches zero
-                // For example, redirect the user or show a "Time's Up!" message.
+                audio.pause(); // Detener la música al finalizar
+                audio.currentTime = 0; // Reiniciar la música
+                startButton.textContent = 'Empezar'; // Cambiar el texto del botón
+            } else {
+                time--;
             }
-
-            time--;
         }
 
-        const countdownInterval = setInterval(updateCountdown, 1000);
-        updateCountdown(); // Initial call to display immediately
+        // Función para iniciar el juego
+        function startGame() {
+            // Detiene cualquier temporizador que esté en marcha
+            clearInterval(countdownInterval);
+            
+            // Reinicia el contador de tiempo
+            time = startingMinutes * 60;
+            
+            // Inicia el nuevo intervalo
+            countdownInterval = setInterval(updateCountdown, 1000);
+            
+            // Reproduce la música
+            audio.play().catch(e => {
+                console.error("La reproducción de la música falló:", e);
+                // Esto podría ocurrir si el usuario no ha interactuado con la página aún.
+                // Puedes mostrar un mensaje al usuario para que interactúe si es necesario.
+            });
+            
+            // Actualiza el texto del botón a "Reiniciar"
+            startButton.textContent = 'Reiniciar';
+        }
+
+        // Asigna la función startGame al evento click del botón
+        startButton.addEventListener('click', startGame);
+
+        // Llama a updateCountdown para mostrar el tiempo inicial
+        updateCountdown();
     </script>
 </body>
 </html>
