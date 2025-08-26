@@ -69,56 +69,63 @@
             margin-bottom: 30px;
         }
 
-        .option-button {
-            background-color: #2980b9;
-            color: white;
+        /* Modern Button Styles */
+        .option-button, #submitButton, #nextButton {
+            background: linear-gradient(145deg, #2c3e50, #1a2a3a); /* Darker gradient */
+            color: #ecf0f1;
             padding: 15px 30px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px; /* Slightly more rounded */
             font-size: 1.2em;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            min-width: 120px;
+            transition: all 0.3s ease; /* Smooth transitions for all properties */
+            min-width: 250px; /* Wider for text options */
+            height: 80px; /* Adjusted height for text options */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-sizing: border-box;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5), -5px -5px 15px rgba(255, 255, 255, 0.05); /* Subtle shadow for depth */
         }
 
-        .option-button:hover {
-            background-color: #3498db;
-            transform: translateY(-3px);
+        .option-button:hover, #submitButton:hover, #nextButton:hover {
+            background: linear-gradient(145deg, #34495e, #2c3e50); /* Lighter gradient on hover */
+            transform: translateY(-5px); /* Lift effect */
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.6), -8px -8px 20px rgba(255, 255, 255, 0.1);
         }
 
         .option-button.selected {
-            background-color: #e74c3c;
-            border: 2px solid #c0392b;
-            transform: scale(1.05);
-        }
-
-        #submitButton, #nextButton {
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.5em;
-            cursor: pointer;
-            margin-top: 20px;
+            background: linear-gradient(145deg, #e74c3c, #c0392b); /* Red gradient for selected */
+            border: 2px solid #ff6347; /* Brighter border */
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.8), 0 0 10px rgba(231, 76, 60, 0.4); /* Glow effect */
         }
 
         #submitButton {
-            background-color: #27ae60;
+            background: linear-gradient(145deg, #27ae60, #229a50); /* Green gradient */
+            margin-top: 20px;
+            font-size: 1.5em; /* Larger font for submit */
+            padding: 15px 40px;
         }
         #submitButton:hover {
-            background-color: #2ecc71;
+            background: linear-gradient(145deg, #2ecc71, #27ae60);
         }
         #submitButton:disabled {
-            background-color: #7f8c8d;
+            background: linear-gradient(145deg, #7f8c8d, #6c7a89);
             cursor: not-allowed;
+            transform: none;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
         }
 
         #nextButton {
-            background-color: #f39c12;
+            background: linear-gradient(145deg, #f39c12, #e67e22); /* Orange gradient */
             display: none;
+            font-size: 1.5em; /* Larger font for next */
+            padding: 15px 40px;
         }
         #nextButton:hover {
-            background-color: #e67e22;
+            background: linear-gradient(145deg, #e67e22, #d35400);
         }
 
         .message {
