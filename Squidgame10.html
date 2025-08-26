@@ -22,7 +22,7 @@
         }
 
         .container {
-            background-image: url('fonde be safe.PNG'); /* Design from Squidgame1 */
+            background-image: url('fonde be safe.PNG');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -71,41 +71,41 @@
 
         /* Modern Button Styles */
         .option-button, #submitButton, #nextButton {
-            background: linear-gradient(145deg, #2c3e50, #1a2a3a); /* Darker gradient */
+            background: linear-gradient(145deg, #2c3e50, #1a2a3a);
             color: #ecf0f1;
             padding: 15px 30px;
             border: none;
-            border-radius: 10px; /* Slightly more rounded */
+            border-radius: 10px;
             font-size: 1.2em;
             cursor: pointer;
-            transition: all 0.3s ease; /* Smooth transitions for all properties */
-            min-width: 250px; /* Wider for text options */
-            height: 80px; /* Adjusted height for text options */
+            transition: all 0.3s ease;
+            min-width: 250px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             box-sizing: border-box;
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5), -5px -5px 15px rgba(255, 255, 255, 0.05); /* Subtle shadow for depth */
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5), -5px -5px 15px rgba(255, 255, 255, 0.05);
         }
 
         .option-button:hover, #submitButton:hover, #nextButton:hover {
-            background: linear-gradient(145deg, #34495e, #2c3e50); /* Lighter gradient on hover */
-            transform: translateY(-5px); /* Lift effect */
+            background: linear-gradient(145deg, #34495e, #2c3e50);
+            transform: translateY(-5px);
             box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.6), -8px -8px 20px rgba(255, 255, 255, 0.1);
         }
 
         .option-button.selected {
-            background: linear-gradient(145deg, #e74c3c, #c0392b); /* Red gradient for selected */
-            border: 2px solid #ff6347; /* Brighter border */
+            background: linear-gradient(145deg, #e74c3c, #c0392b);
+            border: 2px solid #ff6347;
             transform: scale(1.05) translateY(-3px);
-            box-shadow: 0 0 20px rgba(231, 76, 60, 0.8), 0 0 10px rgba(231, 76, 60, 0.4); /* Glow effect */
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.8), 0 0 10px rgba(231, 76, 60, 0.4);
         }
 
         #submitButton {
-            background: linear-gradient(145deg, #27ae60, #229a50); /* Green gradient */
+            background: linear-gradient(145deg, #27ae60, #229a50);
             margin-top: 20px;
-            font-size: 1.5em; /* Larger font for submit */
+            font-size: 1.5em;
             padding: 15px 40px;
         }
         #submitButton:hover {
@@ -119,9 +119,9 @@
         }
 
         #nextButton {
-            background: linear-gradient(145deg, #f39c12, #e67e22); /* Orange gradient */
+            background: linear-gradient(145deg, #f39c12, #e67e22);
             display: none;
-            font-size: 1.5em; /* Larger font for next */
+            font-size: 1.5em;
             padding: 15px 40px;
         }
         #nextButton:hover {
@@ -194,14 +194,13 @@
         <div class="welcome-message" id="welcomeMessage"></div>
 
         <h1>¡DESAFÍO SQUIDGAME 10!</h1>
-        <p>Si te quemás con agua hirviendo, ¿qué hacés?</p>
-        
+        <p>¿Como se utilizan las manos cuando se realizan compresiones en RCP?</p>
 
         <div class="options-container">
-            <button class="option-button" data-value="Pones_hielo">Ponés hielo</button>
-            <button class="option-button" data-value="Te_pones_pasta_dental">Te ponés pasta dental</button>
-            <button class="option-button" data-value="Te_enfrias_con_agua_de_la_canilla_por_varios_minutos">Te enfriás con agua de la canilla por varios minutos</button>
-            <button class="option-button" data-value="Te_tapas_la_mano">Te tapás la mano</button>
+            <button class="option-button" data-value="Una sola mano en la panza">Una sola mano en la panza</button>
+            <button class="option-button" data-value="Con los dedos en el cuello">Con los dedos en el cuello</button>
+            <button class="option-button" data-value="Con las dos manos en el centro del pecho">Con las dos manos en el centro del pecho</button>
+            <button class="option-button" data-value="Con la palma en el estómago">Con la palma en el estómago</button>
         </div>
 
         <button id="submitButton">Responder</button>
@@ -224,21 +223,18 @@
         const nextButton = document.getElementById('nextButton');
         const feedbackMessage = document.getElementById('feedbackMessage');
         const welcomeMessage = document.getElementById('welcomeMessage');
-        const correctAnswer = 'Te_enfrias_con_agua_de_la_canilla_por_varios_minutos'; // Correct answer from Squidgame7 (originally Squidgame5)
+        const correctAnswer = 'Con las dos manos en el centro del pecho';
         const totalTime = 60;
         let timeLeft = totalTime;
         let timerInterval;
         let selectedOption = null;
         let gameEnded = false;
 
-        // URL de Google Apps Script
-        const googleAppsScriptURL = "https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKqCu98KfA09zfBAmxyDgYlhoSdzQ/exec";
+        const googleAppsScriptURL = "https://script.google.com/macros/s/AKfycbzKi8wMWmW3nlXqj2SlJWFwo6IoSOguVYYmoggTjRKpCu98KfA09zfBAmxyDgYlhoSdzQ/exec";
 
-        // Modal
         const gameOverModal = document.getElementById('gameOverModal');
         const restartButton = document.getElementById('restartButton');
 
-        // Obtener parámetros de URL
         function getUrlParameter(name) {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
             const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -249,7 +245,6 @@
         const userCity = getUrlParameter('city');
         if (userName) welcomeMessage.textContent = `¡Jugador: ${userName}!`;
 
-        // Enviar datos a Google Sheets
         async function sendGameData(name, city, gamePage, timeTaken) {
             const formData = new FormData();
             formData.append('nombre', name);
@@ -265,7 +260,6 @@
             }
         }
 
-        // Timer
         function updateTimer() {
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
@@ -274,7 +268,7 @@
                 clearInterval(timerInterval);
                 if (!gameEnded) {
                     endGame(false);
-                    sendGameData(userName, userCity, '10', 0); // GamePage is 10
+                    sendGameData(userName, userCity, '10', 0);
                 }
             } else {
                 timeLeft--;
@@ -291,13 +285,13 @@
                 feedbackMessage.textContent = "¡Respuesta correcta! 🎉";
                 feedbackMessage.classList.add('correct-message');
                 nextButton.style.display = 'block';
-                sendGameData(userName, userCity, '10', totalTime - timeLeft); // GamePage is 10
+                sendGameData(userName, userCity, '10', totalTime - timeLeft);
                 setTimeout(() => {
-                    window.location.href = `Squidgame11.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`; // Redirect to Squidgame11.html
+                    window.location.href = `Squidgame11.html?user=${encodeURIComponent(userName)}&city=${encodeURIComponent(userCity)}`;
                 }, 3000);
             } else {
                 gameOverModal.classList.add('show');
-                sendGameData(userName, userCity, '10', totalTime - timeLeft); // GamePage is 10
+                sendGameData(userName, userCity, '10', totalTime - timeLeft);
             }
         }
 
