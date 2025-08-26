@@ -30,40 +30,39 @@
             text-shadow: 0 0 10px #f1c40f, 0 0 20px #f1c40f;
             animation: glow-text 2s infinite alternate;
         }
-        
         @keyframes glow-text {
             0% { text-shadow: 0 0 10px #f1c40f; }
             100% { text-shadow: 0 0 20px #f1c40f, 0 0 30px #f1c40f; }
         }
 
+        /* 🔒 Siempre lado a lado */
+        .table-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: stretch;
+            flex-wrap: nowrap;          /* no se apilan */
+            gap: 24px;
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            overflow-x: auto;           /* si no entra, aparece scroll horizontal */
+        }
         .city-table-wrapper {
-            flex: 1;
-            max-width: 600px;
-            min-width: 300px;
+            flex: 0 0 48%;              /* casi mitad cada una */
+            min-width: 520px;           /* evita que colapsen */
             background: rgba(26, 42, 58, 0.7);
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
             border: 2px solid #e74c3c;
         }
-
         .city-table-wrapper h2 {
             color: #ecf0f1;
             font-family: 'Share Tech Mono', monospace;
             font-size: 1.8em;
             margin-bottom: 20px;
             text-shadow: 0 0 10px #00ff00;
-        }
-        
-        .table-container {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            flex-wrap: nowrap; /* 🔒 siempre lado a lado */
-            gap: 20px;
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
         }
 
         table {
@@ -78,44 +77,16 @@
             overflow: hidden;
             color: #ecf0f1;
         }
-        
-        th, td {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            text-align: left;
-        }
-        
+        th, td { border: 1px solid rgba(255,255,255,0.1); padding: 15px; text-align: left; }
         th {
             background-color: rgba(231, 76, 60, 0.8);
-            color: white;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-family: 'Orbitron', sans-serif;
+            color: white; font-weight: bold; text-transform: uppercase; font-family: 'Orbitron', sans-serif;
         }
-        
-        tr:nth-child(even) {
-            background: rgba(46, 64, 83, 0.6);
-        }
-        
-        tr:hover {
-            background: rgba(74, 96, 119, 0.7);
-        }
-        
-        #loading {
-            text-align: center;
-            font-size: 1.2em;
-            color: #f1c40f;
-            margin-top: 30px;
-            font-family: 'Share Tech Mono', monospace;
-        }
-        
-        .error-message {
-            color: #e74c3c;
-            text-align: center;
-            margin-top: 20px;
-            font-weight: bold;
-            font-family: 'Share Tech Mono', monospace;
-        }
+        tr:nth-child(even){ background: rgba(46,64,83,0.6); }
+        tr:hover{ background: rgba(74,96,119,0.7); }
+
+        #loading { text-align:center; font-size:1.2em; color:#f1c40f; margin-top:30px; font-family:'Share Tech Mono', monospace; }
+        .error-message { color:#e74c3c; text-align:center; margin-top:20px; font-weight:bold; font-family:'Share Tech Mono', monospace; }
     </style>
 </head>
 <body>
@@ -135,8 +106,7 @@
                         <th>Tiempo Total (segundos)</th>
                     </tr>
                 </thead>
-                <tbody>
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
 
@@ -150,8 +120,7 @@
                         <th>Tiempo Total (segundos)</th>
                     </tr>
                 </thead>
-                <tbody>
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
     </div>
@@ -172,14 +141,11 @@
             const SPREADSHEET_ID = '1kfNWpoj-Svouh1Q7xiug67MEjTWDdeItL96sCLS_p7w';
             const API_KEY = 'AIzaSyAY4PTzTAqm0mwJvV742E0ZTUNQH63BQbg';
             const RANGE = 'Hoja 1!A1:E';
-
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
 
             try {
                 const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
 
                 if (data.values && data.values.length > 1) {
@@ -202,18 +168,11 @@
                         if (userName && city && !isNaN(gamePageValue)) {
                             if (usersByCity[city]) {
                                 if (!usersByCity[city].has(userName)) {
-                                    usersByCity[city].set(userName, {
-                                        maxGamePage: -1,
-                                        totalTime: 0
-                                    });
+                                    usersByCity[city].set(userName, { maxGamePage: -1, totalTime: 0 });
                                 }
                                 const userData = usersByCity[city].get(userName);
-                                if (gamePageValue > userData.maxGamePage) {
-                                    userData.maxGamePage = gamePageValue;
-                                }
-                                if (!isNaN(timeTakenValue)) {
-                                    userData.totalTime += timeTakenValue;
-                                }
+                                if (gamePageValue > userData.maxGamePage) userData.maxGamePage = gamePageValue;
+                                if (!isNaN(timeTakenValue)) userData.totalTime += timeTakenValue;
                             }
                         }
                     });
@@ -221,13 +180,9 @@
                     function populateTable(tableBody, usersMap) {
                         if (usersMap.size > 0) {
                             const sortedUsers = Array.from(usersMap.entries()).sort((a, b) => {
-                                const pageA = a[1].maxGamePage;
-                                const pageB = b[1].maxGamePage;
-                                const timeA = a[1].totalTime;
-                                const timeB = b[1].totalTime;
-                                if (pageA !== pageB) {
-                                    return pageB - pageA;
-                                }
+                                const pageA = a[1].maxGamePage, pageB = b[1].maxGamePage;
+                                const timeA = a[1].totalTime,  timeB = b[1].totalTime;
+                                if (pageA !== pageB) return pageB - pageA;
                                 return timeA - timeB;
                             });
                             sortedUsers.forEach(([userName, data]) => {
@@ -246,13 +201,23 @@
 
                     populateTable(bahiaBlancaTableBody, usersByCity['Bahía Blanca']);
                     populateTable(paranaTableBody, usersByCity['Paraná']);
-
                 } else {
                     bahiaBlancaTableBody.innerHTML = '<tr><td colspan="3">No hay datos disponibles en la hoja de cálculo.</td></tr>';
                     paranaTableBody.innerHTML = '<tr><td colspan="3">No hay datos disponibles en la hoja de cálculo.</td></tr>';
                 }
-
             } catch (error) {
                 console.error('Error al obtener los datos:', error);
                 errorMessageDiv.textContent = `Error al cargar los datos: ${error.message}. Por favor, revisa tu clave de API y el acceso a la hoja.`;
                 errorMessageDiv.style.display = 'block';
+                bahiaBlancaTableBody.innerHTML = '<tr><td colspan="3">Error al cargar.</td></tr>';
+                paranaTableBody.innerHTML = '<tr><td colspan="3">Error al cargar.</td></tr>';
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchUserData);
+        setInterval(fetchUserData, 5000);
+    </script>
+</body>
+</html>
