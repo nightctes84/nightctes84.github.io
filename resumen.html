@@ -37,8 +37,9 @@
         }
 
         .city-table-wrapper {
-            flex: 1 1 45%;  /* ocupa casi la mitad */
-            min-width: 350px;
+            flex: 1;
+            max-width: 600px;
+            min-width: 300px;
             background: rgba(26, 42, 58, 0.7);
             padding: 20px;
             border-radius: 15px;
@@ -56,11 +57,12 @@
         
         .table-container {
             display: flex;
-            flex-direction: row; 
-            justify-content: center;
-            flex-wrap: wrap; 
-            gap: 40px;
-            max-width: 1200px;
+            flex-direction: row;
+            justify-content: space-around;
+            flex-wrap: nowrap; /* 🔒 siempre lado a lado */
+            gap: 20px;
+            width: 100%;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -113,16 +115,6 @@
             margin-top: 20px;
             font-weight: bold;
             font-family: 'Share Tech Mono', monospace;
-        }
-
-        @media (max-width: 768px) {
-            .table-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            .city-table-wrapper {
-                width: 90%; 
-            }
         }
     </style>
 </head>
@@ -264,15 +256,3 @@
                 console.error('Error al obtener los datos:', error);
                 errorMessageDiv.textContent = `Error al cargar los datos: ${error.message}. Por favor, revisa tu clave de API y el acceso a la hoja.`;
                 errorMessageDiv.style.display = 'block';
-                bahiaBlancaTableBody.innerHTML = '<tr><td colspan="3">Error al cargar.</td></tr>';
-                paranaTableBody.innerHTML = '<tr><td colspan="3">Error al cargar.</td></tr>';
-            } finally {
-                loadingDiv.style.display = 'none';
-            }
-        }
-        
-        document.addEventListener('DOMContentLoaded', fetchUserData);
-        setInterval(fetchUserData, 5000);
-    </script>
-</body>
-</html>
