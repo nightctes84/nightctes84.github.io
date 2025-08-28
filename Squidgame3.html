@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tercer Desafío: Juego del Calamar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #0d1a26; /* Fondo muy oscuro, casi negro */
-            color: #ecf0f1; /* Texto claro */
+            background-color: #0d1a26;
+            color: #ecf0f1;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,313 +19,194 @@
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
+            background: radial-gradient(circle at center, #1a2a3a 0%, #0d1a26 100%);
         }
 
         .container {
-            background-image: url('fonde be safe.PNG'); /* La imagen de fondo ahora se aplica al .container */
-            background-size: cover; /* Cubre todo el fondo del contenedor */
-            background-position: center; /* Centra la imagen en el contenedor */
-            background-repeat: no-repeat; /* Evita que la imagen se repita */
-            /* Añadimos un color de fondo semi-transparente SOBRE la imagen para que el texto resalte */
-            background-color: rgba(26, 42, 58, 0.7); /* Menos opaco para ver más la imagen */
+            background-image: url('fonde be safe.PNG');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: rgba(26, 42, 58, 0.7);
             padding: 40px;
-            border-radius: 15px; /* Bordes más redondeados */
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
             max-width: 600px;
             width: 100%;
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
-            border: 2px solid #e74c3c; /* Borde rojo distintivo */
+            border: 2px solid #e74c3c;
         }
 
         h1 {
-            color: #e74c3c; /* Rojo, como los uniformes de los guardias o la sangre en Squid Game */
+            color: #ecf0f1;
             margin-bottom: 30px;
             font-size: 2.5em;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px #f1c40f, 0 0 20px #f1c40f;
+            animation: glow-text 2s infinite alternate;
         }
-
-        /* --- Estilos MODIFICADOS para el contador --- */
-        .timer {
-            font-family: 'Share Tech Mono', monospace; /* Fuente de estilo tecnológico */
-            font-size: 2.5em; /* Tamaño más grande para visibilidad */
-            color: #00ff00; /* Verde brillante, como un display digital */
-            background: linear-gradient(145deg, #1a1a1a, #0a0a0a); /* Gradiente sutil para el fondo */
-            padding: 15px 30px; /* Más padding para un look robusto */
-            border-radius: 10px; /* Bordes ligeramente redondeados */
-            border: 2px solid #00cc00; /* Borde verde más claro */
-            box-shadow:
-                0 0 5px #00ff00, /* Sombra interior suave */
-                0 0 10px #00ff00, /* Resplandor exterior */
-                0 0 20px #00ff00, /* Mayor resplandor */
-                inset 0 0 8px rgba(0, 255, 0, 0.6); /* Sombra interna para profundidad */
-            align-self: center; /* Centrar el timer dentro del flex container */
-            margin-bottom: 20px; /* Espacio debajo del contador */
-            text-shadow: 0 0 5px #00ff00; /* Sombra de texto para el efecto de brillo */
-            position: relative;
-            overflow: hidden; /* Asegurar que el pseudo-elemento no se desborde */
-        }
-
-        /* Efecto de "glitch" o línea parpadeante */
-        .timer::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: -10%;
-            width: 120%;
-            height: 2px;
-            background: linear-gradient(to right, transparent, rgba(0, 255, 0, 0.5), transparent);
-            transform: translateY(-50%) rotate(2deg);
-            animation: glitch-line 2s infinite linear;
-            opacity: 0.7;
-        }
-
-        @keyframes glitch-line {
-            0%, 100% { top: 40%; opacity: 0.7; }
-            20% { top: 60%; opacity: 0.5; }
-            40% { top: 30%; opacity: 0.8; }
-            60% { top: 70%; opacity: 0.6; }
-            80% { top: 45%; opacity: 0.7; }
-        }
-
-        /* Pequeña animación de parpadeo para los números */
-        .timer span {
-            animation: text-flicker 1.5s infinite alternate;
-        }
-
-        @keyframes text-flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                text-shadow:
-                    -0.08rem -0.02rem 0.05rem #fff,
-                    0.08rem 0.02rem 0.05rem #fff,
-                    0 0 1rem #00ff00,
-                    0 0 2rem #00ff00,
-                    0 0 3rem #00ff00,
-                    0 0 4rem #00ff00,
-                    0 0 5rem #00ff00,
-                    0 0 6rem #00ff00;
-            }
-            20%, 24%, 55% {
-                text-shadow: none;
-            }
-        }
-        /* --- FIN Estilos MODIFICADOS para el contador --- */
-
 
         p {
-            font-size: 1.4em;
-            margin-bottom: 30px;
+            color: #ecf0f1;
+            font-size: 1.1em;
+            text-shadow: 1px 1px 2px #000000;
+        }
+
+        .timer {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 2.5em;
+            color: #00ff00;
+            background: rgba(13, 26, 38, 0.7);
+            border-radius: 15px;
+            border: 2px solid rgba(0,204,0,0.5);
+            padding: 15px 30px;
+            box-shadow: 0 0 15px #00ff00;
+            align-self: center;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ff00;
+            transition: transform 0.3s ease;
         }
 
         .options-container {
             display: flex;
-            justify-content: center; /* Centrar los botones de opción */
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 15px;
             margin-bottom: 30px;
+            width: 100%;
         }
 
-        .option-button {
-            background-color: #2980b9; /* Azul */
-            color: white;
+        /* Botones grises con estilo Glassmorphic */
+        .option-button, #submitButton, #nextButton {
+            background: rgba(52, 73, 94, 0.6);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ecf0f1;
             padding: 15px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.2em;
+            border-radius: 12px;
+            font-size: 1.3em;
+            font-family: 'Orbitron', sans-serif;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            min-width: 120px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            height: auto; /* Ajuste para texto multilinea */
         }
 
-        .option-button:hover {
-            background-color: #3498db; /* Azul más claro al pasar el ratón */
-            transform: translateY(-3px);
+        .option-button:hover, #submitButton:hover, #nextButton:hover {
+            background: rgba(74, 96, 119, 0.7);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
         }
 
         .option-button.selected {
-            background-color: #e74c3c; /* Rojo cuando está seleccionado */
-            border: 2px solid #c0392b;
-            transform: scale(1.05);
+            background: rgba(231, 76, 60, 0.8);
+            border: 1px solid #ff6347;
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 0 15px #e74c3c, 0 0 5px #ff6347;
         }
 
         #submitButton {
-            background-color: #27ae60; /* Verde para enviar */
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
+            background: rgba(46, 204, 113, 0.8);
+            border: 1px solid #2ecc71;
             font-size: 1.5em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
             margin-top: 20px;
         }
 
         #submitButton:hover {
-            background-color: #2ecc71; /* Verde más claro al pasar el ratón */
+            background: rgba(46, 204, 113, 0.95);
         }
 
         #submitButton:disabled {
-            background-color: #7f8c8d; /* Gris cuando está deshabilitado */
+            background: rgba(127, 140, 141, 0.5);
+            border: 1px solid rgba(127, 140, 141, 0.3);
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         #nextButton {
-            background-color: #f39c12; /* Naranja para siguiente */
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
+            background: rgba(243, 156, 18, 0.8);
+            border: 1px solid #f39c12;
+            display: none;
             font-size: 1.5em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
             margin-top: 20px;
-            display: none; /* Oculto inicialmente */
-            margin-left: auto; /* Centrar el botón */
-            margin-right: auto; /* Centrar el botón */
         }
-
         #nextButton:hover {
-            background-color: #e67e22; /* Naranja más oscuro al pasar el ratón */
+            background: rgba(243, 156, 18, 0.95);
         }
 
         .message {
             font-size: 1.8em;
             margin-top: 30px;
             font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
         }
+        .correct-message { color: #2ecc71; text-shadow: 0 0 10px #2ecc71; }
+        .incorrect-message, .timeout-message { color: #e74c3c; text-shadow: 0 0 10px #e74c3c; }
 
-        .incorrect-message {
-            color: #e74c3c; /* Rojo para incorrecto */
-        }
-
-        .timeout-message {
-            color: #e74c3c; /* Rojo para tiempo agotado */
-        }
-
-        .correct-message {
-            color: #2ecc71; /* Verde para correcto */
-        }
         .welcome-message {
             font-size: 1.5em;
             color: #f1c40f;
-            margin-bottom: 20px; /* Ajustado para separar de la pregunta */
+            margin-bottom: 20px;
+            font-family: 'Share Tech Mono', monospace;
+            text-shadow: 0 0 5px #f1c40f;
         }
 
-        /* --- Estilos para el modal/alerta de GAME OVER --- */
+        /* Animaciones para el texto */
+        @keyframes glow-text {
+            0% { text-shadow: 0 0 10px #f1c40f; }
+            100% { text-shadow: 0 0 20px #f1c40f, 0 0 30px #f1c40f; }
+        }
+
         .game-over-modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000; /* Asegura que esté por encima de todo */
-            opacity: 0;
-            visibility: hidden;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
-
         .game-over-modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
+            opacity: 1; visibility: visible;
         }
-
         .game-over-modal-content {
-            background: linear-gradient(135deg, #1a2a3a, #0d1a26); /* Degradado oscuro */
-            border: 3px solid #e74c3c; /* Borde rojo del Juego del Calamar */
+            background: linear-gradient(135deg, #1a2a3a, #0d1a26);
+            border: 3px solid #e74c3c;
             border-radius: 20px;
-            padding: 50px;
-            box-shadow: 0 0 40px rgba(231, 76, 60, 0.7); /* Resplandor rojo intenso */
-            text-align: center;
-            transform: scale(0.8);
-            opacity: 0;
+            padding: 50px; text-align: center;
+            transform: scale(0.8); opacity: 0;
             transition: transform 0.3s ease, opacity 0.3s ease;
-            animation: pulse-glow 2s infinite alternate; /* Animación de pulso para el glow */
+            animation: pulse-glow 2s infinite alternate;
         }
-
         .game-over-modal-overlay.show .game-over-modal-content {
-            transform: scale(1);
-            opacity: 1;
+            transform: scale(1); opacity: 1;
         }
-
         .game-over-modal-content h2 {
-            font-size: 4em; /* Más grande */
-            color: #e74c3c; /* Rojo intenso */
-            text-shadow: 0 0 15px rgba(231, 76, 60, 0.9); /* Sombra de texto brillante */
-            margin-bottom: 20px;
-            text-transform: uppercase;
+            font-size: 4em; color: #e74c3c;
+            text-shadow: 0 0 15px rgba(231,76,60,0.9);
+            margin-bottom: 20px; text-transform: uppercase;
             letter-spacing: 5px;
+            font-family: 'Orbitron', sans-serif;
         }
-
         .game-over-modal-content p {
-            font-size: 1.5em;
-            color: #f1c40f; /* Amarillo/Dorado para el texto secundario */
-            margin-bottom: 40px;
-            line-height: 1.6;
+            font-size: 1.5em; color: #f1c40f; margin-bottom: 40px;
         }
-
         .game-over-modal-content button {
-            background-color: #27ae60; /* Botón verde */
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.3em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            background-color: #27ae60; color: white;
+            padding: 15px 40px; border: none; border-radius: 10px;
+            font-size: 1.3em; cursor: pointer;
         }
-
         .game-over-modal-content button:hover {
             background-color: #2ecc71;
-            transform: translateY(-3px);
         }
-
-        /* Animación de pulso para el resplandor del modal */
         @keyframes pulse-glow {
-            0% { box-shadow: 0 0 30px rgba(231, 76, 60, 0.7); }
-            100% { box-shadow: 0 0 50px rgba(231, 76, 60, 1), 0 0 20px rgba(231, 76, 60, 0.5); }
+            0% { box-shadow: 0 0 30px rgba(231,76,60,0.7); }
+            100% { box-shadow: 0 0 50px rgba(231,76,60,1), 0 0 20px rgba(231,76,60,0.5); }
         }
-
-        /* Media queries para responsividad del modal */
-        @media (max-width: 768px) {
-            .game-over-modal-content {
-                padding: 30px;
-                max-width: 90%;
-            }
-            .game-over-modal-content h2 {
-                font-size: 3em;
-            }
-            .game-over-modal-content p {
-                font-size: 1.2em;
-            }
-            .game-over-modal-content button {
-                padding: 12px 30px;
-                font-size: 1.1em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .game-over-modal-content {
-                padding: 20px;
-            }
-            .game-over-modal-content h2 {
-                font-size: 2.5em;
-                letter-spacing: 3px;
-            }
-            .game-over-modal-content p {
-                font-size: 1em;
-            }
-            .game-over-modal-content button {
-                padding: 10px 25px;
-                font-size: 1em;
-            }
-        }
-
     </style>
 </head>
 <body>
@@ -467,5 +348,3 @@
     </script>
 </body>
 </html>
-
-
