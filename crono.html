@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cronómetro</title>
+  <style>
+    :root{
+      --verde:#16a34a;
+      --verde-osc:#0f8a3b;
+      --negro:#000000;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100svh; display:grid; place-items:center; background:var(--negro); color:white;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    .card{
+      width:min(680px, 92vw);
+      background:transparent;
+      padding:28px; text-align:center;
+    }
+    .display{
+      font-variant-numeric: tabular-nums; letter-spacing:.04em;
+      font-weight:800; text-align:center;
+      font-size:clamp(56px, 14vw, 160px);
+      color:var(--verde);
+      line-height:1; margin:14px 0 18px;
+      text-shadow:0 0 20px #00ff80, 0 0 40px #00ff80, 0 0 60px #00ff80;
+    }
+    .controls{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+    button{
+      appearance:none; border:none; cursor:pointer; padding:12px 18px; border-radius:999px;
+      font-weight:700; font-size:16px; transition:.2s transform, .2s background-color, .2s opacity;
+      background:var(--verde); color:white; box-shadow:0 6px 16px rgba(22,163,74,.3);
+    }
+    button:hover{transform:translateY(-1px); background:var(--verde-osc)}
+    button.secondary{background:#e5e7eb; color:#111827; box-shadow:none}
+    button.secondary:hover{background:#d1d5db}
+    .bar{height:12px; background:#222; border-radius:999px; overflow:hidden; box-shadow:0 0 12px #00ff80, 0 0 24px #00ff80 inset}
+    .bar>span{display:block; height:100%; width:100%; background:var(--verde); transform-origin:left center; transform:scaleX(1); transition:transform .2s linear; box-shadow:0 0 20px #00ff80, 0 0 40px #00ff80}
+    .blink{animation: blink 1s steps(2,end) infinite}
+    @keyframes blink{50%{opacity:.25}}
+  </style>
+</head>
+<body>
+  <main class="card" role="region" aria-label="Cronómetro de cuenta regresiva">
+    <div id="time" class="display" aria-live="polite" aria-atomic="true">15:00</div>
+
+    <div class="bar" aria-hidden="true" title="Progreso">
+      <span id="bar"></span>
+    </div>
+
+    <div class="controls" style="margin-top:18px">
+      <button id="toggle">Iniciar</button>
+      <button id="reset" class="secondary">Reiniciar</button>
+    </div>
+  </main>
+
+  <audio id="beep" preload="auto">
+    <source src="data:audio/wav;base64,UklGRkQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYBHFZhdmUAAAAA//8AAP//AAD//wAA" type="audio/wav">
+  </audio>
+
+  <script>
+    const START_MINUTES = 15;
+    const total = START_MINUTES * 60;
+    let remaining = total;
+    let running = false;
+    let raf = null;
+    let lastTick = null;
+
+    const $time = document.getElementById('time');
+    const $toggle = document.getElementById('toggle');
+    const $reset = document.getElementById('reset');
+    const $bar = document.getElementById('bar');
+    const $beep = document.getElementById('beep');
+
+    const fmt = s => {
+      const m = Math.floor(s / 60);
+      const sec = Math.max(0, Math.floor(s % 60));
+      return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+    }
+
+    function updateUI(){
+      $time.textContent = fmt(remaining);
+      const progress = Math.max(0, remaining) / total;
+      $bar.style.transform = `scaleX(${progress})`;
+      if (remaining <= 10 && remaining > 0) {
+        $time.classList.add('blink');
+      } else {
+        $time.classList.remove('blink');
+      }
+    }
+
+    function tick(ts){
+      if(!running){ return; }
+      if(!lastTick) lastTick = ts;
+      const dt = (ts - lastTick) / 1000;
+      lastTick = ts;
+      remaining -= dt;
+      if (remaining <= 0){
+        remaining = 0;
+        running = false;
+        $toggle.textContent = 'Iniciar';
+        $time.classList.remove('blink');
+        updateUI();
+        try{ $beep.currentTime = 0; $beep.play(); }catch(e){}
+        return;
+      }
+      updateUI();
+      raf = requestAnimationFrame(tick);
+    }
+
+    function start(){
+      if (running) return;
+      running = true; lastTick = null;
+      $toggle.textContent = 'Pausar';
+      raf = requestAnimationFrame(tick);
+    }
+
+    function pause(){
+      running = false; lastTick = null;
+      $toggle.textContent = 'Reanudar';
+      if (raf) cancelAnimationFrame(raf);
+    }
+
+    function reset(){
+      pause();
+      remaining = total;
+      $toggle.textContent = 'Iniciar';
+      updateUI();
+    }
+
+    $toggle.addEventListener('click', ()=> running ? pause() : start());
+    $reset.addEventListener('click', reset);
+
+    window.addEventListener('keydown', (e)=>{
+      if(e.code === 'Space'){ e.preventDefault(); running ? pause() : start(); }
+      if(e.key.toLowerCase() === 'r'){ reset(); }
+    });
+
+    updateUI();
+  </script>
+</body>
+</html>
