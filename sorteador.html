@@ -3,274 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteo Dinámico ✨</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    
+    <title>Ruleta de Los 4 Fantásticos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Estilos personalizados para el cuerpo de la página */
         body {
-            background: linear-gradient(135deg, #1f2833, #0a0e14);
-            font-family: 'Poppins', sans-serif;
-            color: #c5c6c7;
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at center, #2e0854 0%, #0c021f 100%);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            text-align: center;
-        }
-
-        .container {
-            background-color: #0b0c10;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            width: 90%;
-            max-width: 600px;
-            border: 1px solid #45a29e;
-        }
-
-        .title {
-            color: #66fcf1;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(102, 252, 241, 0.5);
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: #c5c6c7;
-            margin-bottom: 30px;
-        }
-
-        .winner-box {
-            background: #1f2833;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            min-height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
             overflow: hidden;
-            transition: all 0.5s ease;
-            border: 2px solid transparent;
+            color: #fff;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
         }
 
-        .winner-box.celebrating {
-            border-color: #66fcf1;
-            box-shadow: 0 0 25px rgba(102, 252, 241, 0.7);
+        /* Contenedor principal de la ruleta y los elementos */
+        .ruleta-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            border: 10px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            background: #2e0854; /* Color de fondo para la ruleta */
+        }
+        
+        /* Animación para los destellos de luz */
+        @keyframes glowing {
+            0% { box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000; }
+            25% { box-shadow: 0 0 5px #0000ff, 0 0 10px #0000ff, 0 0 15px #0000ff; }
+            50% { box-shadow: 0 0 5px #008000, 0 0 10px #008000, 0 0 15px #008000; }
+            75% { box-shadow: 0 0 5px #ffff00, 0 0 10px #ffff00, 0 0 15px #ffff00; }
+            100% { box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000; }
         }
 
-        #winner-name {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #45a29e;
-            transition: all 0.5s ease;
+        .ruleta-container.glowing-active {
+            animation: glowing 1s infinite alternate;
         }
 
-        .name-placeholder {
-            color: #45a29e;
+        /* La ruleta en sí */
+        .ruleta {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
 
-        .winner-box.celebrating #winner-name {
-            font-size: 3rem;
-            color: #66fcf1;
-            text-shadow: 0 0 15px rgba(102, 252, 241, 0.8);
-            animation: pulse 1.5s infinite;
+        /* Estilos para cada segmento de la ruleta */
+        .segmento {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            transform-origin: bottom right;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+            padding-left: 20px;
         }
 
-        .draw-button {
-            background: #66fcf1;
-            color: #0b0c10;
+        /* Rotación y colores para cada segmento */
+        /* Colores y temáticas de los 4 Fantásticos */
+        .segmento:nth-child(1) {
+            background-color: #d1121d; /* Rojo para La Antorcha Humana */
+            transform: rotate(0deg);
+        }
+        .segmento:nth-child(2) {
+            background-color: #004d99; /* Azul para Mr. Fantástico */
+            transform: rotate(90deg);
+        }
+        .segmento:nth-child(3) {
+            background-color: #ff9900; /* Naranja para La Mole */
+            transform: rotate(180deg);
+        }
+        .segmento:nth-child(4) {
+            background-color: #008000; /* Verde para La Mujer Invisible */
+            transform: rotate(270deg);
+        }
+        
+        .segmento span {
+            transform: rotate(-45deg);
+        }
+
+        /* Estilos del puntero que indica el resultado */
+        .puntero {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            transform: translate(-50%, -50%) rotate(45deg);
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid #fff;
+            z-index: 10;
+        }
+
+        /* Estilos del botón de girar */
+        .boton-girar {
+            padding: 1rem 2.5rem;
+            margin-top: 3rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #8a2be2, #4b0082);
+            color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            border-radius: 50px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.3s, background-color 0.3s;
-            box-shadow: 0 5px 15px rgba(102, 252, 241, 0.4);
+            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.5);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .draw-button:hover {
-            transform: translateY(-5px);
-            background: #45a29e;
+        .boton-girar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(138, 43, 226, 0.7);
         }
 
-        .draw-button:disabled {
-            background-color: #45a29e;
+        .boton-girar:disabled {
+            background: #4b4b4b;
             cursor: not-allowed;
-            opacity: 0.6;
             transform: none;
             box-shadow: none;
         }
 
-        .status-text {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: #c5c6c7;
-        }
-
-        /* Confetti Animation */
-        .confetti-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .confetti {
-            width: 10px;
-            height: 10px;
-            background-color: #66fcf1;
-            position: absolute;
-            top: -10px;
-            opacity: 0;
-            animation: fall 2s forwards;
-            z-index: 10;
-        }
-
-        @keyframes fall {
-            to {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 1;
-            }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        /* Estilos para el div del resultado */
+        .resultado {
+            margin-top: 2rem;
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            min-height: 50px;
+            color: #fff;
         }
     </style>
 </head>
-<body>
+<body class="flex flex-col items-center justify-center p-8">
 
-    <div class="container">
-        <h1 class="title">¡Sorteo Dinámico! 🎁</h1>
-        <p class="subtitle">Presiona el botón para descubrir al ganador.</p>
-        
-        <div class="winner-box">
-            <h2 id="winner-name" class="name-placeholder">Cargando nombres...</h2>
-            <div class="confetti-container" id="confetti-container"></div>
+    <h1 class="text-4xl md:text-5xl font-bold mb-8 text-center bg-gray-900 bg-opacity-50 p-4 rounded-xl shadow-lg">
+        Ruleta de Los 4 Fantásticos
+    </h1>
+
+    <div class="ruleta-container" id="ruletaContainer">
+        <div class="ruleta">
+            <div class="segmento"><span>La Antorcha Humana</span></div>
+            <div class="segmento"><span>Mr. Fantástico</span></div>
+            <div class="segmento"><span>La Mole</span></div>
+            <div class="segmento"><span>La Mujer Invisible</span></div>
         </div>
-        
-        <button id="draw-button" class="draw-button" disabled>
-            <i class="fas fa-magic"></i> Sortear
-        </button>
-
-        <p class="status-text" id="status-text"></p>
     </div>
 
+    <div class="resultado" id="resultado"></div>
+    <button class="boton-girar" id="botonGirar">GIRAR</button>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const winnerNameEl = document.getElementById('winner-name');
-            const drawButton = document.getElementById('draw-button');
-            const winnerBox = document.querySelector('.winner-box');
-            const statusTextEl = document.getElementById('status-text');
+        const ruletaContainer = document.getElementById('ruletaContainer');
+        const ruleta = document.querySelector('.ruleta');
+        const botonGirar = document.getElementById('botonGirar');
+        const resultadoDiv = document.getElementById('resultado');
 
-            // ⚠️ IMPORTANTE: Reemplaza esta URL con la tuya
-            const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOE83UtRKeje8Y7MjDYrbOemFyXPJq2dZdyxdxlrsnKT9B7JvFU7ALNnANOj266uFox7k-NvXGUItA/pub?gid=0&single=true&output=csv';
+        const segmentosData = [
+            'La Antorcha Humana',
+            'Mr. Fantástico',
+            'La Mole',
+            'La Mujer Invisible'
+        ];
+
+        // Función para girar la ruleta
+        function girarRuleta() {
+            // Deshabilitar el botón para evitar clics múltiples
+            botonGirar.disabled = true;
+            resultadoDiv.textContent = 'Girando...';
+
+            // Remover la animación de destellos
+            ruletaContainer.classList.remove('glowing-active');
+
+            // Calcular el índice del segmento ganador aleatorio
+            const indiceGanador = Math.floor(Math.random() * segmentosData.length);
             
-            let names = [];
-            let drawingInterval;
+            // Calcular los grados para que el puntero apunte al centro del segmento ganador
+            const gradosPorSegmento = 360 / segmentosData.length;
+            const gradosObjetivo = (3 - indiceGanador) * gradosPorSegmento + gradosPorSegmento / 2;
+            
+            // Sumar un número de vueltas completas para un giro más dinámico
+            const vueltasCompletas = 10;
+            const totalGrados = vueltasCompletas * 360 + gradosObjetivo;
 
-            const fetchNames = async () => {
-                try {
-                    statusTextEl.textContent = 'Cargando lista de nombres...';
-                    const response = await fetch(SPREADSHEET_URL);
-                    if (!response.ok) {
-                        throw new Error('No se pudo cargar la hoja de cálculo. Revisa la URL.');
-                    }
-                    const text = await response.text();
-                    
-                    // Separa los nombres por línea
-                    names = text.split('\n').map(name => name.trim()).filter(name => name !== '');
-                    
-                    if (names.length === 0) {
-                        statusTextEl.textContent = '⚠️ ¡No se encontraron nombres en la hoja de cálculo!';
-                    } else {
-                        statusTextEl.textContent = `✅ Se cargaron ${names.length} nombres.`;
-                        drawButton.disabled = false;
-                        winnerNameEl.textContent = '¡Listo para sortear!';
-                    }
-                } catch (error) {
-                    console.error('Error al cargar nombres:', error);
-                    statusTextEl.textContent = `❌ Error: ${error.message}`;
-                }
-            };
+            // Aplicar la rotación y la transición
+            ruleta.style.transition = 'transform 3s cubic-bezier(0.25, 0.1, 0.25, 1)';
+            ruleta.style.transform = `rotate(${totalGrados}deg)`;
 
-            const runDrawingAnimation = () => {
-                const totalDuration = 5000; // 5 segundos
-                const intervalDuration = 50; // 50 milisegundos
-                let startTime = Date.now();
-
-                drawingInterval = setInterval(() => {
-                    if (names.length === 0) {
-                        clearInterval(drawingInterval);
-                        return;
-                    }
-                    const randomIndex = Math.floor(Math.random() * names.length);
-                    winnerNameEl.textContent = names[randomIndex];
-                    
-                    // Reduce la velocidad gradualmente
-                    const elapsedTime = Date.now() - startTime;
-                    if (elapsedTime > totalDuration) {
-                        clearInterval(drawingInterval);
-                        selectWinner();
-                    }
-                }, intervalDuration);
-            };
-
-            const selectWinner = () => {
-                const winnerIndex = Math.floor(Math.random() * names.length);
-                const winner = names[winnerIndex];
+            // Usar setTimeout para manejar el final del giro
+            setTimeout(() => {
+                // Mostrar el resultado
+                resultadoDiv.textContent = `¡El elegido es: ${segmentosData[indiceGanador]}! 🎉`;
                 
-                winnerNameEl.textContent = winner;
-                winnerBox.classList.add('celebrating');
-                drawButton.disabled = true;
-                drawButton.textContent = '¡Ganador!';
-
-                // Elimina al ganador de la lista para no repetirlo
-                names.splice(winnerIndex, 1);
-                statusTextEl.textContent = `¡Felicidades a ${winner}! 🎉 Quedan ${names.length} nombres.`;
+                // Habilitar el botón nuevamente para otro giro
+                botonGirar.disabled = false;
                 
-                // Efecto de confeti
-                createConfetti();
-            };
+                // Añadir la animación de destellos al finalizar
+                ruletaContainer.classList.add('glowing-active');
+            }, 3000); // 3000 milisegundos = 3 segundos
+        }
 
-            const createConfetti = () => {
-                const confettiCount = 50;
-                const confettiContainer = document.getElementById('confetti-container');
-                for (let i = 0; i < confettiCount; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.classList.add('confetti');
-                    confetti.style.left = `${Math.random() * 100}%`;
-                    confetti.style.animationDelay = `${Math.random() * 1}s`;
-                    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                    confettiContainer.appendChild(confetti);
-                }
-            };
-
-            drawButton.addEventListener('click', () => {
-                if (names.length === 0) {
-                    statusTextEl.textContent = '¡No hay más nombres para sortear!';
-                    return;
-                }
-                drawButton.disabled = true;
-                winnerBox.classList.remove('celebrating');
-                winnerNameEl.textContent = '¡Sorteando...!';
-                runDrawingAnimation();
-            });
-
-            fetchNames(); // Llama a la función al cargar la página
-        });
+        // Agregar el evento de clic al botón
+        botonGirar.addEventListener('click', girarRuleta);
     </script>
 </body>
 </html>
