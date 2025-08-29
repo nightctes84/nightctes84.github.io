@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteo Dinámico ✨</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #1f2833, #0a0e14);
+            font-family: 'Poppins', sans-serif;
+            color: #c5c6c7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #0b0c10;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 600px;
+            border: 1px solid #45a29e;
+        }
+
+        .title {
+            color: #66fcf1;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(102, 252, 241, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #c5c6c7;
+            margin-bottom: 30px;
+        }
+
+        .winner-box {
+            background: #1f2833;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            border: 2px solid transparent;
+        }
+
+        .winner-box.celebrating {
+            border-color: #66fcf1;
+            box-shadow: 0 0 25px rgba(102, 252, 241, 0.7);
+        }
+
+        #winner-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #45a29e;
+            transition: all 0.5s ease;
+        }
+
+        .name-placeholder {
+            color: #45a29e;
+        }
+
+        .winner-box.celebrating #winner-name {
+            font-size: 3rem;
+            color: #66fcf1;
+            text-shadow: 0 0 15px rgba(102, 252, 241, 0.8);
+            animation: pulse 1.5s infinite;
+        }
+
+        .draw-button {
+            background: #66fcf1;
+            color: #0b0c10;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            box-shadow: 0 5px 15px rgba(102, 252, 241, 0.4);
+        }
+
+        .draw-button:hover {
+            transform: translateY(-5px);
+            background: #45a29e;
+        }
+
+        .draw-button:disabled {
+            background-color: #45a29e;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .status-text {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #c5c6c7;
+        }
+
+        /* Confetti Animation */
+        .confetti-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .confetti {
+            width: 10px;
+            height: 10px;
+            background-color: #66fcf1;
+            position: absolute;
+            top: -10px;
+            opacity: 0;
+            animation: fall 2s forwards;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="title">¡Sorteo Dinámico! 🎁</h1>
+        <p class="subtitle">Presiona el botón para descubrir al ganador.</p>
+        
+        <div class="winner-box">
+            <h2 id="winner-name" class="name-placeholder">Cargando nombres...</h2>
+            <div class="confetti-container" id="confetti-container"></div>
+        </div>
+        
+        <button id="draw-button" class="draw-button" disabled>
+            <i class="fas fa-magic"></i> Sortear
+        </button>
+
+        <p class="status-text" id="status-text"></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const winnerNameEl = document.getElementById('winner-name');
+            const drawButton = document.getElementById('draw-button');
+            const winnerBox = document.querySelector('.winner-box');
+            const statusTextEl = document.getElementById('status-text');
+
+            // ⚠️ IMPORTANTE: Reemplaza esta URL con la tuya
+            const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOE83UtRKeje8Y7MjDYrbOemFyXPJq2dZdyxdxlrsnKT9B7JvFU7ALNnANOj266uFox7k-NvXGUItA/pub?gid=0&single=true&output=csv';
+            
+            let names = [];
+            let drawingInterval;
+
+            const fetchNames = async () => {
+                try {
+                    statusTextEl.textContent = 'Cargando lista de nombres...';
+                    const response = await fetch(SPREADSHEET_URL);
+                    if (!response.ok) {
+                        throw new Error('No se pudo cargar la hoja de cálculo. Revisa la URL.');
+                    }
+                    const text = await response.text();
+                    
+                    // Separa los nombres por línea
+                    names = text.split('\n').map(name => name.trim()).filter(name => name !== '');
+                    
+                    if (names.length === 0) {
+                        statusTextEl.textContent = '⚠️ ¡No se encontraron nombres en la hoja de cálculo!';
+                    } else {
+                        statusTextEl.textContent = `✅ Se cargaron ${names.length} nombres.`;
+                        drawButton.disabled = false;
+                        winnerNameEl.textContent = '¡Listo para sortear!';
+                    }
+                } catch (error) {
+                    console.error('Error al cargar nombres:', error);
+                    statusTextEl.textContent = `❌ Error: ${error.message}`;
+                }
+            };
+
+            const runDrawingAnimation = () => {
+                const totalDuration = 5000; // 5 segundos
+                const intervalDuration = 50; // 50 milisegundos
+                let startTime = Date.now();
+
+                drawingInterval = setInterval(() => {
+                    if (names.length === 0) {
+                        clearInterval(drawingInterval);
+                        return;
+                    }
+                    const randomIndex = Math.floor(Math.random() * names.length);
+                    winnerNameEl.textContent = names[randomIndex];
+                    
+                    // Reduce la velocidad gradualmente
+                    const elapsedTime = Date.now() - startTime;
+                    if (elapsedTime > totalDuration) {
+                        clearInterval(drawingInterval);
+                        selectWinner();
+                    }
+                }, intervalDuration);
+            };
+
+            const selectWinner = () => {
+                const winnerIndex = Math.floor(Math.random() * names.length);
+                const winner = names[winnerIndex];
+                
+                winnerNameEl.textContent = winner;
+                winnerBox.classList.add('celebrating');
+                drawButton.disabled = true;
+                drawButton.textContent = '¡Ganador!';
+
+                // Elimina al ganador de la lista para no repetirlo
+                names.splice(winnerIndex, 1);
+                statusTextEl.textContent = `¡Felicidades a ${winner}! 🎉 Quedan ${names.length} nombres.`;
+                
+                // Efecto de confeti
+                createConfetti();
+            };
+
+            const createConfetti = () => {
+                const confettiCount = 50;
+                const confettiContainer = document.getElementById('confetti-container');
+                for (let i = 0; i < confettiCount; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.animationDelay = `${Math.random() * 1}s`;
+                    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    confettiContainer.appendChild(confetti);
+                }
+            };
+
+            drawButton.addEventListener('click', () => {
+                if (names.length === 0) {
+                    statusTextEl.textContent = '¡No hay más nombres para sortear!';
+                    return;
+                }
+                drawButton.disabled = true;
+                winnerBox.classList.remove('celebrating');
+                winnerNameEl.textContent = '¡Sorteando...!';
+                runDrawingAnimation();
+            });
+
+            fetchNames(); // Llama a la función al cargar la página
+        });
+    </script>
+</body>
+</html>
