@@ -234,8 +234,13 @@
                 
                 winnerNameEl.textContent = winner;
                 winnerBox.classList.add('celebrating');
-                drawButton.disabled = true;
-                drawButton.textContent = '¡Ganador!';
+                
+                // --- CÓDIGO MODIFICADO ---
+                // Aquí se ha eliminado la línea "drawButton.disabled = true;"
+                // para que el botón siga habilitado.
+                // -------------------------
+
+                drawButton.textContent = '¡Sortear de nuevo!';
 
                 // Elimina al ganador de la lista para no repetirlo
                 names.splice(winnerIndex, 1);
@@ -248,6 +253,12 @@
             const createConfetti = () => {
                 const confettiCount = 50;
                 const confettiContainer = document.getElementById('confetti-container');
+                
+                // Limpiar confetti anterior
+                while (confettiContainer.firstChild) {
+                    confettiContainer.removeChild(confettiContainer.firstChild);
+                }
+
                 for (let i = 0; i < confettiCount; i++) {
                     const confetti = document.createElement('div');
                     confetti.classList.add('confetti');
@@ -261,6 +272,7 @@
             drawButton.addEventListener('click', () => {
                 if (names.length === 0) {
                     statusTextEl.textContent = '¡No hay más nombres para sortear!';
+                    drawButton.disabled = true;
                     return;
                 }
                 drawButton.disabled = true;
