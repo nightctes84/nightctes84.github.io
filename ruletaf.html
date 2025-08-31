@@ -30,9 +30,9 @@
             border: 10px solid rgba(255, 255, 255, 0.8);
             box-shadow: 0 0 40px rgba(255, 255, 255, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.3);
             overflow: hidden;
-            background: #2e0854; /* Color de fondo para la ruleta */
+            background: #2e0854;
         }
-        
+       
         /* Animación para los destellos de luz */
         @keyframes glowing {
             0% { box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000; }
@@ -51,7 +51,8 @@
             width: 100%;
             height: 100%;
             position: relative;
-            transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
+            /* SE CAMBIÓ A 2S */
+            transition: transform 2s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
 
         /* Estilos para cada segmento de la ruleta */
@@ -74,22 +75,22 @@
         /* Rotación y colores para cada segmento */
         /* Colores y temáticas de los 4 Fantásticos */
         .segmento:nth-child(1) {
-            background-color: #d1121d; /* Rojo para La Antorcha Humana */
+            background-color: #d1121d;
             transform: rotate(0deg);
         }
         .segmento:nth-child(2) {
-            background-color: #004d99; /* Azul para Mr. Fantástico */
+            background-color: #004d99;
             transform: rotate(90deg);
         }
         .segmento:nth-child(3) {
-            background-color: #ff9900; /* Naranja para La Mole */
+            background-color: #ff9900;
             transform: rotate(180deg);
         }
         .segmento:nth-child(4) {
-            background-color: #008000; /* Verde para La Mujer Invisible */
+            background-color: #008000;
             transform: rotate(270deg);
         }
-        
+       
         .segmento span {
             transform: rotate(-45deg);
         }
@@ -179,52 +180,39 @@
 
         // Función para girar la ruleta
         function girarRuleta() {
-            // Deshabilitar el botón para evitar clics múltiples
             botonGirar.disabled = true;
             resultadoDiv.textContent = 'Girando...';
-
-            // Remover la animación de destellos
             ruletaContainer.classList.remove('glowing-active');
 
-            // Calcular un número aleatorio de revoluciones (entre 5 y 10)
             const minRevoluciones = 5;
             const maxRevoluciones = 10;
             const extraGrados = Math.floor(Math.random() * 360);
             const totalGrados = (Math.random() * (maxRevoluciones - minRevoluciones) + minRevoluciones) * 360 + extraGrados;
 
-            // Aplicar la rotación y la transición
-            ruleta.style.transition = 'transform 5s cubic-bezier(0.25, 0.1, 0.25, 1)';
+            // SE CAMBIÓ A 2S
+            ruleta.style.transition = 'transform 2s cubic-bezier(0.25, 0.1, 0.25, 1)';
             ruleta.style.transform = `rotate(${totalGrados}deg)`;
 
-            // Escuchar el evento de fin de la transición para mostrar el resultado
             ruleta.addEventListener('transitionend', () => {
-                // Calcular el ángulo final para determinar el ganador
                 const anguloFinal = (totalGrados % 360 + 360) % 360;
-                
-                // Determinar el índice del segmento ganador
+               
                 let indiceGanador = 0;
                 if (anguloFinal >= 0 && anguloFinal < 90) {
-                    indiceGanador = 3; // La Mujer Invisible
+                    indiceGanador = 3;
                 } else if (anguloFinal >= 90 && anguloFinal < 180) {
-                    indiceGanador = 2; // La Mole
+                    indiceGanador = 2;
                 } else if (anguloFinal >= 180 && anguloFinal < 270) {
-                    indiceGanador = 1; // Mr. Fantástico
+                    indiceGanador = 1;
                 } else {
-                    indiceGanador = 0; // La Antorcha Humana
+                    indiceGanador = 0;
                 }
-                
-                // Mostrar el resultado
+               
                 resultadoDiv.textContent = `¡El elegido es: ${segmentosData[indiceGanador]}! 🎉`;
-                
-                // Habilitar el botón nuevamente para otro giro
                 botonGirar.disabled = false;
-                
-                // Añadir la animación de destellos al finalizar
                 ruletaContainer.classList.add('glowing-active');
             }, { once: true });
         }
 
-        // Agregar el evento de clic al botón
         botonGirar.addEventListener('click', girarRuleta);
     </script>
 </body>
