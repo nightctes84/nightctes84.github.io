@@ -235,9 +235,9 @@
                 winnerNameEl.textContent = winner;
                 winnerBox.classList.add('celebrating');
                 
-                // --- CÓDIGO MODIFICADO ---
-                // Aquí se ha eliminado la línea "drawButton.disabled = true;"
-                // para que el botón siga habilitado.
+               // --- CÓDIGO MODIFICADO ---
+                // Se agregó esta línea para REHABILITAR el botón después del sorteo.
+                drawButton.disabled = false;
                 // -------------------------
 
                 drawButton.textContent = '¡Sortear de nuevo!';
@@ -286,3 +286,4 @@
     </script>
 </body>
 </html>
+
